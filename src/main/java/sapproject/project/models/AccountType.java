@@ -6,8 +6,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Getter
@@ -25,15 +23,13 @@ public class AccountType implements Serializable {
 
     @Basic
     @Column(name = "name", nullable = false)
-    @NotNull
-    @Size(min = 4, max = 100)
     private String name;
 
 
-/*    private List<Account> accountList = new ArrayList<>();
+   /* private List<Account> accountList = new ArrayList<>();
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "account_type_id")
+    @JoinTable(name = "accountType")
     public List<Account> getAccountList() {
         return accountList;
     }

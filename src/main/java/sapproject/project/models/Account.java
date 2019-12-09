@@ -1,11 +1,10 @@
 package sapproject.project.models;
 
 
-import lombok.*;
-import sapproject.project.utils.MD5;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @ToString
@@ -20,10 +19,13 @@ public class Account implements Serializable {
     private String email;
     private transient String password;
 
-    //todo fix
-    /*
-    private List<Review> reviewList = new ArrayList<>();
-*/
+    public Account(AccountType accountType, String name, String email, String password) {
+        this.accountType = accountType;
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "account_id")
@@ -46,8 +48,7 @@ public class Account implements Serializable {
     }
 
     @Basic
-    @Column(name = "first_name")
-    @Size(min = 4, max = 50)
+    @Column(name = "name")
     public String getName() {
         return name;
     }
@@ -58,7 +59,6 @@ public class Account implements Serializable {
 
     @Basic
     @Column(name = "email", nullable = false)
-    @Size(min = 4, max = 100)
     public String getEmail() {
         return email;
     }
@@ -69,7 +69,6 @@ public class Account implements Serializable {
 
     @Basic
     @Column(name = "password", nullable = false)
-    @Size(min = 4, max = 50)
     public String getPassword() {
         return password;
     }
@@ -77,16 +76,5 @@ public class Account implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-/*
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "account")
-    @JsonIgnoreProperties("account")
-    public List<Review> getReviewList() {
-        return reviewList;
-    }
 
-    public void setReviewList(List<Review> reviewList) {
-        this.reviewList = reviewList;
-    }
-
- */
 }

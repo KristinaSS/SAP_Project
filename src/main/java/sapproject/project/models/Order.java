@@ -5,24 +5,30 @@ import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
+import java.io.Serializable;
 
 @Getter
 @Setter
 @ToString
 @Entity(name = "order")
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = 7696645133827053325L;
+
+    public Order(String dateTime, Account client) {
+        this.dateTime = dateTime;
+        this.client = client;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_type_id")
+    @Column(name = "order_id")
     private int orderId;
 
     @Basic
     @Column(name = "date_time", nullable = false)
-    private LocalDateTime dateTime;
+    private String dateTime;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "account_id")
+    @JoinColumn(name = "client_id")
     private Account client;
 }
