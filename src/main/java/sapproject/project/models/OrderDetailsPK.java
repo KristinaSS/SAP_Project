@@ -1,8 +1,6 @@
 package sapproject.project.models;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,8 +14,8 @@ public class OrderDetailsPK implements Serializable {
         this.productId = productId;
     }
 
-    @Column(name = "order_id")
-    @Id
+    @ManyToOne
+    @JoinColumn(name = "order_id")
     public int getOrderId() {
         return orderId;
     }
@@ -26,8 +24,8 @@ public class OrderDetailsPK implements Serializable {
         this.orderId = orderId;
     }
 
-    @Column(name = "product_id")
-    @Id
+    @ManyToOne
+    @JoinColumn(name = "product_id")
     public int getProductId() {
         return productId;
     }

@@ -7,16 +7,16 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 
 @AllArgsConstructor
 @Getter
 @Setter
 @ToString
-@IdClass(OrderDetails.class)
 @Entity(name = "orderdetails")
 public class OrderDetails implements Serializable {
     private static final long serialVersionUID = -3056970932234138597L;
-    
+
     @EmbeddedId
     private OrderDetailsPK orderdetailsPK;
 
