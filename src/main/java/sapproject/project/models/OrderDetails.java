@@ -16,19 +16,9 @@ import java.io.Serializable;
 @Entity(name = "orderdetails")
 public class OrderDetails implements Serializable {
     private static final long serialVersionUID = -3056970932234138597L;
-    /*
-        @Id
-        @ManyToOne(cascade = CascadeType.PERSIST)
-        @JoinColumn(name = "order_id")
-        private Order order;
-
-        @Id
-        @ManyToOne(cascade = CascadeType.PERSIST)
-        @JoinColumn(name = "product_id")
-        private Product product;
-     */
+    
     @EmbeddedId
-    private OrderDetailsIdentity orderDetailsIdentity;
+    private OrderDetailsPK orderdetailsPK;
 
     @Basic
     @Column(name = "quantity", nullable = false)
@@ -42,3 +32,15 @@ public class OrderDetails implements Serializable {
     @Column(name = "sum", nullable = false)
     private float sum;
 }
+/*
+
+        @Id
+        @ManyToOne(cascade = CascadeType.PERSIST)
+        @JoinColumn(name = "order_id")
+        private Order order;
+
+        @Id
+        @ManyToOne(cascade = CascadeType.PERSIST)
+        @JoinColumn(name = "product_id")
+        private Product product;
+     */

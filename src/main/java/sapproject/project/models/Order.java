@@ -6,6 +6,7 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Getter
 @Setter
@@ -31,4 +32,7 @@ public class Order implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Account client;
+
+/*    @OneToMany(fetch = FetchType.LAZY)
+    private List<OrderDetails> orderDetailsList;*/
 }

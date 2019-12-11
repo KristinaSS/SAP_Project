@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
 
 import sapproject.project.models.OrderDetails;
-import sapproject.project.models.OrderDetailsIdentity;
+import sapproject.project.models.OrderDetailsPK;
 import sapproject.project.repository.OrderDetailsRepository;
 import sapproject.project.services.interfaces.IOrderDetailsService;
 
@@ -29,7 +29,7 @@ public class OrderDetailsService implements IOrderDetailsService {
         return null;
     }
 
-    public OrderDetails getOne(OrderDetailsIdentity Id) {
+    public OrderDetails getOne(OrderDetailsPK Id) {
         return orderDetailsRepository.findById(Id) .orElseGet(()->{
             try {
                 throw new EntityNotFoundException(OrderDetails.class);
@@ -68,7 +68,7 @@ public class OrderDetailsService implements IOrderDetailsService {
         return null;
     }
 
-    public OrderDetails updateByID(OrderDetailsIdentity ID, OrderDetails entity) {
+    public OrderDetails updateByID(OrderDetailsPK ID, OrderDetails entity) {
         return orderDetailsRepository.findById(ID)
                 .map(accountType -> orderDetailsRepository.save(updateOrderDetailMemebers(accountType,entity)))
                 .orElseGet(()->{

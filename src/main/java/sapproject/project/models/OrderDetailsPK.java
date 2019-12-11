@@ -1,13 +1,20 @@
 package sapproject.project.models;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class OrderdetailsPK implements Serializable {
+@Embeddable
+public class OrderDetailsPK implements Serializable {
     private int orderId;
     private int productId;
+
+    public OrderDetailsPK(int orderId, int productId) {
+        this.orderId = orderId;
+        this.productId = productId;
+    }
 
     @Column(name = "order_id")
     @Id
@@ -33,7 +40,7 @@ public class OrderdetailsPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderdetailsPK that = (OrderdetailsPK) o;
+        OrderDetailsPK that = (OrderDetailsPK) o;
         return orderId == that.orderId &&
                 productId == that.productId;
     }
