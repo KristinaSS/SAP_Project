@@ -24,6 +24,15 @@ public class OrderDetailsController {
         return orderDetailsService.findAll();
     }
 
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public OrderDetails createOrderDetails(@Valid @RequestBody OrderDetails orderDetails) {
+        log.debug("REST request to save Order Details : {}", orderDetails);
+        return orderDetailsService.createOne(orderDetails);
+    }
+    
+    //to be fixed
+
     @GetMapping("/get-{id}")
     @ResponseStatus(HttpStatus.OK)
     public OrderDetails getOrderDetails(@PathVariable(name = "id") int id){
@@ -31,24 +40,17 @@ public class OrderDetailsController {
         return  orderDetailsService.getOne(id);
     }
 
-    @PostMapping("/create-{typeId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public OrderDetails createOrderDetails(@Valid @RequestBody OrderDetails orderDetails, @PathVariable(value = "typeId") Integer typeId) {
-        log.debug("REST request to save Order Details : {}", orderDetails);
-        return orderDetailsService.createOne(orderDetails);
-    }
-
     @PutMapping("/edit-{ID}")
     @ResponseStatus(HttpStatus.OK)
-    public OrderDetails updateAccount(@PathVariable(value = "ID") Integer ID,
-                                 @Valid @RequestBody OrderDetails orderDetails){
+    public OrderDetails updateOrderDetails(@PathVariable(value = "ID") Integer ID,
+                                           @Valid @RequestBody OrderDetails orderDetails){
         log.debug("REST request to update Order Details : {}", ID);
         return orderDetailsService.updateByID(ID,orderDetails);
     }
 
     @DeleteMapping("/delete-{ID}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteFoodplace(@PathVariable(value = "ID") Integer ID) {
+    public void deleteOrderDetails(@PathVariable(value = "ID") Integer ID) {
         log.debug("REST request to delete Order Details : {}", ID);
         orderDetailsService.deleteByID(ID);
     }

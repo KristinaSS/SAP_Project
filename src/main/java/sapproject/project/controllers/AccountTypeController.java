@@ -15,25 +15,41 @@ import java.util.List;
 @RequestMapping("")
 public class AccountTypeController {
     @Autowired
-    IAccountTypeService accountTypeService;
+    IAccountTypeService iAccountTypeService;
 
-    @GetMapping("/all-account-types")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<AccountType> getAllAccountTypes() {
-        log.debug("REST request to get all AccountTypes");
-        return accountTypeService.findAll();
-    }
-    @GetMapping("/accountType-{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public AccountType getAccount(@PathVariable(name = "id") int id){
-        log.debug("REST request to get Account Type: {}", id);
-        return  accountTypeService.getOne(id);
+        log.debug("REST request to get all Order Details.");
+        return iAccountTypeService.findAll();
     }
 
-    @PostMapping("/accountType")
+    @GetMapping("/get-{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AccountType getAccountType(@PathVariable(name = "id") int id){
+        log.debug("REST request to get Order Details : {}", id);
+        return  iAccountTypeService.getOne(id);
+    }
+
+    @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public AccountType createAccountType(@Valid @RequestBody AccountType accountType) {
-        log.debug("REST request to save Account Type : {}", accountType);
-        return accountTypeService.createOne(accountType);
+    public AccountType createAccountType(@Valid @RequestBody AccountType orderDetails) {
+        log.debug("REST request to save Order Details : {}", orderDetails);
+        return iAccountTypeService.createOne(orderDetails);
+    }
+
+    @PutMapping("/edit-{ID}")
+    @ResponseStatus(HttpStatus.OK)
+    public AccountType updateAccountType(@PathVariable(value = "ID") Integer ID,
+                                      @Valid @RequestBody AccountType orderDetails){
+        log.debug("REST request to update Order Details : {}", ID);
+        return iAccountTypeService.updateByID(ID,orderDetails);
+    }
+
+    @DeleteMapping("/delete-{ID}")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteAccountType(@PathVariable(value = "ID") Integer ID) {
+        log.debug("REST request to delete Order Details : {}", ID);
+        iAccountTypeService.deleteByID(ID);
     }
 }

@@ -1,0 +1,41 @@
+/*
+.sign-up-link, .login-link {
+  background-color: seagreen;
+  font-weight: bold;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color:rgba(247,157,62,0.8);
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+li {
+  float: left;
+}
+li a {
+  display: block;
+  color: black;
+  text-align: center;
+  padding: 20px 25px;
+  text-decoration: none;
+}
+li a:hover {
+  color: white;
+  background-color: #666666;
+}
+.musala_logo{
+  margin-left: 20px;
+  margin-top: 10px;
+  padding-bottom: 5px;
+}
+*/
+/*.header-top{
+  float: top;
+}
+.under-header{
+  float: top;
+}*/

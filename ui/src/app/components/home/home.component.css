@@ -1,0 +1,57 @@
+/*
+.site-wrapper{
+  color: black;
+  background-image: url("https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/101/2017/09/02072540/lunch-web1.jpg");
+  background-repeat: no-repeat;
+  background-color: black;
+  height: 100vh;
+  background-position: center;
+  background-size: cover;
+  position: relative;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+  font-weight: bold;
+}
+.Text-wrapper{
+  overflow: hidden;
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:rgba(255,255,255,0.8);
+  padding-right: 10px;
+  padding-left: 10px;
+  padding-top: 20px;
+  z-index: 0;
+}
+.generate-btn-wrapper:before{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.generate-btn{
+  background-color: seagreen;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  border-radius: 12px;
+  border: 2px solid darkslategrey;
+  cursor: pointer;
+  box-shadow: 0 9px darkslategrey;
+}
+.generate-btn:hover {
+  color: black;
+  background-color: darkcyan;
+  border: darkslategrey 2px solid;
+}
+.generate-btn:active {
+  background-color: #2F752D;
+  box-shadow: 0 5px darkslategrey;
+  transform: translateY(4px);
+}
+
+
+*/

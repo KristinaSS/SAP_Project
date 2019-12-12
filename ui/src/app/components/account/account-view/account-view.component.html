@@ -1,0 +1,31 @@
+<div class="site-wrapper">
+  <div class="text-wrap">
+    <br>
+    <div class="title" style="text-align:center">
+      <h1>
+        {{account.firstName}} {{account.lastName}}
+      </h1>
+    </div>
+    <div class="table-wrapper">
+      <div class="form-group">
+        <label>Account Type: </label>
+        <div class="form-control">{{account.accountType.name}}</div>
+      </div>
+      <div class="form-group">
+        <label>Email: </label>
+        <div class="form-control">{{account.email}}</div>
+      </div>
+    </div>
+    <div class="btn-wrapper">
+      <button class="btnz delete-btn" (click)="deleteAccount()" routerLink="/account/account-list">
+        <a>Delete</a>
+      </button>
+      <button class="btnz update-btn">
+        <a>Update</a>
+      </button>
+      <button class="btnz back-btn-wrapper" routerLink="/account/account-list">
+        <a class="btn-back">Back to List</a>
+      </button>
+    </div>
+  </div>
+</div>
