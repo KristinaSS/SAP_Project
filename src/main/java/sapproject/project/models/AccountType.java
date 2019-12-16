@@ -7,6 +7,8 @@ import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,15 +28,20 @@ public class AccountType implements Serializable {
     private String name;
 
 
-   /* private List<Account> accountList = new ArrayList<>();
+    private List<Role> roleList = new ArrayList<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "accountType")
-    public List<Account> getAccountList() {
-        return accountList;
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "accounttyperoles",
+            joinColumns = {
+                    @JoinColumn(name = "accountTypeID", nullable = false, updatable = false)},
+            inverseJoinColumns = {
+                    @JoinColumn(name = "roleId", nullable = false, updatable = false)
+            })
+    public List<Role> getRoleList() {
+        return roleList;
     }
 
-    public void setAccountList(List<Account> accountList) {
-        this.accountList = accountList;
-    }*/
+    public void setRoleList(List<Role> roleList) {
+        this.roleList = roleList;
+    }
 }
