@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import sapproject.project.models.Role;
 
 @Getter
 @Setter
@@ -30,7 +31,7 @@ public class AccountType implements Serializable {
 
     private List<Role> roleList = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "accounttyperoles",
             joinColumns = {
                     @JoinColumn(name = "accountTypeID", nullable = false, updatable = false)},

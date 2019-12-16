@@ -19,12 +19,16 @@ public class MyUserDetails implements UserDetails {
         this.username = account.getEmail();
         this.password = account.getPassword();
         this.active = true;
-        //List<String> roleList = new ArrayList<>();
-        Role[] roles = account.getAccountType().getRoleList().toArray(new Role[account.getAccountType().getRoleList().size()]);
-       /* for(Role role: )
-            roles.append(role.getName()+ " ");*/
-        /*this.authorities = Arrays.stream(roles).map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());*/
+        ArrayList<String> roles = new ArrayList<>();
+
+        account.getAccountType()
+                .getRoleList()
+                .forEach(role-> roles.add(role.getName()));
+
+        this.authorities = Arrays
+                .stream(roles.toArray(new String[roles.size()]))
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     public MyUserDetails() {
@@ -32,12 +36,12 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("client"));
+        return authorities;
     }
 
     @Override
     public String getPassword() {
-        return "pass";
+        return password;
     }
 
     @Override
@@ -62,6 +66,6 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return active;
     }
 }
