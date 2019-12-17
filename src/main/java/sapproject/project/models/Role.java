@@ -1,26 +1,20 @@
 package sapproject.project.models;
 
-
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Setter
-@ToString
-@Entity(name = "accounttype")
-public class AccountType implements Serializable {
-
-    private static final long serialVersionUID = 3521498010964665376L;
-
+@Getter
+@Entity
+@Table(name = "roles")
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "account_type_id")
+    @Column(name = "role_id")
     private int accountTypeID;
 
     @Basic
@@ -28,6 +22,9 @@ public class AccountType implements Serializable {
     private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "accountTypeID")
-    private List<AccountTypeRole> accountListFromAccType;
+    @JoinTable(name = "rolesID")
+    private List<AccountTypeRole> accountListFromRole;
+
+    /*@ManyToMany(mappedBy = "rolesList") //the list in the other Class
+    private List<AccountType> accountTypeList;*/
 }
