@@ -27,7 +27,4 @@ public class AccountType implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "accountTypeID")
-    private List<AccountTypeRole> accountListFromAccType;
 }

@@ -21,14 +21,18 @@ public class MyUserDetails implements UserDetails {
         this.username = account.getEmail();
         this.password = account.getPassword();
         this.active = true;
-        ArrayList<String> roles = new ArrayList<>();
-
-        account.getAccountType()
-                .getAccountListFromAccType()
-                .forEach(role-> roles.add(role.getRolesID().getName()));
-
+        ArrayList<String> permissions = new ArrayList<>();
+            switch (account.getAccountType().getName()){
+                case "admin":
+                    permissions.add("admin");
+                case "employee":
+                    permissions.add("employee");
+                case "client":
+                    permissions.add("client");
+                default:
+            }
         this.authorities = Arrays
-                .stream(roles.toArray(new String[roles.size()]))
+                .stream(permissions.toArray(new String[permissions.size()]))
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
