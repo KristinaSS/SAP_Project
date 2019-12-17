@@ -4,4 +4,6 @@ import sapproject.project.models.Account;
 
 public interface IAccountService extends Service<Account> {
     Account createOne(Account account, int accType);
+
+    //Account findByUsername(String username);
 }
