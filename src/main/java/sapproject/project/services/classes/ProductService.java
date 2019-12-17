@@ -27,7 +27,7 @@ public class ProductService implements IProductService {
             try {
                 throw new EntityNotFoundException(Product.class);
             } catch (EntityNotFoundException e) {
-                log.warn("A product with this Id has not been found:  {}", Id);
+               // log.warn("A product with this Id has not been found:  {}", Id);
             }
             return null;
         });
@@ -35,7 +35,7 @@ public class ProductService implements IProductService {
 
     @Override
     public Product createOne(Product entity) {
-        log.info("New product has been created: {}", entity);
+        //log.info("New product has been created: {}", entity);
         return productRepository.save(entity);
     }
 
@@ -46,11 +46,11 @@ public class ProductService implements IProductService {
             try {
                 throw new EntityNotFoundException(Product.class);
             } catch (EntityNotFoundException e) {
-                log.warn("Product not found: {}", ID);
+                //log.warn("Product not found: {}", ID);
             }
             return;
         }
-        log.info("Deleted product: {} ",ID);
+        //log.info("Deleted product: {} ",ID);
         productRepository.delete(catagory);
 
     }
@@ -61,7 +61,7 @@ public class ProductService implements IProductService {
                 .map(accountType -> productRepository.save(updateProductMembers(accountType,entity)))
                 .orElseGet(()->{
                     entity.setProductId(ID);
-                    log.info("Order has been created: {}",ID);
+                   // log.info("Order has been created: {}",ID);
                     return productRepository.save(entity);
                 });
     }
@@ -71,7 +71,7 @@ public class ProductService implements IProductService {
         product.setName(update.getName());
         product.setPrice(update.getPrice());
         product.setQuantity(update.getQuantity());
-        log.info("Order updated: {}", product);
+        //log.info("Order updated: {}", product);
         return product;
     }
 }

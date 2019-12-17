@@ -10,9 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+
 @Entity(name = "accounttype")
 public class AccountType implements Serializable {
 
@@ -27,4 +25,19 @@ public class AccountType implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public int getAccountTypeID() {
+        return accountTypeID;
+    }
+
+    public void setAccountTypeID(int accountTypeID) {
+        this.accountTypeID = accountTypeID;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }

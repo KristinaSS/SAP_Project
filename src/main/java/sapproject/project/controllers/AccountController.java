@@ -10,7 +10,6 @@ import sapproject.project.services.interfaces.IAccountService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Log4j2
 @RestController
 @RequestMapping("/account")
 public class AccountController {
@@ -20,21 +19,21 @@ public class AccountController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Account> getAllAccounts() {
-        log.debug("REST request to get all Accounts.");
+        //log.debug("REST request to get all Accounts.");
         return accountService.findAll();
     }
 
     @GetMapping("/get-{id}")
     @ResponseStatus(HttpStatus.OK)
     public Account getAccount(@PathVariable(name = "id") int id){
-        log.debug("REST request to get Account : {}", id);
+       // log.debug("REST request to get Account : {}", id);
         return  accountService.getOne(id);
     }
 
     @PostMapping("/create-{typeId}")
     @ResponseStatus(HttpStatus.CREATED)
     public Account createAccount(@Valid @RequestBody Account account, @PathVariable(value = "typeId") Integer typeId) {
-        log.debug("REST request to save Account : {}", account);
+        //log.debug("REST request to save Account : {}", account);
         return accountService.createOne(account,typeId);
     }
 
@@ -42,14 +41,14 @@ public class AccountController {
     @ResponseStatus(HttpStatus.OK)
     public Account updateAccount(@PathVariable(value = "accID") Integer ID,
     @Valid @RequestBody Account account){
-        log.debug("REST request to update Account : {}", ID);
+        //log.debug("REST request to update Account : {}", ID);
         return accountService.updateByID(ID,account);
     }
 
     @DeleteMapping("/delete-{accID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteAccount(@PathVariable(value = "accID") Integer accID) {
-        log.debug("REST request to delete Account : {}", accID);
+        //log.debug("REST request to delete Account : {}", accID);
         accountService.deleteByID(accID);
     }
 }

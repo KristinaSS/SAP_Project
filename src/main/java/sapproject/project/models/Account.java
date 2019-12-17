@@ -8,7 +8,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @ToString
-@NoArgsConstructor
 @Entity(name = "account")
 public class Account implements Serializable {
     private static final long serialVersionUID = 7695450117825003302L;
@@ -24,6 +23,9 @@ public class Account implements Serializable {
         this.name = name;
         this.email = email;
         this.password = password;
+    }
+
+    public Account() {
     }
 
     @Id

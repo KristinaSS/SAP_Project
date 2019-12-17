@@ -27,7 +27,7 @@ public class OrderService implements IOrderService {
             try {
                 throw new EntityNotFoundException(Order.class);
             } catch (EntityNotFoundException e) {
-                log.warn("A order with this Id has not been found:  {}", Id);
+                //log.warn("A order with this Id has not been found:  {}", Id);
             }
             return null;
         });
@@ -35,7 +35,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order createOne(Order entity) {
-        log.info("New order has been created: {}", entity);
+        //log.info("New order has been created: {}", entity);
         return orderRepository.save(entity);
     }
 
@@ -46,11 +46,11 @@ public class OrderService implements IOrderService {
             try {
                 throw new EntityNotFoundException(Order.class);
             } catch (EntityNotFoundException e) {
-                log.warn("Order not found: {}", ID);
+               // log.warn("Order not found: {}", ID);
             }
             return;
         }
-        log.info("Deleted order: {} ",ID);
+        //log.info("Deleted order: {} ",ID);
         orderRepository.delete(catagory);
 
     }
@@ -61,7 +61,7 @@ public class OrderService implements IOrderService {
                 .map(accountType -> orderRepository.save(updateOrderMembers(accountType,entity)))
                 .orElseGet(()->{
                     entity.setOrderId(ID);
-                    log.info("Order has been created: {}",ID);
+                   // log.info("Order has been created: {}",ID);
                     return orderRepository.save(entity);
                 });
     }
@@ -69,7 +69,7 @@ public class OrderService implements IOrderService {
     private Order updateOrderMembers(Order order, Order update){
         order.setClient(update.getClient());
         order.setDateTime(update.getDateTime());
-        log.info("Order updated: {}", order);
+        //log.info("Order updated: {}", order);
         return order;
     }
 }

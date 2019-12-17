@@ -8,9 +8,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-@ToString
+
 @Entity(name = "order")
 public class Order implements Serializable {
     private static final long serialVersionUID = 7696645133827053325L;
@@ -33,6 +31,30 @@ public class Order implements Serializable {
     @JoinColumn(name = "client_id")
     private Account client;
 
-/*    @OneToMany(fetch = FetchType.LAZY)
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.dateTime = dateTime;
+    }
+
+    public Account getClient() {
+        return client;
+    }
+
+    public void setClient(Account client) {
+        this.client = client;
+    }
+
+    /*    @OneToMany(fetch = FetchType.LAZY)
     private List<OrderDetails> orderDetailsList;*/
 }

@@ -1,3 +1,4 @@
+/*
 package sapproject.project.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +34,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public PasswordEncoder getPasswordEncoder(){
         return NoOpPasswordEncoder.getInstance();
     }
-}
+}*/

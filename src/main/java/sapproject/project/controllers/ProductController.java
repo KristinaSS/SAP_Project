@@ -20,21 +20,21 @@ public class ProductController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Product> getAllProducts() {
-        log.debug("REST request to get all Products.");
+        //log.debug("REST request to get all Products.");
         return productService.findAll();
     }
 
     @GetMapping("/get-{id}")
     @ResponseStatus(HttpStatus.OK)
     public Product getProduct(@PathVariable(name = "id") int id){
-        log.debug("REST request to get Product : {}", id);
+        //log.debug("REST request to get Product : {}", id);
         return  productService.getOne(id);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Product createProduct(@Valid @RequestBody Product product) {
-        log.debug("REST request to save Product : {}", product);
+        //log.debug("REST request to save Product : {}", product);
         return productService.createOne(product);
     }
 
@@ -42,14 +42,14 @@ public class ProductController {
     @ResponseStatus(HttpStatus.OK)
     public Product updateProduct(@PathVariable(value = "ID") Integer ID,
                                    @Valid @RequestBody Product product){
-        log.debug("REST request to update Product : {}", ID);
+        //log.debug("REST request to update Product : {}", ID);
         return productService.updateByID(ID,product);
     }
 
     @DeleteMapping("/delete-{ID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteProduct(@PathVariable(value = "ID") Integer ID) {
-        log.debug("REST request to delete Product : {}", ID);
+        //log.debug("REST request to delete Product : {}", ID);
         productService.deleteByID(ID);
     }
 }

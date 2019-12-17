@@ -1,3 +1,4 @@
+/*
 package sapproject.project.security;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +37,6 @@ public class MyUserDetails implements UserDetails {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
-
     public MyUserDetails() {
     }
 
@@ -75,3 +75,4 @@ public class MyUserDetails implements UserDetails {
         return active;
     }
 }
+*/

@@ -1,3 +1,4 @@
+/*
 package sapproject.project.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,3 +25,4 @@ public class MyUserDetailsService implements UserDetailsService {
         return user.map(MyUserDetails::new).get();
     }
 }
+*/

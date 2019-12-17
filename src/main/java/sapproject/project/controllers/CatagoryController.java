@@ -21,21 +21,21 @@ public class CatagoryController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Catagory> getAllCatagories() {
-        log.debug("REST request to get all Catagory.");
+       // log.debug("REST request to get all Catagory.");
         return catagoryService.findAll();
     }
 
     @GetMapping("/get-{id}")
     @ResponseStatus(HttpStatus.OK)
     public Catagory getCatagory(@PathVariable(name = "id") int id){
-        log.debug("REST request to get Catagory : {}", id);
+        //log.debug("REST request to get Catagory : {}", id);
         return  catagoryService.getOne(id);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Catagory createCatagory(@Valid @RequestBody Catagory orderDetails) {
-        log.debug("REST request to save Catagory : {}", orderDetails);
+        //log.debug("REST request to save Catagory : {}", orderDetails);
         return catagoryService.createOne(orderDetails);
     }
 
@@ -43,14 +43,14 @@ public class CatagoryController {
     @ResponseStatus(HttpStatus.OK)
     public Catagory updateCatagory(@PathVariable(value = "ID") Integer ID,
                                          @Valid @RequestBody Catagory orderDetails){
-        log.debug("REST request to update Catagory : {}", ID);
+       // log.debug("REST request to update Catagory : {}", ID);
         return catagoryService.updateByID(ID,orderDetails);
     }
 
     @DeleteMapping("/delete-{ID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteCatagory(@PathVariable(value = "ID") Integer ID) {
-        log.debug("REST request to delete Catagory : {}", ID);
+        //log.debug("REST request to delete Catagory : {}", ID);
         catagoryService.deleteByID(ID);
     }
 }

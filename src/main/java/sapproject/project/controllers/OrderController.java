@@ -20,21 +20,21 @@ public class OrderController {
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<Order> getAllAccountTypes() {
-        log.debug("REST request to get all Order Details.");
+        //log.debug("REST request to get all Order Details.");
         return orderService.findAll();
     }
 
     @GetMapping("/get-{id}")
     @ResponseStatus(HttpStatus.OK)
     public Order getOrder(@PathVariable(name = "id") int id){
-        log.debug("REST request to get Order : {}", id);
+        //log.debug("REST request to get Order : {}", id);
         return  orderService.getOne(id);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
     public Order createOrder(@Valid @RequestBody Order order) {
-        log.debug("REST request to save Order : {}", order);
+        //log.debug("REST request to save Order : {}", order);
         return orderService.createOne(order);
     }
 
@@ -42,14 +42,14 @@ public class OrderController {
     @ResponseStatus(HttpStatus.OK)
     public Order updateOrder(@PathVariable(value = "ID") Integer ID,
                                          @Valid @RequestBody Order order){
-        log.debug("REST request to update Order : {}", ID);
+        //log.debug("REST request to update Order : {}", ID);
         return orderService.updateByID(ID,order);
     }
 
     @DeleteMapping("/delete-{ID}")
     @ResponseStatus(HttpStatus.OK)
     public void deleteOrder(@PathVariable(value = "ID") Integer ID) {
-        log.debug("REST request to delete Order : {}", ID);
+       // log.debug("REST request to delete Order : {}", ID);
         orderService.deleteByID(ID);
     }
 }

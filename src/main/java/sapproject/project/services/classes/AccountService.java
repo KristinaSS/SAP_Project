@@ -45,7 +45,7 @@ public class AccountService implements IAccountService {
                     try {
                         throw new EntityNotFoundException(Account.class);
                     } catch (EntityNotFoundException e) {
-                        log.warn("Account not found: {}", Id);
+                        //log.warn("Account not found: {}", Id);
                     }
                     return null;
                 });
@@ -58,12 +58,12 @@ public class AccountService implements IAccountService {
             try {
                 throw new EntityNotFoundException(Account.class);
             } catch (EntityNotFoundException e) {
-                log.warn("Account not found: {}", ID);
+                //log.warn("Account not found: {}", ID);
             }
             return;
         }
         accountRepository.delete(account);
-        log.debug("Deleted account with id: " + ID);
+        //log.debug("Deleted account with id: " + ID);
     }
 
     @Override
@@ -72,7 +72,7 @@ public class AccountService implements IAccountService {
                 .map(account -> accountRepository.save(updateAccMembers(account, updatedAccount)))
                 .orElseGet(() -> {
                     updatedAccount.setAccID(ID);
-                    log.debug("New account has been created with ID: {}", ID);
+                    //log.debug("New account has been created with ID: {}", ID);
                     return accountRepository.save(updatedAccount);
                 });
     }
@@ -86,7 +86,7 @@ public class AccountService implements IAccountService {
         updateAccMembers(hashedPasswordAcc, account);
         hashedPasswordAcc.setAccountType(accountType);
 
-        log.debug("New account has been created: {}", hashedPasswordAcc);
+        //log.debug("New account has been created: {}", hashedPasswordAcc);
 
         return accountRepository.save(hashedPasswordAcc);
     }
@@ -104,7 +104,7 @@ public class AccountService implements IAccountService {
         hashPassAcc.setEmail(updatedAccount.getEmail());
         //todo password needs to hashed with: MD5.getHashString(password)
         hashPassAcc.setPassword(updatedAccount.getPassword());
-        log.info("Account Updated: {}", hashPassAcc);
+        //log.info("Account Updated: {}", hashPassAcc);
         return hashPassAcc;
     }
 

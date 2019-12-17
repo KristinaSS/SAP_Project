@@ -7,9 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Getter
-@Setter
-@ToString
+
 @Entity(name = "product")
 public class Product implements Serializable {
     private static final long serialVersionUID = 884737769541155742L;
@@ -33,6 +31,46 @@ public class Product implements Serializable {
     @Basic
     @Column(name = "price")
     private float price;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public Catagory getCatagory() {
+        return catagory;
+    }
+
+    public void setCatagory(Catagory catagory) {
+        this.catagory = catagory;
+    }
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
     public Product(String name, int quantity, Catagory catagory, float price) {
         this.name = name;

@@ -1,3 +1,4 @@
+/*
 package sapproject.project.security;
 
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -12,3 +13,4 @@ public class MvcConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
     }
 }
+*/

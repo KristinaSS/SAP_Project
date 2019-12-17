@@ -28,7 +28,7 @@ public class CatagoryService implements ICatagoryService {
             try {
                 throw new EntityNotFoundException(Catagory.class);
             } catch (EntityNotFoundException e) {
-                log.warn("A category with this Id has not been found:  {}", Id);
+                //log.warn("A category with this Id has not been found:  {}", Id);
             }
             return null;
         });
@@ -36,7 +36,7 @@ public class CatagoryService implements ICatagoryService {
 
     @Override
     public Catagory createOne(Catagory entity) {
-        log.info("New category has been created: {}", entity);
+        //log.info("New category has been created: {}", entity);
         return catagoryRepository.save(entity);
     }
 
@@ -47,11 +47,11 @@ public class CatagoryService implements ICatagoryService {
             try {
                 throw new EntityNotFoundException(Catagory.class);
             } catch (EntityNotFoundException e) {
-                log.warn("Category not found: {}", ID);
+               // log.warn("Category not found: {}", ID);
             }
             return;
         }
-        log.info("Deleted category: {} ",ID);
+        //log.info("Deleted category: {} ",ID);
         catagoryRepository.delete(catagory);
 
     }
@@ -62,14 +62,14 @@ public class CatagoryService implements ICatagoryService {
                 .map(accountType -> catagoryRepository.save(updateCatagoryMembers(accountType,entity)))
                 .orElseGet(()->{
                     entity.setCategoryId(ID);
-                    log.info("New category has been created: {}",ID);
+                    //log.info("New category has been created: {}",ID);
                     return catagoryRepository.save(entity);
                 });
     }
 
     private Catagory updateCatagoryMembers(Catagory catagory, Catagory updatedCatagory){
         catagory.setName(updatedCatagory.getName());
-        log.info("Category  updated: {}", catagory);
+        //log.info("Category  updated: {}", catagory);
         return catagory;
     }
 }

@@ -9,10 +9,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
+
 @Entity(name = "orderdetails")
 public class OrderDetails implements Serializable {
     private static final long serialVersionUID = -3056970932234138597L;
@@ -31,6 +28,38 @@ public class OrderDetails implements Serializable {
     @Basic
     @Column(name = "sum", nullable = false)
     private float sum;
+
+    public OrderDetailsPK getOrderdetailsPK() {
+        return orderdetailsPK;
+    }
+
+    public void setOrderdetailsPK(OrderDetailsPK orderdetailsPK) {
+        this.orderdetailsPK = orderdetailsPK;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(float discount) {
+        this.discount = discount;
+    }
+
+    public float getSum() {
+        return sum;
+    }
+
+    public void setSum(float sum) {
+        this.sum = sum;
+    }
 }
 /*
 

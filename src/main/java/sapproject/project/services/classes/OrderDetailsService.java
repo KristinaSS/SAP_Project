@@ -25,7 +25,7 @@ public class OrderDetailsService implements IOrderDetailsService {
 
     @Override
     public OrderDetails createOne(OrderDetails entity) {
-        log.info("New order details has been created: {}", entity);
+       // log.info("New order details has been created: {}", entity);
         return orderDetailsRepository.save(entity);
     }
 
@@ -42,7 +42,7 @@ public class OrderDetailsService implements IOrderDetailsService {
                 .orElseGet(()->{
                     //todo fix this
                     /*entity.setCategoryId(ID);*/
-                    log.info("New order details have been created: {}",ID);
+                   // log.info("New order details have been created: {}",ID);
                     return orderDetailsRepository.save(entity);
                 });
     }
@@ -58,7 +58,7 @@ public class OrderDetailsService implements IOrderDetailsService {
             try {
                 throw new EntityNotFoundException(OrderDetails.class);
             } catch (EntityNotFoundException e) {
-                log.warn("Order details with this Id has not been found:  {}", Id);
+               // log.warn("Order details with this Id has not been found:  {}", Id);
             }
             return null;
         });
@@ -71,11 +71,11 @@ public class OrderDetailsService implements IOrderDetailsService {
             try {
                 throw new EntityNotFoundException(OrderDetails.class);
             } catch (EntityNotFoundException e) {
-                log.warn("Order details not found: {}", ID);
+               // log.warn("Order details not found: {}", ID);
             }
             return;
         }
-        log.info("Deleted order details: {} ",ID);
+       // log.info("Deleted order details: {} ",ID);
         orderDetailsRepository.delete(catagory);
 
     }
@@ -84,7 +84,7 @@ public class OrderDetailsService implements IOrderDetailsService {
         orderDetails.setDiscount(updated.getDiscount());
         orderDetails.setQuantity(updated.getQuantity());
         //todo fix sum
-        log.info("Order Details updated: {}", orderDetails);
+        //log.info("Order Details updated: {}", orderDetails);
         return orderDetails;
     }
 }
