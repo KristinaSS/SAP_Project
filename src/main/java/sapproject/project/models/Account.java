@@ -1,6 +1,7 @@
 package sapproject.project.models;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
@@ -71,6 +72,7 @@ public class Account implements Serializable {
 
     @Basic
     @Column(name = "password", nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getPassword() {
         return password;
     }

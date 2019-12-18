@@ -11,7 +11,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sapproject.project.jwtsecurity.JwtTokenProvider;
@@ -68,14 +67,14 @@ public class AuthController {
         // Creating client account todo call methods from AccountService
         Account client = new Account();
         client.setEmail(signUpRequest.getUsername());
-        client.setPassword(signUpRequest.getPassword()); //todo pass needs to be hashed
+        client.setPassword(passwordEncoder.encode(signUpRequest.getPassword())); //todo pass needs to be hashed
         client.setName(signUpRequest.getName());
         client.setAccountType(accountTypeRepository.getOne(1));
 
         Account result = accountRepository.save(client);
 
         URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/api/v1/clients/{username}")
+                .fromCurrentContextPath().path("/account/create-1")
                 .buildAndExpand(result.getEmail()).toUri();
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));

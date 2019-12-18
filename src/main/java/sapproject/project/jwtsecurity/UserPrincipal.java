@@ -29,7 +29,7 @@ public class UserPrincipal implements UserDetails {
 
     public static UserPrincipal create(Account account) {
         List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority("USER"));
+        authorities.add(new SimpleGrantedAuthority(account.getAccountType().getName()));
 
         return new UserPrincipal(
                 account.getAccID(),

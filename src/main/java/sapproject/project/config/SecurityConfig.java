@@ -61,25 +61,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .cors()
-                .and()
+                    .and()
                 .csrf()
-                .disable()
+                    .disable()
                 .exceptionHandling()
-                .authenticationEntryPoint(unauthorizedHandler)
+                    .authenticationEntryPoint(unauthorizedHandler)
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/account/**").hasRole("admin")
-                .antMatchers("/").hasAnyRole("employee", "admin")
-                .antMatchers("/product/all").hasAnyRole("client", "employee", "client")
-                .antMatchers("/","/login","/signup").permitAll()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login").permitAll()
+                .antMatchers("/signup").permitAll()
+                .antMatchers("/product/all").hasAnyAuthority("client", "employee","admin")
+                .antMatchers("/account/**").hasAuthority("admin")
                 .anyRequest()
                 .authenticated();
 
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-    }
+     }
 
 }
