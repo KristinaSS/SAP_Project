@@ -11,7 +11,6 @@ import sapproject.project.services.interfaces.ICatagoryService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Log4j2
 @RestController
 @RequestMapping("catagory")
 public class CatagoryController {

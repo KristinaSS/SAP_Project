@@ -27,7 +27,6 @@ import javax.validation.Valid;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/api/v1/auth")
 public class AuthController {
     @Autowired
     AccountTypeRepository accountTypeRepository;
@@ -44,7 +43,7 @@ public class AuthController {
     @Autowired
     JwtTokenProvider tokenProvider;
 
-    @PostMapping("/signin")
+    @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =

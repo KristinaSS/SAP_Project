@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
 
         if (account == null) {
             throw new UsernameNotFoundException
-                    ("Client not found for this username :: " + username);
+                    ("User not found for this username :: " + username);
         }
         return UserPrincipal.create(account);
     }

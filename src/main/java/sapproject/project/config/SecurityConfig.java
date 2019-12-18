@@ -41,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
-                .userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder())
+                .userDetailsService(customUserDetailsService)
                 .and()
                 .inMemoryAuthentication().withUser("admin").password(passwordEncoder().encode("admin")).roles("ADMIN");
     }
@@ -71,24 +71,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
-                .permitAll()
-                .antMatchers("/api/v1/auth/**")
-                .permitAll()
-                .antMatchers("/api/v1/clients/checkUsernameAvailability")
-                .permitAll()
-                .antMatchers("/api/v1/clients/me")
-                .permitAll()
+                .antMatchers("/account/**").hasRole("admin")
+                .antMatchers("/").hasAnyRole("employee", "admin")
+                .antMatchers("/product/all").hasAnyRole("client", "employee", "client")
+                .antMatchers("/","/login","/signup").permitAll()
                 .anyRequest()
                 .authenticated();
+
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
     }
