@@ -1,9 +1,5 @@
 package sapproject.project.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -25,12 +21,16 @@ public class Product implements Serializable {
     private int quantity;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "catagory_id")
-    private Catagory catagory;
+    @JoinColumn(name = "category_id")
+    private Category category;
 
     @Basic
     @Column(name = "price")
     private float price;
+
+    @Basic
+    @Column(name = "discription")
+    private String discription;
 
     public int getProductId() {
         return productId;
@@ -56,12 +56,12 @@ public class Product implements Serializable {
         this.quantity = quantity;
     }
 
-    public Catagory getCatagory() {
-        return catagory;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCatagory(Catagory catagory) {
-        this.catagory = catagory;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public float getPrice() {
@@ -72,10 +72,10 @@ public class Product implements Serializable {
         this.price = price;
     }
 
-    public Product(String name, int quantity, Catagory catagory, float price) {
+    public Product(String name, int quantity, Category category, float price) {
         this.name = name;
         this.quantity = quantity;
-        this.catagory = catagory;
+        this.category = category;
         this.price = price;
     }
 }

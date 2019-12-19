@@ -18,6 +18,10 @@ public class OrderDetails implements Serializable {
     private OrderDetailsPK orderdetailsPK;
 
     @Basic
+    @Column(name = "price", nullable = false)
+    private float price;
+
+    @Basic
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
@@ -28,6 +32,14 @@ public class OrderDetails implements Serializable {
     @Basic
     @Column(name = "sum", nullable = false)
     private float sum;
+
+    public float getPrice() {
+        return price;
+    }
+
+    public void setPrice(float price) {
+        this.price = price;
+    }
 
     public OrderDetailsPK getOrderdetailsPK() {
         return orderdetailsPK;

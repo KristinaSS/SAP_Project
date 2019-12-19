@@ -4,7 +4,7 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
-import sapproject.project.models.Catagory;
+import sapproject.project.models.Category;
 import sapproject.project.repository.CatagoryRepository;
 import sapproject.project.services.interfaces.ICatagoryService;
 
@@ -18,15 +18,15 @@ public class CatagoryService implements ICatagoryService {
     CatagoryRepository catagoryRepository;
 
     @Override
-    public List<Catagory> findAll() {
+    public List<Category> findAll() {
         return catagoryRepository.findAll();
     }
 
     @Override
-    public Catagory getOne(int Id) {
+    public Category getOne(int Id) {
         return catagoryRepository.findById(Id) .orElseGet(()->{
             try {
-                throw new EntityNotFoundException(Catagory.class);
+                throw new EntityNotFoundException(Category.class);
             } catch (EntityNotFoundException e) {
                 //log.warn("A category with this Id has not been found:  {}", Id);
             }
@@ -35,29 +35,29 @@ public class CatagoryService implements ICatagoryService {
     }
 
     @Override
-    public Catagory createOne(Catagory entity) {
+    public Category createOne(Category entity) {
         //log.info("New category has been created: {}", entity);
         return catagoryRepository.save(entity);
     }
 
     @Override
     public void deleteByID(int ID) {
-        Catagory catagory = getOne(ID);
-        if(catagory == null) {
+        Category category = getOne(ID);
+        if(category == null) {
             try {
-                throw new EntityNotFoundException(Catagory.class);
+                throw new EntityNotFoundException(Category.class);
             } catch (EntityNotFoundException e) {
                // log.warn("Category not found: {}", ID);
             }
             return;
         }
         //log.info("Deleted category: {} ",ID);
-        catagoryRepository.delete(catagory);
+        catagoryRepository.delete(category);
 
     }
 
     @Override
-    public Catagory updateByID(int ID, Catagory entity) {
+    public Category updateByID(int ID, Category entity) {
         return catagoryRepository.findById(ID)
                 .map(accountType -> catagoryRepository.save(updateCatagoryMembers(accountType,entity)))
                 .orElseGet(()->{
@@ -67,9 +67,9 @@ public class CatagoryService implements ICatagoryService {
                 });
     }
 
-    private Catagory updateCatagoryMembers(Catagory catagory, Catagory updatedCatagory){
-        catagory.setName(updatedCatagory.getName());
+    private Category updateCatagoryMembers(Category category, Category updatedCategory){
+        category.setName(updatedCategory.getName());
         //log.info("Category  updated: {}", catagory);
-        return catagory;
+        return category;
     }
 }

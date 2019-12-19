@@ -1,20 +1,16 @@
 package sapproject.project.models;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
-
 import javax.persistence.*;
 import java.io.Serializable;
 
 
-@Entity(name = "catagory")
-public class Catagory implements Serializable {
+@Entity(name = "category")
+public class Category implements Serializable {
     private static final long serialVersionUID = 1743321812477439024L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "catagory_id")
+    @Column(name = "category_id")
     private int categoryId;
 
     @Basic
@@ -23,7 +19,7 @@ public class Catagory implements Serializable {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "parent_id")
-    private Catagory parentCategory;
+    private Category parentCategory;
 
 
     public int getCategoryId() {
@@ -42,11 +38,11 @@ public class Catagory implements Serializable {
         this.name = name;
     }
 
-    public Catagory getParentCategory() {
+    public Category getParentCategory() {
         return parentCategory;
     }
 
-    public void setParentCategory(Catagory parentCategory) {
+    public void setParentCategory(Category parentCategory) {
         this.parentCategory = parentCategory;
     }
 }

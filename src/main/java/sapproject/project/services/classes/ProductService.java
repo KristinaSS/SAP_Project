@@ -67,7 +67,7 @@ public class ProductService implements IProductService {
     }
 
     private Product updateProductMembers(Product product, Product update){
-        product.setCatagory(update.getCatagory());
+        product.setCategory(update.getCategory());
         product.setName(update.getName());
         product.setPrice(update.getPrice());
         product.setQuantity(update.getQuantity());

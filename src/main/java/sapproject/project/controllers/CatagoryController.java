@@ -1,10 +1,9 @@
 package sapproject.project.controllers;
 
-import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import sapproject.project.models.Catagory;
+import sapproject.project.models.Category;
 import sapproject.project.services.interfaces.ICatagoryService;
 
 
@@ -19,29 +18,29 @@ public class CatagoryController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<Catagory> getAllCatagories() {
+    public List<Category> getAllCatagories() {
        // log.debug("REST request to get all Catagory.");
         return catagoryService.findAll();
     }
 
     @GetMapping("/get-{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Catagory getCatagory(@PathVariable(name = "id") int id){
+    public Category getCatagory(@PathVariable(name = "id") int id){
         //log.debug("REST request to get Catagory : {}", id);
         return  catagoryService.getOne(id);
     }
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Catagory createCatagory(@Valid @RequestBody Catagory orderDetails) {
+    public Category createCatagory(@Valid @RequestBody Category orderDetails) {
         //log.debug("REST request to save Catagory : {}", orderDetails);
         return catagoryService.createOne(orderDetails);
     }
 
     @PutMapping("/edit-{ID}")
     @ResponseStatus(HttpStatus.OK)
-    public Catagory updateCatagory(@PathVariable(value = "ID") Integer ID,
-                                         @Valid @RequestBody Catagory orderDetails){
+    public Category updateCatagory(@PathVariable(value = "ID") Integer ID,
+                                   @Valid @RequestBody Category orderDetails){
        // log.debug("REST request to update Catagory : {}", ID);
         return catagoryService.updateByID(ID,orderDetails);
     }

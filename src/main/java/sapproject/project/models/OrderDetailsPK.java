@@ -14,6 +14,9 @@ public class OrderDetailsPK implements Serializable {
         this.productId = productId;
     }
 
+    public OrderDetailsPK() {
+    }
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     public int getOrderId() {

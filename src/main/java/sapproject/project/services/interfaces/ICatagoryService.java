@@ -1,6 +1,6 @@
 package sapproject.project.services.interfaces;
 
-import sapproject.project.models.Catagory;
+import sapproject.project.models.Category;
 
-public interface ICatagoryService extends Service <Catagory>{
+public interface ICatagoryService extends Service <Category>{
 }
