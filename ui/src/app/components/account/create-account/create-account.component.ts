@@ -61,7 +61,7 @@ export class CreateAccountComponent implements OnInit {
   }
 }
 
-export interface AccountType {
+/*export interface AccountType {
   id: string;
   name: string;
-}
+}*/

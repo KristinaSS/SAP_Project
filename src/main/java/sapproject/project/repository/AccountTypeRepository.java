@@ -6,4 +6,5 @@ import sapproject.project.models.AccountType;
 
 @Repository
 public interface AccountTypeRepository extends JpaRepository<AccountType, Integer> {
+    AccountType getAccountTypeByAccountTypeID(int id);
 }

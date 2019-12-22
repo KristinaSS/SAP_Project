@@ -7,7 +7,6 @@ import sapproject.project.repository.AccountRepository;
 
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackageClasses = AccountRepository.class)
 public class ProjectApplication {
 
 	public static void main(String[] args) {

@@ -81,14 +81,14 @@ public class AccountService implements IAccountService {
     public Account createOne(Account account, int accType) {
 
         AccountType accountType = accountTypeRepository.getOne(accType);
-        Account hashedPasswordAcc = new Account();
+       // Account hashedPasswordAcc = new Account();
 
-        updateAccMembers(hashedPasswordAcc, account);
-        hashedPasswordAcc.setAccountType(accountType);
+       /* updateAccMembers(hashedPasswordAcc, account);
+        hashedPasswordAcc.setAccountType(accountType);*/
 
         //log.debug("New account has been created: {}", hashedPasswordAcc);
-
-        return accountRepository.save(hashedPasswordAcc);
+        account.setAccountType(accountTypeRepository.getOne(accType));
+        return accountRepository.save(account);
     }
 
     //todo fix this

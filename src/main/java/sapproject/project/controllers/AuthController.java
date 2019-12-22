@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sapproject.project.jwtsecurity.JwtTokenProvider;
 import sapproject.project.models.Account;
+import sapproject.project.models.AccountType;
 import sapproject.project.payload.ApiResponse;
 import sapproject.project.payload.JwtAuthenticationResponse;
 import sapproject.project.payload.LoginRequest;
 import sapproject.project.payload.SignUpRequest;
 import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
+import sapproject.project.services.interfaces.IAccountService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -41,6 +43,9 @@ public class AuthController {
 
     @Autowired
     JwtTokenProvider tokenProvider;
+
+    @Autowired
+    IAccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -64,14 +69,17 @@ public class AuthController {
                     HttpStatus.BAD_REQUEST);
         }
 
-        // Creating client account todo call methods from AccountService
-        Account client = new Account();
-        client.setEmail(signUpRequest.getUsername());
-        client.setPassword(passwordEncoder.encode(signUpRequest.getPassword())); //todo pass needs to be hashed
-        client.setName(signUpRequest.getName());
-        client.setAccountType(accountTypeRepository.getOne(1));
+        // Creating client account
+        String email = signUpRequest.getUsername();
+        String pass = passwordEncoder.encode(signUpRequest.getPassword());
+        String name  = signUpRequest.getName();
+        AccountType accountType = accountTypeRepository.getAccountTypeByAccountTypeID(1);
+
+        Account client = new Account(accountType,name, email, pass);
 
         Account result = accountRepository.save(client);
+
+        //accountService.createOne(client,1);
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/account/create-1")

@@ -3,10 +3,13 @@ package sapproject.project.models;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class ProductCampaignsFK {
+public class ProductCampaignsFK implements Serializable {
+    private static final long serialVersionUID = -6585563691398670803L;
+
     private int campaignId;
     private int productId;
 

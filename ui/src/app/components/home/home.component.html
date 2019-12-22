@@ -1,16 +1,12 @@
-<div class="site-wrapper">
-  <div class="Text-wrapper">
-    <br>
-    <div class="title" style="text-align:center">
-      <h1>
-        {{ title }}
-      </h1>
-    </div>
-    <div class="text" style="text-align: center">
-      <p>
-        Sap Black Friday
-      </p>
-    </div>
-    <br><br>
+<div class="card mt-4">
+  <h4 class="card-header">You're logged in with Angular 8 & JWT!!</h4>
+  <div class="card-body">
+    <h6>Users from secure api end point</h6>
+    <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+    <ul *ngIf="users">
+      <li *ngFor="let user of users">{{user.firstName}} {{user.lastName}}</li>
+    </ul>
   </div>
 </div>
+
+

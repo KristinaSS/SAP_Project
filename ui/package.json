@@ -19,7 +19,9 @@
     "@angular/platform-browser": "~8.2.13",
     "@angular/platform-browser-dynamic": "~8.2.13",
     "@angular/router": "~8.2.13",
+    "authentication": "0.0.4",
     "rxjs": "~6.4.0",
+    "services": "0.0.3",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
@@ -43,5 +45,10 @@
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
     "typescript": "~3.5.3"
-  }
+  },
+  "description": "This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.18.",
+  "main": "karma.conf.js",
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
 }

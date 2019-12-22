@@ -1,10 +1,22 @@
-import {Component, OnInit} from '@angular/core';
+import { Component } from '@angular/core';
+import { first } from 'rxjs/operators';
+import {User} from '../../security/models';
+import {UserService} from '../../security/user.service';
 
-@Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
-})
+
+
+@Component({ templateUrl: 'home.component.html' })
 export class HomeComponent {
-  title = 'Sap Black Friday';
+  loading = false;
+  users: User[];
+
+  constructor(private userService: UserService) { }
+
+  ngOnInit() {
+    this.loading = true;
+    this.userService.getAll().pipe(first()).subscribe(users => {
+      this.loading = false;
+      this.users = users;
+    });
+  }
 }
