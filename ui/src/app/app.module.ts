@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import { HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
@@ -11,8 +11,19 @@ import { AcountListComponent } from './components/account/acount-list/acount-lis
 import { CreateAccountComponent } from './components/account/create-account/create-account.component';
 import { AccountViewComponent } from './components/account/account-view/account-view.component';
 import { FilterByNamePipe } from './filter-by-name.pipe';
-import {LoginComponent} from './security/login/login.component';
-import {ErrorInterceptor, JwtInterceptor} from './security/helper';
+import {LoginComponent} from './security/login';
+
+import {
+  MatInputModule,
+  MatPaginatorModule,
+  MatProgressSpinnerModule,
+  MatSortModule,
+  MatTableModule,
+  MatIconModule,
+  MatButtonModule,
+  MatCardModule,
+  MatFormFieldModule } from '@angular/material';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -31,12 +42,19 @@ import {ErrorInterceptor, JwtInterceptor} from './security/helper';
     HttpClientModule,
     AppRoutingModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    BrowserAnimationsModule,
+    MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    MatIconModule,
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule
   ],
-  providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

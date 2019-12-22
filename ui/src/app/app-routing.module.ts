@@ -6,7 +6,8 @@ import {AcountListComponent} from './components/account/acount-list/acount-list.
 import {AccountViewComponent} from './components/account/account-view/account-view.component';
 import {CreateAccountComponent} from './components/account/create-account/create-account.component';
 import {LoginComponent} from './security/login';
-import {AuthGuard} from './security/helper';
+import {AuthGaurdService} from './security/helper/auth.guard';
+
 
 /*const routes: Routes = [
   {
@@ -36,11 +37,24 @@ import {AuthGuard} from './security/helper';
   ];*/
 
 const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent },
-
+  {
+    path: 'account/account-list',
+    component: AcountListComponent,
+    canActivate: [AuthGaurdService]
+  },
+  {
+    path: '',
+    component: HomeComponent
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   // otherwise redirect to home
-  { path: '**', redirectTo: '' }
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ];
 
 @NgModule({
