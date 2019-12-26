@@ -19,18 +19,17 @@
          *ngIf="accounts && accounts.length">
       <table class="table table-bordered table-inverse">
         <tr>
-          <th>First Name</th>
-          <th>Last Name</th>
+          <th>Name</th>
           <th>Email</th>
         </tr>
         <tr *ngFor="let account of filteredAccounts">
-          <td>
+          <!--<td>
             <nav>
               <a [routerLink]="['/account/',account.accID]">{{account.firstName}}</a>
             </nav>
-          </td>
+          </td>-->
           <td>
-            {{account.lastName}}
+            {{account.name}}
           </td>
           <td>
             {{account.email}}
