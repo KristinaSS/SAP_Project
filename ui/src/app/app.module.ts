@@ -1,16 +1,16 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule} from '@angular/common/http';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
-import { AppComponent } from './app.component';
+import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import { HomeComponent } from './components/home/home.component';
-import { HeaderComponent } from './components/header/header.component';
-import { AcountListComponent } from './components/account/acount-list/acount-list.component';
-import { CreateAccountComponent } from './components/account/create-account/create-account.component';
-import { AccountViewComponent } from './components/account/account-view/account-view.component';
-import { FilterByNamePipe } from './filter-by-name.pipe';
+import {HomeComponent} from './components/home/home.component';
+import {HeaderComponent} from './components/header/header.component';
+import {AcountListComponent} from './components/account/acount-list/acount-list.component';
+import {CreateAccountComponent} from './components/account/create-account/create-account.component';
+import {AccountViewComponent} from './components/account/account-view/account-view.component';
+import {FilterByNamePipe} from './filter-by-name.pipe';
 import {LoginComponent} from './security/login';
 
 import {
@@ -22,8 +22,10 @@ import {
   MatIconModule,
   MatButtonModule,
   MatCardModule,
-  MatFormFieldModule } from '@angular/material';
+  MatFormFieldModule
+} from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {CustomHttpInterceptorService} from '@app/security/helper/custom-htpp-interceptor.service';
 
 
 @NgModule({
@@ -54,7 +56,13 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MatCardModule,
     MatFormFieldModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: CustomHttpInterceptorService, multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
