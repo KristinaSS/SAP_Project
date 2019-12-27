@@ -13,16 +13,6 @@ import { AccountViewComponent } from './components/account/account-view/account-
 import { FilterByNamePipe } from './filter-by-name.pipe';
 import {LoginComponent} from './security/login';
 
-import {
-  MatInputModule,
-  MatPaginatorModule,
-  MatProgressSpinnerModule,
-  MatSortModule,
-  MatTableModule,
-  MatIconModule,
-  MatButtonModule,
-  MatCardModule,
-  MatFormFieldModule } from '@angular/material';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BasicAuthHtppInterceptorService} from '@app/security/helper/basic-htpp-interceptor.service';
 
@@ -44,16 +34,7 @@ import {BasicAuthHtppInterceptorService} from '@app/security/helper/basic-htpp-i
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
-    BrowserAnimationsModule,
-    MatInputModule,
-    MatTableModule,
-    MatPaginatorModule,
-    MatSortModule,
-    MatProgressSpinnerModule,
-    MatIconModule,
-    MatButtonModule,
-    MatCardModule,
-    MatFormFieldModule
+    BrowserAnimationsModule
   ],
   providers: [ {
     provide: HTTP_INTERCEPTORS,

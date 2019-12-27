@@ -50,6 +50,10 @@ const routes: Routes = [
     path: 'login',
     component: LoginComponent
   },
+  {
+    path: 'signup',
+    component: CreateAccountComponent
+  },
   // otherwise redirect to home
   {
     path: '**',

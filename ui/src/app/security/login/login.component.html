@@ -1,9 +1,28 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
 <div class="container">
-  <div>
-    User Name : <input type="text" name="username" [(ngModel)]="username">
-    Password : <input type="password" name="password" [(ngModel)]="password">
+  <div class="row">
+    <div class="col-sm-6 col-md-4 col-md-offset-4">
+      <h1 class="text-center login-title">You are not logged in. Please log in to view account.</h1>
+      <div class="account-wall">
+        <img class="profile-img" src="https://lh5.googleusercontent.com/-b0-k99FZlyE/AAAAAAAAAAI/AAAAAAAAAAA/eu7opA4byxI/photo.jpg?sz=120"
+             alt="">
+        <form class="form-signin" [formGroup]="form_signin" (ngSubmit)="checkLogin()">
+          <input type="text" class="form-control" placeholder="Email" required autofocus formControlName="username">
+          <input type="password" class="form-control" placeholder="Password" required  formControlName="password">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">
+            Sign in</button>
+         <!-- <label class="checkbox pull-left">
+            <input type="checkbox" value="remember-me">
+            Remember me
+          </label>
+          <a class="pull-right need-help">Need help? </a><span class="clearfix"></span>-->
+        </form>
+      </div>
+      <a class="text-center new-account"  [routerLink]="['/signup']" >Create an account </a>
+    </div>
   </div>
-  <button (click)=checkLogin() class="btn btn-success">
-    Login
-  </button>
 </div>
