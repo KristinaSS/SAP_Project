@@ -1,5 +1,5 @@
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <!------ Include the above in your HEAD tag ---------->
 
@@ -14,28 +14,33 @@
 
       <form action="" method="post">
         <div class="modal-body">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="text" class="form-control" required="" name="userEmail" value="">
+          <div class="form-group" [formGroup]="form_signup" (ngSubmit)="submitRegistration()">
+            <label>Email Address</label>
+            <input type="text" class="form-control" required="" name="userEmail" value="" formControlName="email">
             <span class="help-block">Your email address is also used to log in. Needs to be unique</span>
           </div>
           <div class="form-group">
-            <label for="name">Name</label>
-            <input type="text" class="form-control" required="" name="name" value="">
-            <span class="help-block">This will be your name</span>
+            <label>First Name</label>
+            <input type="text" class="form-control" required="" name="name" value="" formControlName="first_name">
+            <span class="help-block">This will be your first name</span>
+          </div>
+          <div class="form-group">
+            <label>Last  Name</label>
+            <input type="text" class="form-control" required="" name="name" value="" formControlName="last_name">
+            <span class="help-block">This will be your last name</span>
           </div>
           <div class="row">
             <div class="col-md-6">
               <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" required="" name="password" value="">
+                <label>Password</label>
+                <input type="password" class="form-control" required="" name="password" value="" formControlName="password">
                 <span class="help-block">Choose a password for your new account. Must contain capital letter and number</span>
               </div>
             </div>
             <div class="col-md-6">
               <div class="form-group">
-                <label for="password">Repeat Password</label>
-                <input type="password" class="form-control" required="" name="passwordr" value="">
+                <label >Repeat Password</label>
+                <input type="password" class="form-control" required="" name="passwordr" value="" formControlName="password_repeat">
                 <span class="help-block">Type the password again. Passwords must match.</span>
               </div>
             </div>
@@ -45,7 +50,7 @@
         <div class="modal-footer">
           <input type="hidden" name="isEmpty" value="">
           <button type="input" name="submit" value="newAccount" class="btn btn-success btn-icon"><i class="fa fa-check"></i> Create My Account</button>
-          <button type="button" class="btn btn-default btn-icon" data-dismiss="modal"><i class="fa fa-times-circle"></i> Cancel</button>
+          <button type="button" class="btn btn-default btn-icon" data-dismiss="modal"><i class="fa fa-times-circle" [routerLink]="['/login']"></i> Cancel</button>
         </div>
       </form>
 
