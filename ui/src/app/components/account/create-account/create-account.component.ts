@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {AccountServiceService} from '@app/services/account-service.service';
 import {AccountTypeServiceService} from '@app/services/account-type-service.service';
 import {Router} from '@angular/router';
@@ -12,7 +12,7 @@ import {Account} from '../account-model/account';
   styleUrls: ['./create-account.component.css']
 })
 export class CreateAccountComponent implements OnInit {
-  validMessage: string = '';
+  validMessage = 'Ready to Join? Create a New Account';
 
   account: Account;
 
@@ -42,20 +42,19 @@ export class CreateAccountComponent implements OnInit {
   submitRegistration() {
     this.intializeMembers();
     if (this.validation()) {
-      this.account = new Account(this.first_name + ' ' + this.last_name, this.email, this.password);
-      this.validMessage = 'Your account registration has been submitted. Thank you!';
-      this.accountServiceService.createAccount(this.account, '1').subscribe(
+      this.accountServiceService.createAccount(this.email, this.password, this.first_name + ' ' + this.last_name).subscribe(
         data => {
+          console.log('account created');
           this.form_signup.reset();
+          this.router.navigate(['/login']);
           return true;
         },
         error => {
-          return Observable.throw(error);
+          console.log('error thrown');
+          this.validMessage = 'A user with this username already exists.';
+          return throwError(error.message || error);
         }
       );
-      this.router.navigate(['/login']);
-    } else {
-      this.validMessage = 'Please fill out this form before submitting';
     }
   }
 
@@ -64,26 +63,43 @@ export class CreateAccountComponent implements OnInit {
     this.last_name = this.form_signup.get('last_name').value;
     this.email = this.form_signup.get('email').value;
     this.password = this.form_signup.get('password').value;
-    this.passwordAgain = this.form_signup.get('password_again').value;
+    this.passwordAgain = this.form_signup.get('passwordAgain').value;
   }
 
   validation() {
-    if (this.password !== this.passwordAgain) {
-      this.validMessage = 'Passwords do not match';
-      return false;
-    }
-    if (!this.first_name.match('[A-Z][a-z]{2,20}')) {
-      this.validMessage = 'Not valid first name';
-      return false;
-    }
-    if (!this.last_name.match('[A-Z][a-z]{2,20}')) {
-      this.validMessage = 'Not valid last name';
-      return false;
-    }
-    if (!this.email.match('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}')) {
+    /* let result: boolean;
+     result = this.accountServiceService.accountExists(this.email)._isScalar;
+     console.log('result: ' + result);
+     if (result) {
+       this.validMessage = 'Account with this email already exists';
+       return false;
+     }*/
+    if (this.email.length === 0 || !this.email.match('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}')) {
       this.validMessage = 'Not valid email';
       return false;
     }
+    if (this.password.length === 0 || this.password !== this.passwordAgain) {
+      this.validMessage = 'Passwords do not match';
+      return false;
+    }
+    /* if (!this.password.match('^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$')) {
+          this.validMessage = 'Not valid password: must be at least 6 letters, contains a capital letter and number!';
+          return false;
+        }*/
+    if (this.first_name.length === 0 || !this.first_name.match('[A-Z][a-z]{2,20}')) {
+      this.validMessage = 'Not valid first name';
+      return false;
+    }
+    if (this.last_name.length === 0 || !this.last_name.match('[A-Z][a-z]{2,20}')) {
+      this.validMessage = 'Not valid last name';
+      return false;
+    }
+    console.log('Validated');
     return true;
+  }
+
+  navigateCancel() {
+    console.log('Navigate to login');
+    this.router.navigate(['/login']);
   }
 }

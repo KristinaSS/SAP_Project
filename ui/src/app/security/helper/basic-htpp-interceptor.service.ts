@@ -17,6 +17,8 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
       return next.handle(request);
     }
 
+    console.log('enter interceptor');
+
     request = request.clone({headers: request.headers.set('Authorization', sessionStorage.getItem('token'))});
 
     return next.handle(request);

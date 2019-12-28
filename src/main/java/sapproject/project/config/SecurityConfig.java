@@ -79,7 +79,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/account/get-{id}").hasAuthority("admin")
                 .antMatchers("/account/edit-{accID").hasAuthority("admin")
                 .antMatchers("/account/delete-{accID}").hasAuthority("admin")
-                .antMatchers("/account/create-{typeID}").permitAll()
+                .antMatchers("/account/create-{accID}").permitAll()
+                .antMatchers("/findAccountByEmail").permitAll()
                 .anyRequest()
                 .authenticated();
 

@@ -65,11 +65,12 @@ public class AuthController {
 
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
+
         if(accountRepository.existsAccountByEmail(signUpRequest.getUsername())) {
+            System.out.println("Username is already taken!");
             return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
         }
-
         // Creating client account
         String email = signUpRequest.getUsername();
         String pass = passwordEncoder.encode(signUpRequest.getPassword());
@@ -88,5 +89,12 @@ public class AuthController {
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
+/*
+    @PostMapping("/findAccountByEmail")
+    public boolean existsByEmail(@Valid @RequestBody String email){
+        boolean result =  accountRepository.existsAccountByEmail(email);
+        System.out.println("result: "+ result);
+        return result;
+    }*/
 }
 

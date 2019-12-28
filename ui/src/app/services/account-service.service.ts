@@ -1,5 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 const httpOptions = {
   headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -10,23 +11,30 @@ const httpOptions = {
 })
 export class AccountServiceService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   getAllAccounts() {
     return this.http.get('server/account/all');
   }
+
   getAccount(id: number) {
     return this.http.get('server/account/get-' + id);
   }
-  createAccount(foodPlace, accountTypeId: string) {
-    let body = JSON.stringify(foodPlace);
-    console.log(body);
-    let accID: string;
-    accID = accountTypeId.substring(1, (accountTypeId.length) - 1).trim();
-    let url = 'server/account/create-' + accID;
-    return this.http.post(url, body, httpOptions);
+
+  createAccount(username, password, name) {
+    console.log('before post');
+    return this.http.post<any>('server/signup', {username, password, name});
   }
+
   deleteAccount(id: number) {
     return this.http.delete('server/account/delete-' + id);
   }
+
+/*  accountExists(email): Observable<boolean> {
+    let result: Observable<boolean>;
+    result =  this.http.post<any>('server/findAccountByEmail', {email});
+    console.log(result);
+    return result;
+  }*/
 }

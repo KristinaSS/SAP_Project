@@ -34,6 +34,7 @@ public class AccountController {
     @ResponseStatus(HttpStatus.CREATED)
     public Account createAccount(@Valid @RequestBody Account account, @PathVariable(value = "typeId") Integer typeId) {
         //log.debug("REST request to save Account : {}", account);
+        System.out.println("Enter create account method");
         return accountService.createOne(account,typeId);
     }
 
