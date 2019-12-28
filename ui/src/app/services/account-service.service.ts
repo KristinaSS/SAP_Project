@@ -18,8 +18,8 @@ export class AccountServiceService {
     return this.http.get('server/account/all');
   }
 
-  getAccount(id: number) {
-    return this.http.get('server/account/get-' + id);
+  getAccount(username: string) {
+    return this.http.post('server/get', {username});
   }
 
   createAccount(username, password, name) {
@@ -31,10 +31,10 @@ export class AccountServiceService {
     return this.http.delete('server/account/delete-' + id);
   }
 
-/*  accountExists(email): Observable<boolean> {
-    let result: Observable<boolean>;
-    result =  this.http.post<any>('server/findAccountByEmail', {email});
-    console.log(result);
-    return result;
-  }*/
+  /*  accountExists(email): Observable<boolean> {
+      let result: Observable<boolean>;
+      result =  this.http.post<any>('server/findAccountByEmail', {email});
+      console.log(result);
+      return result;
+    }*/
 }

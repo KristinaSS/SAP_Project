@@ -1,7 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {AccountServiceService} from '../../../services/account-service.service';
 import {AccountTypeServiceService} from '../../../services/account-type-service.service';
+import {AuthenticationService} from '@app/security/helper/authentication.service';
 
 @Component({
   selector: 'app-account-view',
@@ -11,34 +12,29 @@ import {AccountTypeServiceService} from '../../../services/account-type-service.
 export class AccountViewComponent implements OnInit {
 
   public account;
-  public accountType;
 
   constructor(private accountServiceService: AccountServiceService,
-              private accountTypeService: AccountTypeServiceService,
-              private route: ActivatedRoute) {
+              private router: Router,
+              private logOutService: AuthenticationService
+  ) {
   }
 
   ngOnInit() {
-    this.getFoodPlaceByID(this.route.snapshot.params.id);
+    this.getAccountByEmail();
   }
 
-  getFoodPlaceByID(id: number) {
-    this.accountServiceService.getAccount(id).subscribe(
+  getAccountByEmail() {
+    this.accountServiceService.getAccount(sessionStorage.getItem('username')).subscribe(
       data => {
         this.account = data;
       },
       error => console.error(error),
       () => console.log('Account Loaded')
     );
-
   }
-  deleteAccount() {
-    this.accountServiceService.deleteAccount(this.account.accID).subscribe(
-      data => {
-        this.account = data;
-      },
-      error => console.error(error),
-      () => console.log('Account Deleted')
-    );
+
+  logout() {
+    this.logOutService.logOut();
+    this.router.navigate(['/home']);
   }
 }

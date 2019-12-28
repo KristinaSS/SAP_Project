@@ -43,6 +43,11 @@ const routes: Routes = [
     canActivate: [AuthGaurdService]
   },
   {
+    path: 'account-view',
+    component: AccountViewComponent,
+    canActivate: [AuthGaurdService]
+  },
+  {
     path: '',
     component: HomeComponent
   },

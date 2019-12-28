@@ -89,12 +89,12 @@ public class AuthController {
 
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
-/*
-    @PostMapping("/findAccountByEmail")
-    public boolean existsByEmail(@Valid @RequestBody String email){
-        boolean result =  accountRepository.existsAccountByEmail(email);
+
+    @PostMapping("/get")
+    public Account findByEmail(@Valid @RequestBody String email){
+        Account result =  accountRepository.findAccountByEmail(email);
         System.out.println("result: "+ result);
         return result;
-    }*/
+    }
 }
 

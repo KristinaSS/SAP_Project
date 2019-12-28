@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
     console.log('enter method' + this.username + this.password);
     (this.loginservice.authenticate(this.username, this.password).subscribe(
         data => {
-          this.router.navigate(['account/account-list']);
+          this.router.navigate(['account-view']);
           this.invalidLogin = false;
           console.log('Logged in');
         },
