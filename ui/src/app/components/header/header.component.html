@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
@@ -9,7 +9,7 @@
     </div>
     <ul class="nav navbar-nav">
       <li><a (click)="isUserLoggedIn()">My Account</a></li>
-      <li><a [routerLink]="['dining-place/create']">Cart</a></li>
+      <li><a (click)="seeShoppingCart()">Cart</a></li>
     </ul>
     <form class="navbar-form navbar-left">
       <div class="input-group">

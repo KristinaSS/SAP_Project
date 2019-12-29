@@ -17,6 +17,14 @@ public class CatagoryService implements ICatagoryService {
     @Autowired
     CatagoryRepository catagoryRepository;
 
+    public Category findCategoryByName(String name){
+        for (Category category: catagoryRepository.findAll()){
+            if(category.getName().equals(name))
+                return category;
+        }
+        return null;
+    }
+
     @Override
     public List<Category> findAll() {
         return catagoryRepository.findAll();

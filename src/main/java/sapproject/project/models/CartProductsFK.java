@@ -1,32 +1,34 @@
 package sapproject.project.models;
 
-import javax.persistence.*;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class OrderDetailsPK implements Serializable {
-    private static final long serialVersionUID = 5037502058855728581L;
+public class CartProductsFK implements Serializable {
+    private static final long serialVersionUID = 1596105392370917172L;
 
-    private int orderId;
+    private int cartId;
     private int productId;
 
-    public OrderDetailsPK(int orderId, int productId) {
-        this.orderId = orderId;
+    public CartProductsFK(int orderId, int productId) {
+        this.cartId = orderId;
         this.productId = productId;
     }
 
-    public OrderDetailsPK() {
+    public CartProductsFK() {
     }
 
     @ManyToOne
-    @JoinColumn(name = "order_id")
-    public int getOrderId() {
-        return orderId;
+    @JoinColumn(name = "cart_id")
+    public int getCartId() {
+        return cartId;
     }
 
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
     }
 
     @ManyToOne
@@ -43,13 +45,13 @@ public class OrderDetailsPK implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OrderDetailsPK that = (OrderDetailsPK) o;
-        return orderId == that.orderId &&
+        CartProductsFK that = (CartProductsFK) o;
+        return cartId == that.cartId &&
                 productId == that.productId;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(orderId, productId);
+        return Objects.hash(cartId, productId);
     }
 }

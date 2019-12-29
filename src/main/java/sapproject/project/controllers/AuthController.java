@@ -22,6 +22,7 @@ import sapproject.project.payload.LoginRequest;
 import sapproject.project.payload.SignUpRequest;
 import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
+import sapproject.project.services.classes.AccountService;
 import sapproject.project.services.interfaces.IAccountService;
 
 import javax.validation.Valid;
@@ -45,7 +46,7 @@ public class AuthController {
     JwtTokenProvider tokenProvider;
 
     @Autowired
-    IAccountService accountService;
+    AccountService accountService;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -92,7 +93,8 @@ public class AuthController {
 
     @PostMapping("/get")
     public Account findByEmail(@Valid @RequestBody String email){
-        Account result =  accountRepository.findAccountByEmail(email);
+        System.out.println("email: "+ email);
+        Account result =  accountService.findAccountByEmail(email);
         System.out.println("result: "+ result);
         return result;
     }

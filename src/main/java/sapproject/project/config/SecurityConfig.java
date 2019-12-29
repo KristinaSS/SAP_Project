@@ -81,9 +81,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/account/delete-{accID}").hasAuthority("admin")
                 .antMatchers("/account/create-{accID}").permitAll()
                 .antMatchers("/findAccountByEmail").permitAll()
+                .antMatchers("/product/filteredByCategory").permitAll()
+                .antMatchers("/product/get").permitAll()
                 .anyRequest()
                 .authenticated();
-
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
      }

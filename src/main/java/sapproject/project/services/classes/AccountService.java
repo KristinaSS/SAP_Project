@@ -81,7 +81,7 @@ public class AccountService implements IAccountService {
     public Account createOne(Account account, int accType) {
 
         AccountType accountType = accountTypeRepository.getOne(accType);
-       // Account hashedPasswordAcc = new Account();
+        // Account hashedPasswordAcc = new Account();
 
        /* updateAccMembers(hashedPasswordAcc, account);
         hashedPasswordAcc.setAccountType(accountType);*/
@@ -106,6 +106,17 @@ public class AccountService implements IAccountService {
         hashPassAcc.setPassword(updatedAccount.getPassword());
         //log.info("Account Updated: {}", hashPassAcc);
         return hashPassAcc;
+    }
+
+    public Account findAccountByEmail(String email) {
+        System.out.println("find string: " + email);
+        String username = email.substring(13, email.length()-2);
+        System.out.println("username: "+ username);
+        for (Account account : accountRepository.findAll()) {
+            if (account.getEmail().equals(username))
+                return account;
+        }
+        return null;
     }
 
 

@@ -15,6 +15,10 @@ import {LoginComponent} from './security/login';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BasicAuthHtppInterceptorService} from '@app/security/helper/basic-htpp-interceptor.service';
+import { CatagoryComponent } from './components/catagory/catagory.component';
+import { ProductListComponent } from './components/product-list/product-list.component';
+import { ViewProductComponent } from './components/view-product/view-product.component';
+import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
 
 
 @NgModule({
@@ -26,7 +30,11 @@ import {BasicAuthHtppInterceptorService} from '@app/security/helper/basic-htpp-i
     CreateAccountComponent,
     AccountViewComponent,
     FilterByNamePipe,
-    LoginComponent
+    LoginComponent,
+    CatagoryComponent,
+    ProductListComponent,
+    ViewProductComponent,
+    ShoppingCartComponent
   ],
   imports: [
     BrowserModule,

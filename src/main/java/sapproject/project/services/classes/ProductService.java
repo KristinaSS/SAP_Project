@@ -4,10 +4,13 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
+import sapproject.project.models.Category;
 import sapproject.project.models.Product;
+import sapproject.project.repository.CatagoryRepository;
 import sapproject.project.repository.ProductRepository;
 import sapproject.project.services.interfaces.IProductService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -15,6 +18,24 @@ import java.util.List;
 public class ProductService implements IProductService {
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    CatagoryService catagoryService;
+
+    public List<Product> findAllProductsByCategory(String categoryName){
+        Category category = catagoryService.findCategoryByName(categoryName);
+        List<Product> filteredList = new ArrayList<>();
+        int catID = 0;
+        if(category == null)
+            return filteredList;//todo fix
+        else
+            catID = category.getCategoryId();
+        for(Product product: productRepository.findAll()){
+            if(product.getCategory().getCategoryId()==catID)
+                filteredList.add(product);
+        }
+        return filteredList;
+    }
 
     @Override
     public List<Product> findAll() {

@@ -7,6 +7,9 @@ import {AccountViewComponent} from './components/account/account-view/account-vi
 import {CreateAccountComponent} from './components/account/create-account/create-account.component';
 import {LoginComponent} from './security/login';
 import {AuthGaurdService} from './security/helper/auth.guard';
+import {ProductListComponent} from '@app/components/product-list/product-list.component';
+import {ViewProductComponent} from '@app/components/view-product/view-product.component';
+import {ShoppingCartComponent} from '@app/components/shopping-cart/shopping-cart.component';
 
 
 /*const routes: Routes = [
@@ -38,9 +41,22 @@ import {AuthGaurdService} from './security/helper/auth.guard';
 
 const routes: Routes = [
   {
+    path: 'myCart',
+    component: ShoppingCartComponent,
+    canActivate: [AuthGaurdService]
+  },
+  {
+    path: 'product',
+    component: ViewProductComponent
+  },
+  {
     path: 'account/account-list',
     component: AcountListComponent,
     canActivate: [AuthGaurdService]
+  },
+  {
+    path: 'product/product-list',
+    component: ProductListComponent
   },
   {
     path: 'account-view',

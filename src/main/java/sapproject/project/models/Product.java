@@ -7,6 +7,11 @@ import java.io.Serializable;
 @Entity(name = "product")
 public class Product implements Serializable {
     private static final long serialVersionUID = 884737769541155742L;
+
+
+    public Product() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "product_id")
@@ -31,6 +36,14 @@ public class Product implements Serializable {
     @Basic
     @Column(name = "discription")
     private String discription;
+
+    public String getDiscription() {
+        return discription;
+    }
+
+    public void setDiscription(String discription) {
+        this.discription = discription;
+    }
 
     public int getProductId() {
         return productId;

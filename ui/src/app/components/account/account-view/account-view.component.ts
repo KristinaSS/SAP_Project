@@ -24,6 +24,7 @@ export class AccountViewComponent implements OnInit {
   }
 
   getAccountByEmail() {
+    console.log('username: ' + sessionStorage.getItem('username'));
     this.accountServiceService.getAccount(sessionStorage.getItem('username')).subscribe(
       data => {
         this.account = data;

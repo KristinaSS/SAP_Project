@@ -15,6 +15,17 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
   }
 
+  seeShoppingCart() {
+    let result: boolean;
+    result = this.lsTest();
+    console.log('result: ' + result);
+    if (result) {
+      this.router.navigate(['/myCart']);
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
   isUserLoggedIn() {
     let result: boolean;
     result = this.lsTest();

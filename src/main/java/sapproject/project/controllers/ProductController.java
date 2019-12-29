@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Product;
+import sapproject.project.services.classes.ProductService;
 import sapproject.project.services.interfaces.IProductService;
 
 import javax.validation.Valid;
@@ -15,7 +16,7 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
-    IProductService productService;
+    ProductService productService;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
@@ -24,10 +25,11 @@ public class ProductController {
         return productService.findAll();
     }
 
-    @GetMapping("/get-{id}")
+    @PostMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public Product getProduct(@PathVariable(name = "id") int id){
+    public Product getProduct(@Valid @RequestBody int id){
         //log.debug("REST request to get Product : {}", id);
+        System.out.println("id of product: " + id);
         return  productService.getOne(id);
     }
 
@@ -51,5 +53,11 @@ public class ProductController {
     public void deleteProduct(@PathVariable(value = "ID") Integer ID) {
         //log.debug("REST request to delete Product : {}", ID);
         productService.deleteByID(ID);
+    }
+    @PostMapping("/filteredByCategory")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> filterByCategory(@Valid @RequestBody String category) {
+        //log.debug("REST request to save Product : {}", product);
+        return productService.findAllProductsByCategory(category);
     }
 }
