@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthenticationService } from '../helper/authentication.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {AuthenticationService} from '../helper/authentication.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   private form_signin: FormGroup;
 
   constructor(private router: Router,
-              private loginservice: AuthenticationService) { }
+              private loginservice: AuthenticationService) {
+  }
 
   ngOnInit() {
     this.form_signin = new FormGroup({
@@ -41,7 +43,39 @@ export class LoginComponent implements OnInit {
         }
       )
     );
-
   }
 
+  submitCart() {
+    console.log('item: ' + sessionStorage.getItem('cart'));
+    this.loginservice.createCart(sessionStorage.getItem('cart')).subscribe(
+      data => {
+        console.log('cart created');
+        return true;
+      },
+      error => {
+        console.log('error thrown');
+        return throwError(error.message || error);
+      }
+    );
+  }
+/*
+  isAccountCreated() {
+    let result: boolean;
+    result = this.lsTest();
+    console.log('result: ' + result);
+    if (result) {
+      this.submitCart();
+      sessionStorage.removeItem('cart');
+    }
+  }
+
+  lsTest() {
+    let test = 'cart';
+    try {
+      sessionStorage.getItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }*/
 }

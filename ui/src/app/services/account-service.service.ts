@@ -21,7 +21,6 @@ export class AccountServiceService {
   getAccount(username: string) {
     return this.http.post('server/get', {username});
   }
-
   createAccount(username, password, name) {
     console.log('before post');
     return this.http.post<any>('server/signup', {username, password, name});

@@ -74,6 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/signup").permitAll()
+                .antMatchers("/cart").permitAll()
                 .antMatchers("/product/all").hasAnyAuthority("employee","admin")
                 .antMatchers("/account/all").hasAuthority("admin")
                 .antMatchers("/account/get-{id}").hasAuthority("admin")
@@ -83,6 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/findAccountByEmail").permitAll()
                 .antMatchers("/product/filteredByCategory").permitAll()
                 .antMatchers("/product/get").permitAll()
+                .antMatchers("/cart/getAllByUser").permitAll()
                 .anyRequest()
                 .authenticated();
 

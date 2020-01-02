@@ -3,8 +3,16 @@ package sapproject.project.models;
 import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity(name = "cart")
 public class Cart implements Serializable {
     private static final long serialVersionUID = -3818181978943661953L;
+
+    public Cart() {
+    }
+
+    public Cart(Account account) {
+        this.account = account;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,10 +27,10 @@ public class Cart implements Serializable {
         this.cartId = cartId;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "accounts_id")
     private Account account;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id")
     public Account getAccount() {
         return account;
     }

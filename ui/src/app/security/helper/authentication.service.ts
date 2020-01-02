@@ -35,7 +35,6 @@ export class AuthenticationService {
           console.log('token: ' + sessionStorage.getItem('username'));
           sessionStorage.setItem('token', tokenStr);
           console.log('token: ' + sessionStorage.getItem('token'));
-
           return userData;
         }
       )
@@ -50,5 +49,10 @@ export class AuthenticationService {
   logOut() {
     sessionStorage.removeItem('username');
     sessionStorage.removeItem('token');
+  }
+
+  createCart(username) {
+    console.log('username' +  username);
+    return this.httpClient.post<any>('server/cart', {username});
   }
 }

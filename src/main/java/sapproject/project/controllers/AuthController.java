@@ -16,12 +16,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import sapproject.project.jwtsecurity.JwtTokenProvider;
 import sapproject.project.models.Account;
 import sapproject.project.models.AccountType;
+import sapproject.project.models.Cart;
 import sapproject.project.payload.ApiResponse;
 import sapproject.project.payload.JwtAuthenticationResponse;
 import sapproject.project.payload.LoginRequest;
 import sapproject.project.payload.SignUpRequest;
 import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
+import sapproject.project.repository.CartRepository;
 import sapproject.project.services.classes.AccountService;
 import sapproject.project.services.interfaces.IAccountService;
 
@@ -47,6 +49,9 @@ public class AuthController {
 
     @Autowired
     AccountService accountService;
+
+    @Autowired
+    CartRepository cartRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -88,6 +93,15 @@ public class AuthController {
                 .fromCurrentContextPath().path("/account/create-1")
                 .buildAndExpand(result.getEmail()).toUri();
 
+        Account result1 =  null;
+        for (Account account : accountRepository.findAll()) {
+            if (account.getEmail().equals(email))
+                result1 = account;
+        }
+        System.out.println("result for cart: "+ result1);
+        Cart cart = new Cart(result1);
+        cartRepository.save(cart);
+
         return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
     }
 
@@ -97,6 +111,14 @@ public class AuthController {
         Account result =  accountService.findAccountByEmail(email);
         System.out.println("result: "+ result);
         return result;
+    }
+
+    @PostMapping("/cart")
+    public Cart cart(@Valid @RequestBody String email){
+        Account result =  accountService.findAccountByEmail(email);
+        System.out.println("result for cart: "+ result);
+        Cart cart = new Cart(result);
+        return cartRepository.save(cart);
     }
 }
 

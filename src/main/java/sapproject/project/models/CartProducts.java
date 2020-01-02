@@ -1,33 +1,55 @@
 package sapproject.project.models;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
+import javax.persistence.*;
 import java.io.Serializable;
 
+@Entity
 public class CartProducts implements Serializable {
     private static final long serialVersionUID = -4993938723418672269L;
 
-    @EmbeddedId
-    private CartProductsFK cartProductsFK;
+    private int quantity;
+    private Cart cart;
+    private Product product;
+    private int cartProductID;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "cart_product_id")
+    public int getCartProductID() {
+        return cartProductID;
+    }
+
+    public void setCartProductID(int cartProductID) {
+        this.cartProductID = cartProductID;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "cart_id")
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
+    }
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 
     @Basic
     @Column(name = "quantity", nullable = false)
-    private int quanity;
-
-    public CartProductsFK getCartProductsFK() {
-        return cartProductsFK;
+    public int getQuantity() {
+        return quantity;
     }
 
-    public void setCartProductsFK(CartProductsFK cartProductsFK) {
-        this.cartProductsFK = cartProductsFK;
-    }
-
-    public int getQuanity() {
-        return quanity;
-    }
-
-    public void setQuanity(int quanity) {
-        this.quanity = quanity;
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

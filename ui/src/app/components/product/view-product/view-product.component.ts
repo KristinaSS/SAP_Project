@@ -16,12 +16,13 @@ export class ViewProductComponent implements OnInit {
   public product;
 
   ngOnInit() {
-    this.getProductByID();
+    console.log('id from route: ' + this.route.snapshot.params.id);
+    this.getProductByID(this.route.snapshot.params.id);
 /*    console.log(this.product.discription);*/
   }
 
-  getProductByID() {
-    this.productService.getProduct(1).subscribe(
+  getProductByID(id) {
+    this.productService.getProduct(id).subscribe(
       data => {
         this.product = data;
       },

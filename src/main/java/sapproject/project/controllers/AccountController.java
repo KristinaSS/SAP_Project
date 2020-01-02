@@ -5,6 +5,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Account;
+import sapproject.project.models.Cart;
+import sapproject.project.repository.CartRepository;
 import sapproject.project.services.interfaces.IAccountService;
 
 import javax.validation.Valid;
@@ -15,6 +17,9 @@ import java.util.List;
 public class AccountController {
     @Autowired
     IAccountService accountService;
+
+    @Autowired
+    CartRepository cartRepository;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
@@ -36,6 +41,8 @@ public class AccountController {
         //log.debug("REST request to save Account : {}", account);
         System.out.println("Enter create account method");
         return accountService.createOne(account,typeId);
+
+
     }
 
     @PutMapping("/edit-{accID}")

@@ -5,6 +5,7 @@ import {AccountServiceService} from '@app/services/account-service.service';
 import {AccountTypeServiceService} from '@app/services/account-type-service.service';
 import {Router} from '@angular/router';
 import {Account} from '../account-model/account';
+import {AuthenticationService} from '@app/security/helper/authentication.service';
 
 @Component({
   selector: 'app-create-account',
@@ -25,7 +26,8 @@ export class CreateAccountComponent implements OnInit {
 
   constructor(private accountServiceService: AccountServiceService,
               private accountTypeServiceService: AccountTypeServiceService,
-              private router: Router) {
+              private router: Router,
+              private authenticationService: AuthenticationService) {
   }
 
   ngOnInit() {
@@ -55,6 +57,7 @@ export class CreateAccountComponent implements OnInit {
           return throwError(error.message || error);
         }
       );
+
     }
   }
 
@@ -64,6 +67,11 @@ export class CreateAccountComponent implements OnInit {
     this.email = this.form_signup.get('email').value;
     this.password = this.form_signup.get('password').value;
     this.passwordAgain = this.form_signup.get('passwordAgain').value;
+
+    let name: string;
+    name = this.email;
+    console.log('this email: ' + name);
+    localStorage.setItem('cart', name);
   }
 
   validation() {
