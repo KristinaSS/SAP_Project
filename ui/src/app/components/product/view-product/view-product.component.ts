@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '@app/services/product.service';
+import {CartService} from '@app/services/cart.service';
 
 @Component({
   selector: 'app-view-product',
@@ -9,16 +10,20 @@ import {ProductService} from '@app/services/product.service';
 })
 export class ViewProductComponent implements OnInit {
 
-  constructor(private productService: ProductService,
-              private route: ActivatedRoute) {
+  constructor(private router: Router,
+              private productService: ProductService,
+              private route: ActivatedRoute,
+              private cartService: CartService) {
   }
 
   public product;
+  public selectOption;
+  public result;
 
   ngOnInit() {
     console.log('id from route: ' + this.route.snapshot.params.id);
     this.getProductByID(this.route.snapshot.params.id);
-/*    console.log(this.product.discription);*/
+    /*    console.log(this.product.discription);*/
   }
 
   getProductByID(id) {
@@ -30,5 +35,37 @@ export class ViewProductComponent implements OnInit {
       () => console.log('Account Loaded')
     );
   }
+
+  addProductToCart() {
+    let result: boolean;
+    result = this.lsTest();
+    console.log('result: ' + result);
+    if (result) {
+      console.log('selected option local storage: ' + sessionStorage.getItem('username'));
+      this.cartService.addItemToCart(this.product.productId, this.selectOption, sessionStorage.getItem('username')).subscribe(
+        data => {
+          console.log('success');
+          this.result = data;
+          this.router.navigate(['/myCart']);
+        },
+        error => console.error(error),
+        () => console.log('Products Loaded')
+      );
+    } else {
+      this.router.navigate(['/login']);
+    }
+  }
+
+
+  lsTest() {
+    let test = 'username';
+    try {
+      sessionStorage.getItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
 
 }

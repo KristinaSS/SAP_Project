@@ -15,4 +15,14 @@ export class CartService {
     username = sessionStorage.getItem('username');
     return this.http.post('server/cart/getAllByUser', {username});
   }
+
+  addItemToCart(productId, quantity, username) {
+    console.log('username; ' + username);
+    return this.http.post('server/cart/addItem', {username, productId, quantity});
+  }
+
+  calculate(username) {
+    console.log('calculate username; ' + username);
+    return this.http.post('server/cart/calculate', username);
+  }
 }

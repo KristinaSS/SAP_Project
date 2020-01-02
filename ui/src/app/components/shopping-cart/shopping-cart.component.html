@@ -14,8 +14,8 @@
                 <h5><span class="glyphicon glyphicon-shopping-cart"></span> Shopping Cart</h5>
               </div>
               <div class="col-xs-6">
-                <button type="button" class="btn btn-primary btn-sm btn-block">
-                  <span class="glyphicon glyphicon-share-alt"></span> Continue shopping
+                <button type="button" class="btn btn-primary btn-sm btn-block"  [routerLink]="['']">
+                  <span class="glyphicon glyphicon-share-alt" ></span> Continue shopping
                 </button>
               </div>
             </div>
@@ -26,7 +26,7 @@
             <div class="col-xs-2"><img class="img-responsive" src="http://placehold.it/100x70">
             </div>
             <div class="col-xs-4">
-              <h4 class="product-name" ><strong>{{item.product.name}}</strong></h4>
+              <h4 class="product-name" (click)="getProduct(item) "><strong>{{item.product.name}}</strong></h4>
             </div>
             <div class="col-xs-6">
               <div class="col-xs-6 text-right">
@@ -46,7 +46,7 @@
         <div class="panel-footer">
           <div class="row text-center">
             <div class="col-xs-9">
-              <h4 class="text-right">Total <strong>$50.00</strong></h4>
+              <h4 class="text-right">Total <strong>{{sum}}</strong></h4>
             </div>
             <div class="col-xs-3">
               <button type="button" class="btn btn-success btn-block">

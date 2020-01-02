@@ -14,7 +14,7 @@ export class ProductService {
     return this.http.post('server/product/filteredByCategory', category);
   }
 
-  getProduct(id: number) {
+  getProduct(id: string) {
     console.log('id: ' + id);
     return this.http.post('server/product/get', id);
   }

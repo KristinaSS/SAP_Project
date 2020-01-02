@@ -28,10 +28,6 @@ public class AccountService implements IAccountService {
     private AccountRepository accountRepository;
     @Autowired
     private AccountTypeRepository accountTypeRepository;
-/*
-    @Autowired
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-*/
 
     @Override
     public List<Account> findAll() {
@@ -81,12 +77,7 @@ public class AccountService implements IAccountService {
     public Account createOne(Account account, int accType) {
 
         AccountType accountType = accountTypeRepository.getOne(accType);
-        // Account hashedPasswordAcc = new Account();
 
-       /* updateAccMembers(hashedPasswordAcc, account);
-        hashedPasswordAcc.setAccountType(accountType);*/
-
-        //log.debug("New account has been created: {}", hashedPasswordAcc);
         account.setAccountType(accountTypeRepository.getOne(accType));
         return accountRepository.save(account);
     }
@@ -118,30 +109,11 @@ public class AccountService implements IAccountService {
         }
         return null;
     }
-
-
-    //security
-
-   /* @Transactional(readOnly = true)
-    public UserDetails loadUserByUsername(String username)
-            throws UsernameNotFoundException {
-        Account user = findByUsername(username);
-
-        Set grantedAuthorities = new HashSet<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(user.getAccountType().getName()));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(),
-                user.getPassword(), grantedAuthorities);
-    }
-
-    public Account findByUsername(String username) {
-        Account user = null;
+    public Account findAccountByEmail(String email, boolean res) {
         for (Account account : accountRepository.findAll()) {
-            if (account.getEmail().equals(username))
-                user = account;
+            if (account.getEmail().equals(email))
+                return account;
         }
-        if (user == null)
-            throw new UsernameNotFoundException("User not found");
-        return user;
+        return null;
     }
-*/
 }

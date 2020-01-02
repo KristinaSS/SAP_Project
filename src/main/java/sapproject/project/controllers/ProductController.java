@@ -27,10 +27,11 @@ public class ProductController {
 
     @PostMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public Product getProduct(@Valid @RequestBody int id){
+    public Product getProduct(@Valid @RequestBody String id){
         //log.debug("REST request to get Product : {}", id);
         System.out.println("id of product: " + id);
-        return  productService.getOne(id);
+
+        return  productService.getOne(Integer.parseInt(id));
     }
 
     @PostMapping("/create")

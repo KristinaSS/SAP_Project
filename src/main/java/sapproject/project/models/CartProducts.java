@@ -12,6 +12,15 @@ public class CartProducts implements Serializable {
     private Product product;
     private int cartProductID;
 
+    public CartProducts(int quantity, Cart cart, Product product) {
+        this.quantity = quantity;
+        this.cart = cart;
+        this.product = product;
+    }
+
+    public CartProducts() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_product_id")
