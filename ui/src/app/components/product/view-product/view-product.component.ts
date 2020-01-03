@@ -61,11 +61,13 @@ export class ViewProductComponent implements OnInit {
     let test = 'username';
     try {
       sessionStorage.getItem(test);
+      if (sessionStorage.getItem(test) === null) {
+        return false;
+      }
       return true;
     } catch (e) {
       return false;
     }
   }
-
 
 }

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from '@app/services/cart.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-checkout',
@@ -23,17 +24,25 @@ export class CheckoutComponent implements OnInit {
   public sum;
   public total;
 
-  constructor(private cartService: CartService) {
+  constructor(private cartService: CartService,
+              private router: Router) {
   }
 
   ngOnInit() {
-    this.getCartItems();
-    this.calculate();
-    this.total = this.total + 5;
+    let result: boolean;
+    result = this.lsTest();
+    console.log('result: ' + result);
+    if (result) {
+      this.getCartItems();
+      this.calculate();
+      this.total = this.total + 5;
+    } else {
+        this.router.navigate(['/login']);
+    }
   }
 
   public getTotal() {
-    this.total =  this.sum + 5;
+    this.total = this.sum + 5;
   }
 
   getCartItems() {
@@ -45,6 +54,7 @@ export class CheckoutComponent implements OnInit {
       () => console.log('Items Loaded')
     );
   }
+
   calculate() {
     console.log('calculate');
     this.cartService.calculate(sessionStorage.getItem('username')).subscribe(
@@ -55,4 +65,35 @@ export class CheckoutComponent implements OnInit {
       () => console.log('Items Loaded')
     );
   }
+
+  placeorder() {
+    console.log('place order' + this.expirationMonth +
+      this.expirationYear);
+    this.cartService.makeorder(sessionStorage.getItem('username'),
+      this.country,
+      this.address,
+      this.city, this.state,
+      this.postCode,
+      this.phoneNumber,
+      this.cardType,
+      this.cardNumber,
+      this.CVV,
+      this.expirationMonth,
+      this.expirationYear);
+    this.router.navigate(['thankyou']);
+  }
+
+  lsTest() {
+    let test = 'username';
+    try {
+      sessionStorage.getItem(test);
+      if (sessionStorage.getItem(test) === null) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
 }

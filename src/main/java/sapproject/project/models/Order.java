@@ -9,7 +9,7 @@ import java.io.Serializable;
 import java.util.List;
 
 
-@Entity(name = "order")
+@Entity(name = "orders")
 public class Order implements Serializable {
     private static final long serialVersionUID = 7696645133827053325L;
 
@@ -33,7 +33,7 @@ public class Order implements Serializable {
     @Column(name = "date_time", nullable = false)
     private String dateTime;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "client_id")
     private Account client;
 

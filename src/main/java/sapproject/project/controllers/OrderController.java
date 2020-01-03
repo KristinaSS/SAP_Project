@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Order;
 import sapproject.project.payload.Checkout;
+import sapproject.project.services.classes.OrderService;
 import sapproject.project.services.interfaces.IOrderService;
 
 import javax.validation.Valid;
@@ -17,6 +18,9 @@ import java.util.List;
 public class OrderController {
     @Autowired
     IOrderService orderService;
+
+    @Autowired
+    OrderService orderServiceClass;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
@@ -54,10 +58,10 @@ public class OrderController {
         orderService.deleteByID(ID);
     }
 
-    @PostMapping("/create")
+    @PostMapping("/makeOrder")
     @ResponseStatus(HttpStatus.CREATED)
     public Order makeOrder(@Valid @RequestBody Checkout checkout) {
         //log.debug("REST request to save Order : {}", order);
-        return orderService.createOne();
+        return orderServiceClass.makeOrder(checkout);
     }
 }

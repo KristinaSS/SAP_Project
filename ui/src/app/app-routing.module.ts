@@ -11,6 +11,7 @@ import {ProductListComponent} from '@app/components/product/product-list/product
 import {ViewProductComponent} from '@app/components/product/view-product/view-product.component';
 import {ShoppingCartComponent} from '@app/components/shopping-cart/shopping-cart.component';
 import {CheckoutComponent} from '@app/components/checkout/checkout.component';
+import {ThankYouComponent} from '@app/components/thank-you/thank-you.component';
 
 const routes: Routes = [
   {
@@ -51,6 +52,10 @@ const routes: Routes = [
   {
     path: 'checkout',
     component: CheckoutComponent
+  },
+  {
+    path: 'thankyou',
+    component: ThankYouComponent
   },
   // otherwise redirect to home
   {

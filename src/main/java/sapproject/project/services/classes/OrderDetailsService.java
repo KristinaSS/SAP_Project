@@ -81,7 +81,6 @@ public class OrderDetailsService implements IOrderDetailsService {
     }
 
     private OrderDetails updateOrderDetailMemebers(OrderDetails orderDetails, OrderDetails updated){
-        orderDetails.setDiscount(updated.getDiscount());
         orderDetails.setQuantity(updated.getQuantity());
         //todo fix sum
         //log.info("Order Details updated: {}", orderDetails);

@@ -26,18 +26,13 @@ public class OrderDetails implements Serializable {
     private int quantity;
 
     @Basic
-    @Column(name = "discount", nullable = false)
-    private float discount;
-
-    @Basic
     @Column(name = "sum", nullable = false)
     private float sum;
 
-    public OrderDetails(OrderDetailsPK orderdetailsPK, float price, int quantity, float discount, float sum) {
+    public OrderDetails(OrderDetailsPK orderdetailsPK, float price, int quantity, float sum) {
         this.orderdetailsPK = orderdetailsPK;
         this.price = price;
         this.quantity = quantity;
-        this.discount = discount;
         this.sum = sum;
     }
 
@@ -68,14 +63,6 @@ public class OrderDetails implements Serializable {
         this.quantity = quantity;
     }
 
-    public float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(float discount) {
-        this.discount = discount;
-    }
-
     public float getSum() {
         return sum;
     }
@@ -84,15 +71,3 @@ public class OrderDetails implements Serializable {
         this.sum = sum;
     }
 }
-/*
-
-        @Id
-        @ManyToOne(cascade = CascadeType.PERSIST)
-        @JoinColumn(name = "order_id")
-        private Order order;
-
-        @Id
-        @ManyToOne(cascade = CascadeType.PERSIST)
-        @JoinColumn(name = "product_id")
-        private Product product;
-     */

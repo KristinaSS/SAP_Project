@@ -8,10 +8,13 @@ import sapproject.project.models.*;
 import sapproject.project.payload.Checkout;
 import sapproject.project.repository.CartProductsRepository;
 import sapproject.project.repository.CartRepository;
+import sapproject.project.repository.OrderDetailsRepository;
 import sapproject.project.repository.OrderRepository;
 import sapproject.project.services.interfaces.IOrderService;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Log4j2
@@ -26,6 +29,8 @@ public class OrderService implements IOrderService {
 
     @Autowired
     CartProductsRepository cartProductsRepository;
+    @Autowired
+    OrderDetailsRepository orderDetailsRepository;
 
     @Override
     public List<Order> findAll() {
@@ -84,20 +89,82 @@ public class OrderService implements IOrderService {
         return order;
     }
 
-    public void makeOrder(Checkout checkout) {
+    public Order makeOrder(Checkout checkout) {
         Account account = accountService.findAccountByEmail(checkout.getUsername(), true);
+        String dateTime = LocalDateTime.now().toString();
+        String address = createAddress(checkout);
+        String paymentDetails = createPaymentDetails(checkout);
+        String phoneNumber = checkout.getPhoneNumber();
+
+        Order order = new Order(dateTime, account, address, paymentDetails, phoneNumber);
+        Order createdOrder = orderRepository.save(order);
+
+        int createdorderId = createdOrder.getOrderId();
+        List<OrderDetails> orderDetailsList = getItemsToBuy(createdorderId, checkout, account);
+        addToOrderDetailsRepository(orderDetailsList);
+
+        return order;
+    }
+
+    private String createAddress(Checkout checkout){
+
+        return  checkout.getCountry() + ", " +
+                checkout.getAddress() + ", " +
+                checkout.getCity() + ", " +
+                checkout.getState() + ", " +
+                checkout.getPostCode();
+    }
+
+    private String createPaymentDetails(Checkout checkout){
+        return "Card Type: " + checkout.getCardType() +
+                "\nCard Number: " + checkout.getCardNumber() +
+                "\nCard CVV: " + checkout.getCVV() +
+                "\nExpiration Date: " + checkout.getExpirationMonth()+ " " + checkout.getExpirationYear();
+    }
+
+    private List<OrderDetails> getItemsToBuy(int orderId, Checkout checkout, Account account){
         Cart cart = cartRepository.findByAccount(account);
         List<OrderDetails> orderDetailsList = new ArrayList<>();
-        OrderDetailsPK pk = null;
-        Order order = new Order();
-
+        OrderDetailsPK pk;
 
         for (CartProducts item : cartProductsRepository.findAll()) {
             if (item.getCart().getCartId() == cart.getCartId()) {
-                pk = new OrderDetailsPK();
-
+                pk = new OrderDetailsPK(orderId,item.getProduct().getProductId());
+                orderDetailsList.add(new OrderDetails(pk,
+                        item.getProduct().getPrice(),
+                        item.getQuantity(),
+                        (item.getQuantity()*item.getProduct().getPrice())));
             }
+        }
+        deleteAllByCartId(cart.getCartId());
+        return orderDetailsList;
+    }
+
+    private void addToOrderDetailsRepository(List<OrderDetails> orderDetailsList){
+        for(OrderDetails orderDetails: orderDetailsList){
+            orderDetailsRepository.save(orderDetails);
         }
 
     }
+    private void deleteAllByCartId(int cartId){
+        Iterator<CartProducts> iterator = cartProductsRepository.findAll().iterator();
+        CartProducts cartProducts;
+        while (iterator.hasNext()){
+            cartProducts = iterator.next();
+
+            if(cartProducts.getCart().getCartId() == cartId)
+                cartProductsRepository.delete(cartProducts);
+        }
+    }
 }
+   /* Cart cart = cartRepository.findByAccount(account);
+    List<OrderDetails> orderDetailsList = new ArrayList<>();
+    OrderDetailsPK pk = null;
+    Order order = new Order();
+
+        for (CartProducts item : cartProductsRepository.findAll()) {
+                if (item.getCart().getCartId() == cart.getCartId()) {
+                pk = new OrderDetailsPK();
+
+                }
+                }*/
