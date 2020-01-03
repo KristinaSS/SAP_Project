@@ -25,4 +25,9 @@ export class CartService {
     console.log('calculate username; ' + username);
     return this.http.post('server/cart/calculate', username);
   }
+
+  delete(productId, quantity, username) {
+    console.log('username; delete ' + username);
+    return this.http.post('server/cart/deleteItem', {username, productId, quantity}).subscribe();
+  }
 }

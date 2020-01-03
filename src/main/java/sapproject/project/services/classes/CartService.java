@@ -6,6 +6,7 @@ import sapproject.project.models.Account;
 import sapproject.project.models.Cart;
 import sapproject.project.models.CartProducts;
 import sapproject.project.models.Product;
+import sapproject.project.payload.CartItem;
 import sapproject.project.repository.CartProductsRepository;
 import sapproject.project.repository.CartRepository;
 
@@ -64,5 +65,17 @@ public class CartService {
         }
         System.out.println("total sum: "+ sum);
         return sum;
+    }
+    public void deleteCartItem (CartItem cartItem) {
+        Account account = accountService.findAccountByEmail(cartItem.getUsername(), true);
+        Cart cart = cartRepository.findByAccount(account);
+
+        for (CartProducts item: cartProductsRepository.findAll()){
+            if(item.getCart().getCartId() == cart.getCartId()
+                    && item.getProduct().getProductId() == Integer.parseInt(cartItem.getProductId())){
+                cartProductsRepository.delete(item);
+            }
+        }
+
     }
 }

@@ -33,6 +33,17 @@ public class OrderDetails implements Serializable {
     @Column(name = "sum", nullable = false)
     private float sum;
 
+    public OrderDetails(OrderDetailsPK orderdetailsPK, float price, int quantity, float discount, float sum) {
+        this.orderdetailsPK = orderdetailsPK;
+        this.price = price;
+        this.quantity = quantity;
+        this.discount = discount;
+        this.sum = sum;
+    }
+
+    public OrderDetails() {
+    }
+
     public float getPrice() {
         return price;
     }

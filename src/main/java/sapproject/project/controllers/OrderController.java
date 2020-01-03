@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Order;
+import sapproject.project.payload.Checkout;
 import sapproject.project.services.interfaces.IOrderService;
 
 import javax.validation.Valid;
@@ -51,5 +52,12 @@ public class OrderController {
     public void deleteOrder(@PathVariable(value = "ID") Integer ID) {
        // log.debug("REST request to delete Order : {}", ID);
         orderService.deleteByID(ID);
+    }
+
+    @PostMapping("/create")
+    @ResponseStatus(HttpStatus.CREATED)
+    public Order makeOrder(@Valid @RequestBody Checkout checkout) {
+        //log.debug("REST request to save Order : {}", order);
+        return orderService.createOne();
     }
 }

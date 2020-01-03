@@ -10,6 +10,7 @@ import {AuthGaurdService} from './security/helper/auth.guard';
 import {ProductListComponent} from '@app/components/product/product-list/product-list.component';
 import {ViewProductComponent} from '@app/components/product/view-product/view-product.component';
 import {ShoppingCartComponent} from '@app/components/shopping-cart/shopping-cart.component';
+import {CheckoutComponent} from '@app/components/checkout/checkout.component';
 
 const routes: Routes = [
   {
@@ -46,6 +47,10 @@ const routes: Routes = [
   {
     path: 'signup',
     component: CreateAccountComponent
+  },
+  {
+    path: 'checkout',
+    component: CheckoutComponent
   },
   // otherwise redirect to home
   {

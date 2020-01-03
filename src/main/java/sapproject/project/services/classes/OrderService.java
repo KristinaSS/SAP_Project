@@ -4,10 +4,14 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
-import sapproject.project.models.Order;
+import sapproject.project.models.*;
+import sapproject.project.payload.Checkout;
+import sapproject.project.repository.CartProductsRepository;
+import sapproject.project.repository.CartRepository;
 import sapproject.project.repository.OrderRepository;
 import sapproject.project.services.interfaces.IOrderService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
@@ -15,6 +19,13 @@ import java.util.List;
 public class OrderService implements IOrderService {
     @Autowired
     OrderRepository orderRepository;
+    @Autowired
+    AccountService accountService;
+    @Autowired
+    CartRepository cartRepository;
+
+    @Autowired
+    CartProductsRepository cartProductsRepository;
 
     @Override
     public List<Order> findAll() {
@@ -23,7 +34,7 @@ public class OrderService implements IOrderService {
 
     @Override
     public Order getOne(int Id) {
-        return orderRepository.findById(Id) .orElseGet(()->{
+        return orderRepository.findById(Id).orElseGet(() -> {
             try {
                 throw new EntityNotFoundException(Order.class);
             } catch (EntityNotFoundException e) {
@@ -42,11 +53,11 @@ public class OrderService implements IOrderService {
     @Override
     public void deleteByID(int ID) {
         Order catagory = getOne(ID);
-        if(catagory == null) {
+        if (catagory == null) {
             try {
                 throw new EntityNotFoundException(Order.class);
             } catch (EntityNotFoundException e) {
-               // log.warn("Order not found: {}", ID);
+                // log.warn("Order not found: {}", ID);
             }
             return;
         }
@@ -58,18 +69,35 @@ public class OrderService implements IOrderService {
     @Override
     public Order updateByID(int ID, Order entity) {
         return orderRepository.findById(ID)
-                .map(accountType -> orderRepository.save(updateOrderMembers(accountType,entity)))
-                .orElseGet(()->{
+                .map(accountType -> orderRepository.save(updateOrderMembers(accountType, entity)))
+                .orElseGet(() -> {
                     entity.setOrderId(ID);
-                   // log.info("Order has been created: {}",ID);
+                    // log.info("Order has been created: {}",ID);
                     return orderRepository.save(entity);
                 });
     }
 
-    private Order updateOrderMembers(Order order, Order update){
+    private Order updateOrderMembers(Order order, Order update) {
         order.setClient(update.getClient());
         order.setDateTime(update.getDateTime());
         //log.info("Order updated: {}", order);
         return order;
+    }
+
+    public void makeOrder(Checkout checkout) {
+        Account account = accountService.findAccountByEmail(checkout.getUsername(), true);
+        Cart cart = cartRepository.findByAccount(account);
+        List<OrderDetails> orderDetailsList = new ArrayList<>();
+        OrderDetailsPK pk = null;
+        Order order = new Order();
+
+
+        for (CartProducts item : cartProductsRepository.findAll()) {
+            if (item.getCart().getCartId() == cart.getCartId()) {
+                pk = new OrderDetailsPK();
+
+            }
+        }
+
     }
 }

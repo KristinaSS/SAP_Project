@@ -14,7 +14,7 @@ export class ShoppingCartComponent implements OnInit {
   @Output() onCreate: EventEmitter<any> = new EventEmitter<any>();
   public product;
   public cartList;
-  public  sum;
+  public sum;
 
   constructor(private cartService: CartService,
               private productService: ProductService,
@@ -54,4 +54,12 @@ export class ShoppingCartComponent implements OnInit {
     );
   }
 
+  deleteItem(item) {
+    console.log('delete 1');
+    this.cartService.delete(item.product.productId, item.quantity, sessionStorage.getItem('username'));
+  }
+
+  refresh(): void {
+    window.location.reload();
+  }
 }

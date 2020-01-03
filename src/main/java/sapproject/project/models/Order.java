@@ -13,9 +13,15 @@ import java.util.List;
 public class Order implements Serializable {
     private static final long serialVersionUID = 7696645133827053325L;
 
-    public Order(String dateTime, Account client) {
+    public Order(String dateTime, Account client, String address, String paymentDetails, String phoneNumber) {
         this.dateTime = dateTime;
         this.client = client;
+        this.address = address;
+        this.paymentDetails = paymentDetails;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Order() {
     }
 
     @Id
@@ -30,6 +36,18 @@ public class Order implements Serializable {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "client_id")
     private Account client;
+
+    @Basic
+    @Column(name = "address", nullable = false)
+    private String address;
+
+    @Basic
+    @Column(name = "payment_details", nullable = false)
+    private String paymentDetails;
+
+    @Basic
+    @Column(name = "phone_number", nullable = false)
+    private String phoneNumber;
 
     public int getOrderId() {
         return orderId;
@@ -55,6 +73,27 @@ public class Order implements Serializable {
         this.client = client;
     }
 
-    /*    @OneToMany(fetch = FetchType.LAZY)
-    private List<OrderDetails> orderDetailsList;*/
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getPaymentDetails() {
+        return paymentDetails;
+    }
+
+    public void setPaymentDetails(String paymentDetails) {
+        this.paymentDetails = paymentDetails;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
 }

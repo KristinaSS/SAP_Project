@@ -75,4 +75,11 @@ public class CartController {
         Cart cart = cartRepository.findByAccount(account);
         return cartService.calculateCart(cart);
     }
+
+    @PostMapping("/deleteItem")
+    @ResponseStatus(HttpStatus.OK)
+    public void deleteItem(@Valid @RequestBody CartItem cartItem) {
+        cartService.deleteCartItem(cartItem);
+    }
+
 }
