@@ -16,8 +16,18 @@ import {ProductViewEmployeeComponent} from '@app/components/product/product-view
 import {CreateProductComponent} from '@app/components/product/create-product/create-product.component';
 import {EditProductComponent} from '@app/components/product/edit-product/edit-product.component';
 import {ProductDeletedComponent} from '@app/components/product/product-deleted/product-deleted.component';
+import {CreatedComponent} from '@app/components/product/created/created.component';
+import {UpdatedComponent} from '@app/components/product/updated/updated.component';
 
 const routes: Routes = [
+  {
+    path: 'product-created',
+    component: CreatedComponent
+  },
+  {
+    path: 'product-updated',
+    component: UpdatedComponent
+  },
   {
     path: 'product-deleted',
     component: ProductDeletedComponent

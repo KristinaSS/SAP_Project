@@ -25,6 +25,8 @@ import { ProductViewEmployeeComponent } from './components/product/product-view-
 import { EditProductComponent } from './components/product/edit-product/edit-product.component';
 import { CreateProductComponent } from './components/product/create-product/create-product.component';
 import { ProductDeletedComponent } from './components/product/product-deleted/product-deleted.component';
+import { CreatedComponent } from './components/product/created/created.component';
+import { UpdatedComponent } from './components/product/updated/updated.component';
 
 
 @NgModule({
@@ -46,7 +48,9 @@ import { ProductDeletedComponent } from './components/product/product-deleted/pr
     ProductViewEmployeeComponent,
     EditProductComponent,
     CreateProductComponent,
-    ProductDeletedComponent
+    ProductDeletedComponent,
+    CreatedComponent,
+    UpdatedComponent
   ],
   imports: [
     BrowserModule,

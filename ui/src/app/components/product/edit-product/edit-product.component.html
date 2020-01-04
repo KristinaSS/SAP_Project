@@ -17,7 +17,11 @@
         </div>
         <div class="form-group">
           <label>Add Product Quantity</label>
-          <input type="email" class="form-control" formControlName="quantity" required value="0"/>
+          <input type="text" class="form-control" formControlName="quantity" required value="0"/>
+        </div>
+        <div class="form-group">
+          <label>Edit Price</label>
+          <input type="text" class="form-control" formControlName="price" required value="{{product.price}}"/>
         </div>
         <div class="form-group">
           <label>Description</label>
@@ -27,14 +31,21 @@
       <div class="form-group">
         <form [formGroup]="categoryFormGroup" (ngSubmit)="submitRegistration()" novalidate>
           <label>Account Type</label>
-          <select class="form-control-select" formControlName="accountType" [(ngModel)]="categoryId">
-            <option *ngFor="let category of categories" value="[{{category.id}}]">
-              {{category.name}}
-            </option>
+          <select class="form-control-select" formControlName="category" [(ngModel)]="categoryId">
+            <option> IT </option>
+            <option> Photography </option>
+            <option> Electrical Appliances </option>
+            <option> Clothes </option>
+            <option> Health and Care </option>
+            <option> Books </option>
+            <option> Toys </option>
+            <option> Sport </option>
+            <option> Food </option>
+            <option> Other </option>
           </select>
         </form>
       </div>
-      <button type="submit" class="btn btn-primary">Submit</button>
+      <button type="submit" class="btn btn-primary" (click)="submitRegistration()" >Submit</button>
     </div>
   </div>
 </div>

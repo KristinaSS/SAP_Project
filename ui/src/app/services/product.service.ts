@@ -30,6 +30,7 @@ export class ProductService {
     return this.http.post('server/product/create', {id, name, quantity, price, description, categoryName});
   }
   deleteProduct(id) {
+    console.log('delete id: ' + id);
     return this.http.post('server/product/delete', id);
   }
 }

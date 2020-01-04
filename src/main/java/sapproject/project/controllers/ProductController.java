@@ -51,11 +51,11 @@ public class ProductController {
         return productService.updateByID(product);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteProduct(@Valid @RequestBody ProductPayload product) {
+    public void deleteProduct(@Valid @RequestBody String productId) {
         //log.debug("REST request to delete Product : {}", ID);
-        productService.deleteByID(Integer.parseInt(product.getId()));
+        productService.deleteByID(Integer.parseInt(productId));
     }
     @PostMapping("/filteredByCategory")
     @ResponseStatus(HttpStatus.OK)

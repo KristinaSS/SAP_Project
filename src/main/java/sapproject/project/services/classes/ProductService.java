@@ -23,16 +23,16 @@ public class ProductService implements IProductService {
     @Autowired
     CatagoryService catagoryService;
 
-    public List<Product> findAllProductsByCategory(String categoryName){
+    public List<Product> findAllProductsByCategory(String categoryName) {
         Category category = catagoryService.findCategoryByName(categoryName);
         List<Product> filteredList = new ArrayList<>();
         int catID = 0;
-        if(category == null)
+        if (category == null)
             return filteredList;//todo fix
         else
             catID = category.getCategoryId();
-        for(Product product: productRepository.findAll()){
-            if(product.getCategory().getCategoryId()==catID)
+        for (Product product : productRepository.findAll()) {
+            if (product.getCategory().getCategoryId() == catID)
                 filteredList.add(product);
         }
         return filteredList;
@@ -45,11 +45,11 @@ public class ProductService implements IProductService {
 
     @Override
     public Product getOne(int Id) {
-        return productRepository.findById(Id) .orElseGet(()->{
+        return productRepository.findById(Id).orElseGet(() -> {
             try {
                 throw new EntityNotFoundException(Product.class);
             } catch (EntityNotFoundException e) {
-               // log.warn("A product with this Id has not been found:  {}", Id);
+                // log.warn("A product with this Id has not been found:  {}", Id);
             }
             return null;
         });
@@ -68,12 +68,13 @@ public class ProductService implements IProductService {
         return productRepository.save(product);
     }
 
-    private Product createProductObject(ProductPayload productPayload){
+    private Product createProductObject(ProductPayload productPayload) {
         Product product = new Product();
         product.setName(productPayload.getName());
         product.setQuantity(Integer.parseInt(productPayload.getQuantity()));
         product.setPrice(Float.parseFloat(productPayload.getPrice()));
         product.setCategory(catagoryService.findCategoryByName(productPayload.getCategoryName()));
+        product.setDiscription(productPayload.getDescription());
 
         return product;
     }
@@ -81,7 +82,7 @@ public class ProductService implements IProductService {
     @Override
     public void deleteByID(int ID) {
         Product catagory = getOne(ID);
-        if(catagory == null) {
+        if (catagory == null) {
             try {
                 throw new EntityNotFoundException(Product.class);
             } catch (EntityNotFoundException e) {
@@ -109,19 +110,22 @@ public class ProductService implements IProductService {
         return productRepository.save(result);
     }
 
-    private Product findProductById (int id) {
-        for (Product product: productRepository.findAll() ){
-            if( product.getProductId() == id)
+    private Product findProductById(int id) {
+        for (Product product : productRepository.findAll()) {
+            if (product.getProductId() == id)
                 return product;
         }
         return null;
     }
 
-    private Product updateProductMembers(Product product, ProductPayload update){
+    private Product updateProductMembers(Product product, ProductPayload update) {
         product.setCategory(catagoryService.findCategoryByName(update.getCategoryName()));
         product.setName(update.getName());
         product.setPrice(Float.parseFloat(update.getPrice()));
-        product.setQuantity(product.getQuantity() + Integer.parseInt(update.getPrice()));
+        if (!update.getQuantity().equals("")) {
+            product.setQuantity(product.getQuantity() + Integer.parseInt(update.getQuantity()));
+        }
+        product.setDiscription(update.getDescription());
 
         return product;
     }

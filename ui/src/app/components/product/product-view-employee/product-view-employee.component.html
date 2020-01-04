@@ -30,8 +30,29 @@
           <div class="row">
             <div class="col-sm-5">
               <dl class="param param-inline">
-                <dt>Quantity: </dt>
+                <dt>Available Quantity: </dt>
                 {{product.quantity}}
+              </dl>  <!-- item-property .// -->
+            </div> <!-- col.// -->
+          </div> <!-- row.// -->
+          <div class="row">
+            <div class="col-sm-5">
+              <dl class="param param-inline">
+                <dt>Quantity to buy: </dt>
+                <dd>
+                  <select class="form-control form-control-sm" style="width:70px;" [(ngModel)]="selectOption">
+                    <option> 1 </option>
+                    <option> 2 </option>
+                    <option> 3 </option>
+                    <option> 4 </option>
+                    <option> 5 </option>
+                    <option> 6 </option>
+                    <option> 7 </option>
+                    <option> 8 </option>
+                    <option> 9 </option>
+                    <option> 10 </option>
+                  </select>
+                </dd>
               </dl>  <!-- item-property .// -->
             </div> <!-- col.// -->
           </div> <!-- row.// -->

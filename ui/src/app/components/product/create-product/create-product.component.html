@@ -32,9 +32,16 @@
         <form [formGroup]="categoryFormGroup" (ngSubmit)="submitRegistration()" novalidate>
           <label>Account Type</label>
           <select class="form-control-select" formControlName="category" [(ngModel)]="categoryId">
-            <option *ngFor="let category of categories">
-              {{category.name}}
-            </option>
+            <option> IT </option>
+            <option> Photography </option>
+            <option> Electrical Appliances </option>
+            <option> Clothes </option>
+            <option> Health and Care </option>
+            <option> Books </option>
+            <option> Toys </option>
+            <option> Sport </option>
+            <option> Food </option>
+            <option> Other </option>
           </select>
         </form>
         <button type="submit" class="btn btn-primary" (click)="submitRegistration()" >Submit</button>

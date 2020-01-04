@@ -23,19 +23,6 @@ export class EditProductComponent implements OnInit {
   private description;
 
   validMessage: string = '';
-  categories: Category[] = [
-    {id: '0', name: 'Old'},
-    {id: '1', name: 'IT'},
-    {id: '2', name: 'Photography'},
-    {id: '3', name: 'Electrical Appliances'},
-    {id: '4', name: 'Clothes'},
-    {id: '5', name: 'Health and Care'},
-    {id: '6', name: 'Books'},
-    {id: '7', name: 'Toys'},
-    {id: '8', name: 'Sport'},
-    {id: '9', name: 'Food'},
-    {id: '10', name: 'Other'}
-  ];
 
   constructor(private router: Router,
               private productService: ProductService,
@@ -108,9 +95,7 @@ export class EditProductComponent implements OnInit {
           return Observable.throw(error);
         }
       );
-      this.router.navigate(['']);
-    } else {
-      this.validMessage = 'Please fill out this form before submitting';
+      this.router.navigate(['product-updated']);
     }
   }
 
@@ -123,27 +108,28 @@ export class EditProductComponent implements OnInit {
 
   validation() {
     if (this.name.length === 0) {
-      this.validMessage = 'Not valid name';
-      return false;
+      this.name = this.product.name;
     }
-    if (this.price.length === 0 || !this.price.match('\\d*\\.?\\d+')) {
-      this.validMessage = 'Not Valid price';
-      return false;
+    if (!this.price.match('\\d*\\.?\\d+')) {
+      if (this.price.length === 0) {
+        this.price = this.product.price;
+      } else {
+        this.validMessage = 'Not Valid price';
+        return false;
+      }
     }
     if (this.description.length === 0) {
-      this.validMessage = 'Please fill out description';
-      return false;
+      this.description = this.product.discription;
     }
-    if (this.quantity.length === 0 || !this.quantity.match('^(0|[1-9][0-9]{0,9})$')) {
-      this.validMessage = 'Not valid quantity';
-      return false;
+    if (this.quantity.match('^(0|[1-9][0-9]{0,9})$')) {
+      if (this.quantity.length === 0) {
+        this.quantity = '0';
+      } else {
+        this.validMessage = 'Not valid quantity';
+        return false;
+      }
     }
     console.log('Validated');
     return true;
   }
-}
-
-export interface Category {
-  id: string;
-  name: string;
 }

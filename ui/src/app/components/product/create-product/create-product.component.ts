@@ -21,18 +21,6 @@ export class CreateProductComponent implements OnInit {
   private description;
 
   validMessage: string = 'creating product: ';
-  categories: Category[] = [
-    {id: '1', name: 'IT'},
-    {id: '2', name: 'Photography'},
-    {id: '3', name: 'Electrical Appliances'},
-    {id: '4', name: 'Clothes'},
-    {id: '5', name: 'Health and Care'},
-    {id: '6', name: 'Books'},
-    {id: '7', name: 'Toys'},
-    {id: '8', name: 'Sport'},
-    {id: '9', name: 'Food'},
-    {id: '10', name: 'Other'}
-  ];
 
   constructor(private router: Router,
               private  productService: ProductService) {
@@ -53,8 +41,9 @@ export class CreateProductComponent implements OnInit {
   submitRegistration() {
     this.intializeMembers();
     if (this.validation()) {
+      console.log(this.categoryId.name);
       this.validMessage = 'Your food place registration has been submitted. Thank you!';
-      this.productService.createProduct(this.name, this.quantity, this.price, this.description, this.categoryId.name).subscribe(
+      this.productService.createProduct(this.name, this.quantity, this.price, this.description, this.categoryId).subscribe(
         data => {
           this.productFormGroup.reset();
           return true;
@@ -63,9 +52,7 @@ export class CreateProductComponent implements OnInit {
           return Observable.throw(error);
         }
       );
-      this.router.navigate(['']);
-    } else {
-      this.validMessage = 'Please fill out this form before submitting';
+      this.router.navigate(['product-created']);
     }
   }
 
@@ -96,9 +83,4 @@ export class CreateProductComponent implements OnInit {
     console.log('Validated');
     return true;
   }
-}
-
-export interface Category {
-  id: string;
-  name: string;
 }

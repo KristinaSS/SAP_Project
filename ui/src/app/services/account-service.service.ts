@@ -29,11 +29,4 @@ export class AccountServiceService {
   deleteAccount(id: number) {
     return this.http.delete('server/account/delete-' + id);
   }
-
-  /*  accountExists(email): Observable<boolean> {
-      let result: Observable<boolean>;
-      result =  this.http.post<any>('server/findAccountByEmail', {email});
-      console.log(result);
-      return result;
-    }*/
 }
