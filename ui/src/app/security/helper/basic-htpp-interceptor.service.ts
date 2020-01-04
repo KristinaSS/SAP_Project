@@ -39,6 +39,16 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
     if (request.url.includes('order/makeOrder')) {
       return next.handle(request);
     }
+    if (request.url.includes('product/edit')) {
+      return next.handle(request);
+    }
+    if (request.url.includes('product/create')) {
+      return next.handle(request);
+    }
+    if (request.url.includes('product/delete')) {
+      return next.handle(request);
+    }
+
 
     console.log('authorize interceptor');
     request = request.clone({headers: request.headers.set('Authorization', sessionStorage.getItem('token'))});

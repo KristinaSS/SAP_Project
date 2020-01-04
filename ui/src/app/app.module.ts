@@ -11,7 +11,7 @@ import { AcountListComponent } from './components/account/acount-list/acount-lis
 import { CreateAccountComponent } from './components/account/create-account/create-account.component';
 import { AccountViewComponent } from './components/account/account-view/account-view.component';
 import { FilterByNamePipe } from './filter-by-name.pipe';
-import {LoginComponent} from './security/login';
+import {LoginComponent} from './components/login';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {BasicAuthHtppInterceptorService} from '@app/security/helper/basic-htpp-interceptor.service';
@@ -19,8 +19,12 @@ import { CatagoryComponent } from './components/catagory/catagory.component';
 import { ProductListComponent } from './components/product/product-list/product-list.component';
 import { ViewProductComponent } from './components/product/view-product/view-product.component';
 import { ShoppingCartComponent } from './components/shopping-cart/shopping-cart.component';
-import { CheckoutComponent } from './components/checkout/checkout.component';
-import { ThankYouComponent } from './components/thank-you/thank-you.component';
+import { CheckoutComponent } from './components/checkout/chekout/checkout.component';
+import { ThankYouComponent } from './components/checkout/thank-you/thank-you.component';
+import { ProductViewEmployeeComponent } from './components/product/product-view-employee/product-view-employee.component';
+import { EditProductComponent } from './components/product/edit-product/edit-product.component';
+import { CreateProductComponent } from './components/product/create-product/create-product.component';
+import { ProductDeletedComponent } from './components/product/product-deleted/product-deleted.component';
 
 
 @NgModule({
@@ -38,7 +42,11 @@ import { ThankYouComponent } from './components/thank-you/thank-you.component';
     ViewProductComponent,
     ShoppingCartComponent,
     CheckoutComponent,
-    ThankYouComponent
+    ThankYouComponent,
+    ProductViewEmployeeComponent,
+    EditProductComponent,
+    CreateProductComponent,
+    ProductDeletedComponent
   ],
   imports: [
     BrowserModule,

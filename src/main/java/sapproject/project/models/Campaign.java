@@ -18,12 +18,8 @@ public class Campaign implements Serializable{
     private String name;
 
     @Basic
-    @Column(name = "start_date", nullable = false)
-    private String startDate;
-
-    @Basic
-    @Column(name = "end_date", nullable = false)
-    private String endDate;
+    @Column(name = "isActive", nullable = false)
+    private Boolean isActive;
 
 
     @Basic
@@ -46,27 +42,19 @@ public class Campaign implements Serializable{
         this.name = name;
     }
 
-    public String getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
     public String getDetails() {
         return details;
     }
 
     public void setDetails(String details) {
         this.details = details;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
     }
 }

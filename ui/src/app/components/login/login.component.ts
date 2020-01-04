@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
-import {AuthenticationService} from '../helper/authentication.service';
+import {AuthenticationService} from '../../security/helper/authentication.service';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {throwError} from 'rxjs';
 
@@ -44,38 +44,4 @@ export class LoginComponent implements OnInit {
       )
     );
   }
-
-  submitCart() {
-    console.log('item: ' + sessionStorage.getItem('cart'));
-    this.loginservice.createCart(sessionStorage.getItem('cart')).subscribe(
-      data => {
-        console.log('cart created');
-        return true;
-      },
-      error => {
-        console.log('error thrown');
-        return throwError(error.message || error);
-      }
-    );
-  }
-/*
-  isAccountCreated() {
-    let result: boolean;
-    result = this.lsTest();
-    console.log('result: ' + result);
-    if (result) {
-      this.submitCart();
-      sessionStorage.removeItem('cart');
-    }
-  }
-
-  lsTest() {
-    let test = 'cart';
-    try {
-      sessionStorage.getItem(test);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }*/
 }

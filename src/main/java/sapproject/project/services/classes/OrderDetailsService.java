@@ -41,7 +41,7 @@ public class OrderDetailsService implements IOrderDetailsService {
                 .map(accountType -> orderDetailsRepository.save(updateOrderDetailMemebers(accountType,entity)))
                 .orElseGet(()->{
                     //todo fix this
-                    /*entity.setCategoryId(ID);*/
+                    /*entity.setCategoryName(ID);*/
                    // log.info("New order details have been created: {}",ID);
                     return orderDetailsRepository.save(entity);
                 });

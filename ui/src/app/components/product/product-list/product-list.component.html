@@ -13,14 +13,14 @@
                         {{product.price}}
                     </span>
           <small class="text-muted">Category: {{product.category.name}}</small>
-          <a class="product-name" [routerLink]="['/product/' + product.productId]"> {{product.name}}</a>
+          <a class="product-name" (click)="seeProduct(product)"> {{product.name}}</a>
 
           <div class="small m-t-xs">
             {{product.description}}
           </div>
           <div class="m-t text-righ">
 
-            <a [routerLink]="['/product/',product.productId]" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
+            <a (click)="seeProduct(product)" class="btn btn-xs btn-outline btn-primary">Info <i class="fa fa-long-arrow-right"></i> </a>
           </div>
         </div>
       </div>

@@ -6,10 +6,11 @@ import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
 import sapproject.project.models.Category;
 import sapproject.project.models.Product;
-import sapproject.project.repository.CatagoryRepository;
+import sapproject.project.payload.ProductPayload;
 import sapproject.project.repository.ProductRepository;
 import sapproject.project.services.interfaces.IProductService;
 
+import javax.validation.Payload;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,10 +55,27 @@ public class ProductService implements IProductService {
         });
     }
 
+
     @Override
+    @Deprecated
     public Product createOne(Product entity) {
+        return null;
+    }
+
+    public Product createOne(ProductPayload entity) {
         //log.info("New product has been created: {}", entity);
-        return productRepository.save(entity);
+        Product product = createProductObject(entity);
+        return productRepository.save(product);
+    }
+
+    private Product createProductObject(ProductPayload productPayload){
+        Product product = new Product();
+        product.setName(productPayload.getName());
+        product.setQuantity(Integer.parseInt(productPayload.getQuantity()));
+        product.setPrice(Float.parseFloat(productPayload.getPrice()));
+        product.setCategory(catagoryService.findCategoryByName(productPayload.getCategoryName()));
+
+        return product;
     }
 
     @Override
@@ -76,23 +94,35 @@ public class ProductService implements IProductService {
 
     }
 
+    @Deprecated
     @Override
     public Product updateByID(int ID, Product entity) {
-        return productRepository.findById(ID)
-                .map(accountType -> productRepository.save(updateProductMembers(accountType,entity)))
-                .orElseGet(()->{
-                    entity.setProductId(ID);
-                   // log.info("Order has been created: {}",ID);
-                    return productRepository.save(entity);
-                });
+        return null;
     }
 
-    private Product updateProductMembers(Product product, Product update){
-        product.setCategory(update.getCategory());
+
+    public Product updateByID(ProductPayload payload) {
+        Product product = findProductById(Integer.parseInt(payload.getId()));
+        assert product != null;
+        Product result = updateProductMembers(product, payload);
+
+        return productRepository.save(result);
+    }
+
+    private Product findProductById (int id) {
+        for (Product product: productRepository.findAll() ){
+            if( product.getProductId() == id)
+                return product;
+        }
+        return null;
+    }
+
+    private Product updateProductMembers(Product product, ProductPayload update){
+        product.setCategory(catagoryService.findCategoryByName(update.getCategoryName()));
         product.setName(update.getName());
-        product.setPrice(update.getPrice());
-        product.setQuantity(update.getQuantity());
-        //log.info("Order updated: {}", product);
+        product.setPrice(Float.parseFloat(update.getPrice()));
+        product.setQuantity(product.getQuantity() + Integer.parseInt(update.getPrice()));
+
         return product;
     }
 }

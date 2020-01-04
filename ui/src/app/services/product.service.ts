@@ -18,4 +18,18 @@ export class ProductService {
     console.log('id: ' + id);
     return this.http.post('server/product/get', id);
   }
+
+  editProduct(id, name , quantity, price, description, categoryName) {
+    console.log('id: edit product ');
+    return this.http.post('server/product/edit', {id,  name, quantity, price, description, categoryName});
+  }
+
+  createProduct(name , quantity, price, description, categoryName) {
+    let id = null;
+    console.log('id: create Product ');
+    return this.http.post('server/product/create', {id, name, quantity, price, description, categoryName});
+  }
+  deleteProduct(id) {
+    return this.http.post('server/product/delete', id);
+  }
 }

@@ -1,0 +1,44 @@
+<div class="site-wrapper">
+  <div class="text-wrapper">
+    <br>
+    <div class="title" style="text-align:center">
+      <h1>
+        Create Product
+      </h1>
+    </div>
+    <div class="container-form">
+      <form [formGroup]="productFormGroup" (ngSubmit)="submitRegistration()" novalidate>
+        <div *ngIf="validMessage != ''">
+          <h3 class="has-info">{{validMessage}}</h3>
+        </div>
+        <div class="form-group">
+          <label>Product Name</label>
+          <input type="text" class="form-control" formControlName="name" required autofocus/>
+        </div>
+        <div class="form-group">
+          <label>Product Quantity</label>
+          <input type="text" class="form-control" formControlName="quantity" required/>
+        </div>
+        <div class="form-group">
+          <label>Product Price</label>
+          <input type="text" class="form-control" formControlName="price" required/>
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <input type="text" class="form-control" formControlName="description"/>
+        </div>
+      </form>
+      <div class="form-group">
+        <form [formGroup]="categoryFormGroup" (ngSubmit)="submitRegistration()" novalidate>
+          <label>Account Type</label>
+          <select class="form-control-select" formControlName="category" [(ngModel)]="categoryId">
+            <option *ngFor="let category of categories">
+              {{category.name}}
+            </option>
+          </select>
+        </form>
+        <button type="submit" class="btn btn-primary" (click)="submitRegistration()" >Submit</button>
+      </div>
+    </div>
+  </div>
+</div>

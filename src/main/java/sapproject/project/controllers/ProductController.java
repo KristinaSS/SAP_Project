@@ -5,9 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Product;
+import sapproject.project.payload.ProductPayload;
 import sapproject.project.services.classes.ProductService;
 import sapproject.project.services.interfaces.IProductService;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.Valid;
 import java.util.List;
 
@@ -36,24 +38,24 @@ public class ProductController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Product createProduct(@Valid @RequestBody Product product) {
+    public Product createProduct(@Valid @RequestBody ProductPayload product) {
         //log.debug("REST request to save Product : {}", product);
+
         return productService.createOne(product);
     }
 
-    @PutMapping("/edit-{ID}")
+    @PostMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public Product updateProduct(@PathVariable(value = "ID") Integer ID,
-                                   @Valid @RequestBody Product product){
+    public Product updateProduct(@Valid @RequestBody ProductPayload product){
         //log.debug("REST request to update Product : {}", ID);
-        return productService.updateByID(ID,product);
+        return productService.updateByID(product);
     }
 
-    @DeleteMapping("/delete-{ID}")
+    @DeleteMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteProduct(@PathVariable(value = "ID") Integer ID) {
+    public void deleteProduct(@Valid @RequestBody ProductPayload product) {
         //log.debug("REST request to delete Product : {}", ID);
-        productService.deleteByID(ID);
+        productService.deleteByID(Integer.parseInt(product.getId()));
     }
     @PostMapping("/filteredByCategory")
     @ResponseStatus(HttpStatus.OK)

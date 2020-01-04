@@ -33,9 +33,33 @@ export class ProductListComponent implements OnInit {
 
   seeProduct(product) {
     let url: string;
-    url = '/product/' + product.productId;
-    console.log('url: ' + url);
-    this.router.navigate([url]);
+    if (this.lsTestAuthentication()) {
+      url = '/product-em/' + product.productId;
+      this.router.navigate([url]);
+    } else {
+      url = '/product/' + product.productId;
+      console.log('url: ' + url);
+      this.router.navigate([url]);
+    }
+  }
+
+  lsTestAuthentication() {
+    let test = 'accountType';
+    try {
+      if (sessionStorage.getItem(test) === 'employee') {
+        return true;
+      }
+      if (sessionStorage.getItem(test) === 'admin') {
+        return true;
+      }
+      if (sessionStorage.getItem(test) === null) {
+        return false;
+      }
+      console.log('true' + sessionStorage.getItem('accountType'));
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 
 }

@@ -28,6 +28,8 @@ export class AccountViewComponent implements OnInit {
     this.accountServiceService.getAccount(sessionStorage.getItem('username')).subscribe(
       data => {
         this.account = data;
+        sessionStorage.setItem('accountType', this.account.accountType.name);
+        console.log('account type' + sessionStorage.getItem('accountType'));
       },
       error => console.error(error),
       () => console.log('Account Loaded')
