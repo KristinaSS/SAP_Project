@@ -31,23 +31,6 @@ public class AccountController {
         return accountService.findAll();
     }
 
-    @GetMapping("/get-{id}")
-    @ResponseStatus(HttpStatus.OK)
-    public Account getAccount(@PathVariable(name = "id") int id){
-       // log.debug("REST request to get Account : {}", id);
-        return  accountService.getOne(id);
-    }
-
-    @PostMapping("/create-{typeId}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Account createAccount(@Valid @RequestBody Account account, @PathVariable(value = "typeId") Integer typeId) {
-        //log.debug("REST request to save Account : {}", account);
-        System.out.println("Enter create account method");
-        return accountService.createOne(account,typeId);
-
-
-    }
-
     @PostMapping("/update")
     @ResponseStatus(HttpStatus.OK)
     public Account updateAccount(@Valid @RequestBody UpdateAccount account)
@@ -56,10 +39,10 @@ public class AccountController {
         return accountService.updateAccount(account);
     }
 
-    @DeleteMapping("/delete-{accID}")
+    @PostMapping("/delete")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAccount(@PathVariable(value = "accID") Integer accID) {
+    public void deleteAccount(@Valid @RequestBody String email) {
         //log.debug("REST request to delete Account : {}", accID);
-        accountService.deleteByID(accID);
+        //accountService.deleteByID(accID);
     }
 }

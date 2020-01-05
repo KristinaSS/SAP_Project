@@ -24,17 +24,6 @@ public class CartService {
     @Autowired
     CartProductsRepository cartProductsRepository;
 
-    public Cart createCart(String username){
-        Account account = accountService.findAccountByEmail(username);
-        Cart cart = new Cart(account);
-
-        return cartRepository.save(cart);
-    }
-
-    public void addItemToCart (int productId){
-        Product product = productService.getOne(productId);
-    }
-
     public boolean ifCartItemExists(Product product, Cart cart){
         for (CartProducts cartProducts: cartProductsRepository.findAll()){
             if(cartProducts.getCart().getCartId() == cart.getCartId()

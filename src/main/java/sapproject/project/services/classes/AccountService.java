@@ -25,7 +25,7 @@ import java.util.Set;
 
 @Log4j2
 @Service
-public class AccountService implements IAccountService {
+public class AccountService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -36,12 +36,10 @@ public class AccountService implements IAccountService {
     PasswordEncoder passwordEncoder;
 
 
-    @Override
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
 
-    @Override
     public Account getOne(int Id) {
         return accountRepository.findById(Id)
                 .orElseGet(() -> {
@@ -54,7 +52,6 @@ public class AccountService implements IAccountService {
                 });
     }
 
-    @Override
     public void deleteByID(int ID) {
         Account account = getOne(ID);
         if (account == null) {
@@ -77,33 +74,13 @@ public class AccountService implements IAccountService {
         return accountRepository.save(result);
     }
 
-    @Deprecated
-    @Override
-    public Account updateByID(int ID, Account updatedAccount) {
-       /* return accountRepository.findById(ID)
-                .map(account -> accountRepository.save(updateAccMembers(account, updatedAccount)))
-                .orElseGet(() -> {
-                    updatedAccount.setAccID(ID);
-                    //log.debug("New account has been created with ID: {}", ID);
-                    return accountRepository.save(updatedAccount);
-                });*/
-       return null;
-    }
 
-    @Override
     public Account createOne(Account account, int accType) {
 
         AccountType accountType = accountTypeRepository.getOne(accType);
 
         account.setAccountType(accountTypeRepository.getOne(accType));
         return accountRepository.save(account);
-    }
-
-    //todo fix this
-    @Override
-    @Deprecated
-    public Account createOne(Account entity) {
-        return null;
     }
 
     private Account updateAccMembers(Account hashPassAcc, String name, String email, String password, AccountType accountType) {

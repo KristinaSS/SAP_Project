@@ -159,14 +159,3 @@ public class OrderService implements IOrderService {
         }
     }
 }
-   /* Cart cart = cartRepository.findByAccount(account);
-    List<OrderDetails> orderDetailsList = new ArrayList<>();
-    OrderDetailsPK pk = null;
-    Order order = new Order();
-
-        for (CartProducts item : cartProductsRepository.findAll()) {
-                if (item.getCart().getCartId() == cart.getCartId()) {
-                pk = new OrderDetailsPK();
-
-                }
-                }*/

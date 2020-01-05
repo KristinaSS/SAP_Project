@@ -16,7 +16,7 @@ import java.util.List;
 
 @Log4j2
 @Service
-public class ProductService implements IProductService {
+public class ProductService{
     @Autowired
     ProductRepository productRepository;
 
@@ -32,18 +32,16 @@ public class ProductService implements IProductService {
         else
             catID = category.getCategoryId();
         for (Product product : productRepository.findAll()) {
-            if (product.getCategory().getCategoryId() == catID)
+            if (product.getCategory().getCategoryId() == catID && product.getQuantity()>0)
                 filteredList.add(product);
         }
         return filteredList;
     }
 
-    @Override
     public List<Product> findAll() {
         return productRepository.findAll();
     }
 
-    @Override
     public Product getOne(int Id) {
         return productRepository.findById(Id).orElseGet(() -> {
             try {
@@ -53,13 +51,6 @@ public class ProductService implements IProductService {
             }
             return null;
         });
-    }
-
-
-    @Override
-    @Deprecated
-    public Product createOne(Product entity) {
-        return null;
     }
 
     public Product createOne(ProductPayload entity) {
@@ -79,7 +70,6 @@ public class ProductService implements IProductService {
         return product;
     }
 
-    @Override
     public void deleteByID(int ID) {
         Product catagory = getOne(ID);
         if (catagory == null) {
@@ -94,13 +84,6 @@ public class ProductService implements IProductService {
         productRepository.delete(catagory);
 
     }
-
-    @Deprecated
-    @Override
-    public Product updateByID(int ID, Product entity) {
-        return null;
-    }
-
 
     public Product updateByID(ProductPayload payload) {
         Product product = findProductById(Integer.parseInt(payload.getId()));
