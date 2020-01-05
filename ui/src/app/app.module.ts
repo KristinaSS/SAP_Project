@@ -27,6 +27,9 @@ import { CreateProductComponent } from './components/product/create-product/crea
 import { ProductDeletedComponent } from './components/product/product-deleted/product-deleted.component';
 import { CreatedComponent } from './components/product/created/created.component';
 import { UpdatedComponent } from './components/product/updated/updated.component';
+import { AccountViewEmpComponent } from './components/account/account-view-emp/account-view-emp.component';
+import { EditAccountComponent } from './components/account/edit-account/edit-account.component';
+import { EditAccountEmpComponent } from './components/account/edit-account-emp/edit-account-emp.component';
 
 
 @NgModule({
@@ -50,7 +53,10 @@ import { UpdatedComponent } from './components/product/updated/updated.component
     CreateProductComponent,
     ProductDeletedComponent,
     CreatedComponent,
-    UpdatedComponent
+    UpdatedComponent,
+    AccountViewEmpComponent,
+    EditAccountComponent,
+    EditAccountEmpComponent
   ],
   imports: [
     BrowserModule,

@@ -34,6 +34,14 @@ public class AccountTypeService implements IAccountTypeService {
         });
     }
 
+    public AccountType findAccountTypeByName (String name){
+        for(AccountType accountType: accountTypeRepository.findAll()){
+            if (accountType.getName().equals(name))
+                return accountType;
+        }
+        return null;
+    }
+
     @Override
     public AccountType createOne(AccountType accountType) {
         //log.info("New account type has been created: {}", accountType);

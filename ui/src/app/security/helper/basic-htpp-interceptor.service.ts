@@ -48,6 +48,12 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
     if (request.url.includes('product/delete')) {
       return next.handle(request);
     }
+    if (request.url.includes('account/all')) {
+      return next.handle(request);
+    }
+    if (request.url.includes('account/update')) {
+      return next.handle(request);
+    }
 
 
     console.log('authorize interceptor');

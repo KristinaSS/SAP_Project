@@ -21,6 +21,7 @@
         <tr>
           <th>Name</th>
           <th>Email</th>
+          <th>Account Type</th>
         </tr>
         <tr *ngFor="let account of filteredAccounts">
 <!--          <td>
@@ -28,11 +29,14 @@
               <a [routerLink]="['/account/',account.accID]">{{account.firstName}}</a>
             </nav>
           </td>-->
-          <td>
+          <td  (click)="editAccount(account)">
             {{account.name}}
           </td>
           <td>
-            {{account.email}}
+          {{account.email}}
+        </td>
+          <td>
+            {{account.accountType.name}}
           </td>
         </tr>
       </table>

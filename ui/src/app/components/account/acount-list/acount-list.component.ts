@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 
-import {AccountServiceService} from '../../../services/account-service.service';
+import {AccountServiceService} from '@app/services/account-service.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-acount-list',
@@ -23,10 +24,15 @@ export class AcountListComponent implements OnInit {
     this.filteredAccounts = this.listFilter ? this.performFilter(this.listFilter) : this.accounts;
   }
 
-  constructor(private accountService: AccountServiceService) {
+  constructor( private router: Router,
+               private accountService: AccountServiceService) {
   }
 
   ngOnInit() {
+    if (!this.lsTestAuthentication()) {
+      this.router.navigate(['']);
+    }
+    console.log('loading all accounts');
     this.getAllAccounts();
   }
 
@@ -46,5 +52,27 @@ export class AcountListComponent implements OnInit {
     return this.accounts.filter((foodPace: any) => foodPace.firstName.toLocaleLowerCase().indexOf(filterBy) !== -1 ||
       foodPace.lastName.toLocaleLowerCase().indexOf(filterBy) !== -1 ||
       foodPace.email.toLocaleLowerCase().indexOf(filterBy) !== -1);
+  }
+  editAccount(account) {
+    this.router.navigate(['account-edit-emp/' + account.email]);
+  }
+
+  lsTestAuthentication() {
+    let test = 'accountType';
+    try {
+      if (sessionStorage.getItem(test) === 'employee') {
+        console.log('true empoyee');
+        return true;
+      }
+      if (sessionStorage.getItem(test) === 'admin') {
+        return true;
+      }
+      if (sessionStorage.getItem(test) === null) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

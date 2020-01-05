@@ -21,6 +21,7 @@ export class AccountServiceService {
   getAccount(username: string) {
     return this.http.post('server/get', {username});
   }
+
   createAccount(username, password, name) {
     console.log('before post');
     return this.http.post<any>('server/signup', {username, password, name});
@@ -28,5 +29,9 @@ export class AccountServiceService {
 
   deleteAccount(id: number) {
     return this.http.delete('server/account/delete-' + id);
+  }
+  updateAccount(id, username, name, accountTypeName) {
+    let password = null;
+    return this.http.post<any>('server/account/update', {id, username, password, name, accountTypeName});
   }
 }

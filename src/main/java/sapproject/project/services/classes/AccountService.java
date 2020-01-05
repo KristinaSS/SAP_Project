@@ -4,10 +4,12 @@ package sapproject.project.services.classes;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
 import sapproject.project.models.Account;
 import sapproject.project.models.AccountType;
+import sapproject.project.payload.UpdateAccount;
 import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
 import sapproject.project.services.interfaces.IAccountService;
@@ -28,6 +30,11 @@ public class AccountService implements IAccountService {
     private AccountRepository accountRepository;
     @Autowired
     private AccountTypeRepository accountTypeRepository;
+    @Autowired
+    private AccountTypeService accountTypeService;
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
 
     @Override
     public List<Account> findAll() {
@@ -61,16 +68,26 @@ public class AccountService implements IAccountService {
         accountRepository.delete(account);
         //log.debug("Deleted account with id: " + ID);
     }
+    public Account updateAccount(UpdateAccount payload){
+        Account account = findAccountByEmail(payload.getUsername(), true);
+        AccountType accountType = accountTypeService.findAccountTypeByName(payload.getAccountTypeName());
+        Account result = updateAccMembers(account, payload.getName(),payload.getUsername(), payload.getPassword(), accountType);
+        result.setAccID(account.getAccID());
 
+        return accountRepository.save(result);
+    }
+
+    @Deprecated
     @Override
     public Account updateByID(int ID, Account updatedAccount) {
-        return accountRepository.findById(ID)
+       /* return accountRepository.findById(ID)
                 .map(account -> accountRepository.save(updateAccMembers(account, updatedAccount)))
                 .orElseGet(() -> {
                     updatedAccount.setAccID(ID);
                     //log.debug("New account has been created with ID: {}", ID);
                     return accountRepository.save(updatedAccount);
-                });
+                });*/
+       return null;
     }
 
     @Override
@@ -89,13 +106,12 @@ public class AccountService implements IAccountService {
         return null;
     }
 
-    private Account updateAccMembers(@NotNull Account hashPassAcc, @NotNull Account updatedAccount) {
-        hashPassAcc.setName(updatedAccount.getName());
-        hashPassAcc.setAccountType(updatedAccount.getAccountType());
-        hashPassAcc.setEmail(updatedAccount.getEmail());
-        //todo password needs to hashed with: MD5.getHashString(password)
-        hashPassAcc.setPassword(updatedAccount.getPassword());
-        //log.info("Account Updated: {}", hashPassAcc);
+    private Account updateAccMembers(Account hashPassAcc, String name, String email, String password, AccountType accountType) {
+        hashPassAcc.setName(name);
+        hashPassAcc.setAccountType(accountType);
+        hashPassAcc.setEmail(email);
+        if(password!= null)
+            hashPassAcc.setPassword( passwordEncoder.encode(password));
         return hashPassAcc;
     }
 

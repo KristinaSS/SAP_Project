@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
 import sapproject.project.models.*;
 import sapproject.project.payload.Checkout;
-import sapproject.project.repository.CartProductsRepository;
-import sapproject.project.repository.CartRepository;
-import sapproject.project.repository.OrderDetailsRepository;
-import sapproject.project.repository.OrderRepository;
+import sapproject.project.repository.*;
 import sapproject.project.services.interfaces.IOrderService;
 
 import java.time.LocalDateTime;
@@ -26,6 +23,8 @@ public class OrderService implements IOrderService {
     AccountService accountService;
     @Autowired
     CartRepository cartRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @Autowired
     CartProductsRepository cartProductsRepository;
@@ -129,6 +128,9 @@ public class OrderService implements IOrderService {
 
         for (CartProducts item : cartProductsRepository.findAll()) {
             if (item.getCart().getCartId() == cart.getCartId()) {
+                item.getProduct().setQuantity(item.getProduct().getQuantity()-item.getQuantity());
+                productRepository.save(item.getProduct());
+
                 pk = new OrderDetailsPK(orderId,item.getProduct().getProductId());
                 orderDetailsList.add(new OrderDetails(pk,
                         item.getProduct().getPrice(),

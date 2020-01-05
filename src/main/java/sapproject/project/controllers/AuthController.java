@@ -108,7 +108,12 @@ public class AuthController {
     @PostMapping("/get")
     public Account findByEmail(@Valid @RequestBody String email){
         System.out.println("email: "+ email);
-        Account result =  accountService.findAccountByEmail(email);
+        Account result;
+        if(email.contains("username"))
+            result =  accountService.findAccountByEmail(email);
+        else{
+            result = accountService.findAccountByEmail(email, true);
+        }
         System.out.println("result: "+ result);
         return result;
     }

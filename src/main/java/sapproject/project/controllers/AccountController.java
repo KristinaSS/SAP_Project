@@ -3,10 +3,13 @@ package sapproject.project.controllers;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Account;
 import sapproject.project.models.Cart;
+import sapproject.project.payload.UpdateAccount;
 import sapproject.project.repository.CartRepository;
+import sapproject.project.services.classes.AccountService;
 import sapproject.project.services.interfaces.IAccountService;
 
 import javax.validation.Valid;
@@ -16,7 +19,7 @@ import java.util.List;
 @RequestMapping("/account")
 public class AccountController {
     @Autowired
-    IAccountService accountService;
+    AccountService accountService;
 
     @Autowired
     CartRepository cartRepository;
@@ -45,12 +48,12 @@ public class AccountController {
 
     }
 
-    @PutMapping("/edit-{accID}")
+    @PostMapping("/update")
     @ResponseStatus(HttpStatus.OK)
-    public Account updateAccount(@PathVariable(value = "accID") Integer ID,
-    @Valid @RequestBody Account account){
+    public Account updateAccount(@Valid @RequestBody UpdateAccount account)
+    {
         //log.debug("REST request to update Account : {}", ID);
-        return accountService.updateByID(ID,account);
+        return accountService.updateAccount(account);
     }
 
     @DeleteMapping("/delete-{accID}")

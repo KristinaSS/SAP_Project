@@ -1,0 +1,27 @@
+<div class="site-wrapper">
+  <div class="text-wrap">
+    <br>
+    <div class="title" style="text-align:center">
+      <h1>
+        {{account.name}}
+      </h1>
+    </div>
+    <div class="table-wrapper">
+      <div class="form-group">
+        <label>Email: </label>
+        <div class="form-control">{{account.email}}</div>
+      </div>
+    </div>
+    <div class="btn-wrapper">
+      <button class="btnz delete-btn" (click)="logout()">
+        <a>Log out</a>
+      </button>
+      <button class="btnz update-btn">
+        <a>Edit</a>
+      </button>
+      <button class="btnz update-btn">
+        <a  (click)="getAllAccounts()" >See All accounts</a>
+      </button>
+    </div>
+  </div>
+</div>

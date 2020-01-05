@@ -28,6 +28,10 @@ export class AccountViewComponent implements OnInit {
     this.accountServiceService.getAccount(sessionStorage.getItem('username')).subscribe(
       data => {
         this.account = data;
+        if (this.lsTestAuthentication()) {
+          console.log('emplyee or admin');
+          this.router.navigate(['account-view-emp']);
+        }
         sessionStorage.setItem('accountType', this.account.accountType.name);
         console.log('account type' + sessionStorage.getItem('accountType'));
       },
@@ -38,6 +42,25 @@ export class AccountViewComponent implements OnInit {
 
   logout() {
     this.logOutService.logOut();
-    this.router.navigate(['/home']);
+    this.router.navigate(['']);
+  }
+
+  lsTestAuthentication() {
+    let test = 'accountType';
+    try {
+      if (sessionStorage.getItem(test) === 'employee') {
+        console.log('true empoyee');
+        return true;
+      }
+      if (sessionStorage.getItem(test) === 'admin') {
+        return true;
+      }
+      if (sessionStorage.getItem(test) === null) {
+        return false;
+      }
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 }

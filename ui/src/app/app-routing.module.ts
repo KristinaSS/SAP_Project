@@ -18,6 +18,8 @@ import {EditProductComponent} from '@app/components/product/edit-product/edit-pr
 import {ProductDeletedComponent} from '@app/components/product/product-deleted/product-deleted.component';
 import {CreatedComponent} from '@app/components/product/created/created.component';
 import {UpdatedComponent} from '@app/components/product/updated/updated.component';
+import {AccountViewEmpComponent} from '@app/components/account/account-view-emp/account-view-emp.component';
+import {EditAccountEmpComponent} from '@app/components/account/edit-account-emp/edit-account-emp.component';
 
 const routes: Routes = [
   {
@@ -41,11 +43,6 @@ const routes: Routes = [
     component: EditProductComponent
   },
   {
-    path: 'myCart',
-    component: ShoppingCartComponent,
-    canActivate: [AuthGaurdService]
-  },
-  {
     path: 'product/:id',
     component: ViewProductComponent
   },
@@ -54,13 +51,17 @@ const routes: Routes = [
     component: ProductViewEmployeeComponent
   },
   {
-    path: 'account/account-list',
-    component: AcountListComponent,
+    path: 'product-list/:category',
+    component: ProductListComponent
+  },
+  {
+    path: 'myCart',
+    component: ShoppingCartComponent,
     canActivate: [AuthGaurdService]
   },
   {
-    path: 'product-list/:category',
-    component: ProductListComponent
+    path: 'account/account-list',
+    component: AcountListComponent
   },
   {
     path: 'account-view',
@@ -68,8 +69,13 @@ const routes: Routes = [
     canActivate: [AuthGaurdService]
   },
   {
-    path: '',
-    component: HomeComponent
+    path: 'account-view-emp',
+    component: AccountViewEmpComponent,
+    canActivate: [AuthGaurdService]
+  },
+  {
+    path: 'account-edit-emp/:username',
+    component: EditAccountEmpComponent,
   },
   {
     path: 'login',
@@ -86,6 +92,10 @@ const routes: Routes = [
   {
     path: 'thankyou',
     component: ThankYouComponent
+  },
+  {
+    path: '',
+    component: HomeComponent
   },
   // otherwise redirect to home
   {
