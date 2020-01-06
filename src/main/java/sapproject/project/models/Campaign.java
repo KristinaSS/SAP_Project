@@ -18,7 +18,7 @@ public class Campaign implements Serializable{
     private String name;
 
     @Basic
-    @Column(name = "isActive", nullable = false)
+    @Column(name = "is_cur_active", nullable = false)
     private Boolean isActive;
 
 

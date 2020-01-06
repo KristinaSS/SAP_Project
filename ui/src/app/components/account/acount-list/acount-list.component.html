@@ -6,15 +6,7 @@
         {{ title }}
       </h1>
     </div>
-    <div>Filter by:</div>
-    <div class="filter-input">
-      <input type="text" [(ngModel)]="listFilter">
-    </div>
-    <div>
-      <div>
-        <h4> Filtered by: {{listFilter}}</h4>
-      </div>
-    </div>
+    <br>(click on account name to edit)
     <div class="container-table"
          *ngIf="accounts && accounts.length">
       <table class="table table-bordered table-inverse">

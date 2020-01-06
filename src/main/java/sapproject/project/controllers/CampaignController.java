@@ -21,7 +21,7 @@ public class CampaignController {
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
-    public List<Campaign> getAllCampaigns(){
+    public List<CampaignPayload> getAllCampaigns(){
         return campaignService.findAll();
     }
 

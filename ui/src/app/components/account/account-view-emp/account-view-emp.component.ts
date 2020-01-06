@@ -20,6 +20,9 @@ export class AccountViewEmpComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (!this.lsTestAuthentication()) {
+      this.router.navigate(['account-view']);
+    }
     console.log('ng on init');
     this.getAccountByEmail();
   }
@@ -44,5 +47,24 @@ export class AccountViewEmpComponent implements OnInit {
   getAllAccounts() {
     console.log('Account Loaded in method');
     this.router.navigate(['account/account-list']);
+  }
+
+  lsTestAuthentication() {
+    let test = 'accountType';
+    try {
+      if (sessionStorage.getItem(test) === 'employee') {
+        console.log('true empoyee');
+        return true;
+      }
+      if (sessionStorage.getItem(test) === 'admin') {
+        return true;
+      }
+      if (sessionStorage.getItem(test) === null) {
+        return false;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
 }

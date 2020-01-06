@@ -2,8 +2,18 @@ package sapproject.project.payload;
 
 public class ReportPayload {
 
+    private int productId;
     private String productName;
     private int quantity;
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
     private float sum;
 
     public String getProductName() {

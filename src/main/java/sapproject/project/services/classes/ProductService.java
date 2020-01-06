@@ -125,7 +125,7 @@ public class ProductService{
     public List<Product> findAllProductsByKeyword(String keyword) {
         List<Product> filteredList = new ArrayList<>();
         for (Product product : productRepository.findAll()) {
-            if (product.getName().contains(keyword))
+            if (product.getName().toLowerCase().contains(keyword.toLowerCase())  && product.getQuantity()>0 )
                 filteredList.add(product);
         }
         return filteredList;

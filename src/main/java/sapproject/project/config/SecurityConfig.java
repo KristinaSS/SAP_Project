@@ -84,6 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/account/create-{accID}").permitAll()
                 .antMatchers("/findAccountByEmail").permitAll()
                 .antMatchers("/product/filteredByCategory").permitAll()
+                .antMatchers("/product/filteredByKeyword").permitAll()
                 .antMatchers("/product/get").permitAll()
                 .antMatchers("/product/create").permitAll()
                 .antMatchers("/product/delete").permitAll()
@@ -94,6 +95,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cart/calculate").permitAll()
                 .antMatchers("/cart/deleteItem").permitAll()
                 .antMatchers("/order/makeOrder").permitAll()
+                .antMatchers("/orderDetails/**").permitAll()
                 .anyRequest()
                 .authenticated();
 

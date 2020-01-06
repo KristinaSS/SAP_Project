@@ -7,6 +7,7 @@ import sapproject.project.payload.CampaignPayload;
 import sapproject.project.payload.ProductCampaignPayload;
 import sapproject.project.repository.CampaignRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,12 +15,23 @@ public class CampaignService {
     @Autowired
     CampaignRepository campaignRepository;
 
-    public List<Campaign> findAll(){
-        return campaignRepository.findAll();
+    public List<CampaignPayload> findAll(){
+        List<CampaignPayload> payloads = new ArrayList<>();
+        CampaignPayload campaignPayload;
+        for(Campaign campaign: campaignRepository.findAll()){
+            campaignPayload = new CampaignPayload();
+            campaignPayload.setId(String.valueOf(campaign.getCampaignId()));
+            campaignPayload.setIsActive(String.valueOf(campaign.getActive()));
+            campaignPayload.setName(campaign.getName());
+            campaignPayload.setDetails(campaign.getDetails());
+
+            payloads.add(campaignPayload);
+        }
+        return payloads;
     }
 
     public Campaign getCampaignById(int campaignId) {
-        for(Campaign campaign: findAll()){
+        for(Campaign campaign: campaignRepository.findAll()){
             if(campaign.getCampaignId() == campaignId)
                 return campaign;
         }

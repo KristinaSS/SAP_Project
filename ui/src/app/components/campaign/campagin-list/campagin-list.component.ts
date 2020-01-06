@@ -11,7 +11,7 @@ import {CampaignService} from '@app/services/campaign.service';
 export class CampaginListComponent implements OnInit {
 
   public campaigns;
-  title = 'All Accounts';
+  title = 'All Campaigns';
 
   // tslint:disable-next-line:variable-name
 
@@ -37,8 +37,8 @@ export class CampaginListComponent implements OnInit {
     );
   }
 
-  editAccount(campaign) {
-    this.router.navigate(['campaign-edit/' + campaign.campaignId]);
+  editCampaign(campaign) {
+    this.router.navigate(['campaign-edit/' + campaign.id]);
   }
 
   lsTestAuthentication() {
@@ -54,7 +54,7 @@ export class CampaginListComponent implements OnInit {
       if (sessionStorage.getItem(test) === null) {
         return false;
       }
-      return true;
+      return false;
     } catch (e) {
       return false;
     }

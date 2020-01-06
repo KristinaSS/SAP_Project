@@ -51,6 +51,7 @@ public class OrderDetailsService{
             payload.setProductName(product.getName());
             payload.setQuantity(quantity);
             payload.setSum(sum);
+            payload.setProductId(product.getProductId());
             reportPayloadList.add(payload);
         }
         return reportPayloadList;

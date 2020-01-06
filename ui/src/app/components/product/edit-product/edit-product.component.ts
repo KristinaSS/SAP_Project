@@ -70,7 +70,7 @@ export class EditProductComponent implements OnInit {
       if (sessionStorage.getItem(test) === null) {
         return false;
       }
-      return true;
+      return false;
     } catch (e) {
       return false;
     }
@@ -79,7 +79,7 @@ export class EditProductComponent implements OnInit {
   submitRegistration() {
     this.intializeMembers();
     if (this.validation()) {
-      this.validMessage = 'Your food place registration has been submitted. Thank you!';
+      this.validMessage = 'Your campaign registration has been submitted. Thank you!';
       this.productService.editProduct(
         this.product.productId,
         this.name,

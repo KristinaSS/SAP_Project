@@ -38,7 +38,7 @@ const routes: Routes = [
     component: CampaginListComponent
   },
   {
-    path: 'campaign-created',
+    path: 'campaign-create',
     component: CreateCampaignComponent
   },
   {

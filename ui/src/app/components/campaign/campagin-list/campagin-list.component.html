@@ -6,37 +6,26 @@
         {{ title }}
       </h1>
     </div>
-    <div>Filter by:</div>
-    <div class="filter-input">
-      <input type="text" [(ngModel)]="listFilter">
-    </div>
-    <div>
-      <div>
-        <h4> Filtered by: {{listFilter}}</h4>
-      </div>
-    </div>
+    <button type="submit" class="btn btn-primary" [routerLink]="['/campaign-create']" >Create Campaign</button><br>
+    (click on campaign name to edit)
     <div class="container-table"
          *ngIf="campaigns && campaigns.length">
       <table class="table table-bordered table-inverse">
         <tr>
           <th>Name</th>
-          <th>Email</th>
-          <th>Account Type</th>
+          <th>Is active?</th>
         </tr>
-        <tr *ngFor="let account of filteredCampaigns">
+        <tr *ngFor="let campaign of campaigns">
           <!--          <td>
                       <nav>
                         <a [routerLink]="['/account/',account.accID]">{{account.firstName}}</a>
                       </nav>
                     </td>-->
-          <td  (click)="editAccount(account)">
-            {{account.name}}
+          <td  (click)="editCampaign(campaign)">
+            {{campaign.name}}
           </td>
           <td>
-            {{account.email}}
-          </td>
-          <td>
-            {{account.accountType.name}}
+            {{campaign.isActive}}
           </td>
         </tr>
       </table>

@@ -58,7 +58,7 @@ export class AccountViewComponent implements OnInit {
       if (sessionStorage.getItem(test) === null) {
         return false;
       }
-      return true;
+      return false;
     } catch (e) {
       return false;
     }

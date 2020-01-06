@@ -33,4 +33,12 @@ export class ProductService {
     console.log('delete id: ' + id);
     return this.http.post('server/product/delete', id);
   }
+
+  getOutOfStockProductList() {
+    return this.http.get('server/product/outOfStock');
+  }
+
+  getFilteredProductListByKeyword(keyword: any) {
+    return this.http.post('server/product/filteredByKeyword', keyword);
+  }
 }

@@ -1,1 +1,46 @@
-<p>sales-report works!</p>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container" *ngIf="reportItems && reportItems.length">
+  <div class="row">
+    <div class="col-xs-8">
+      <div class="panel panel-info">
+        <div class="panel-heading">
+          <div class="panel-title">
+            <div class="row">
+              <div class="col-xs-6">
+                <h5><span class="glyphicon glyphicon-shopping-cart"></span> Sales Report</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-body">
+          <div class="row" *ngFor="let item of reportItems">
+            <div class="col-xs-2"><img class="img-responsive" src="https://cdn3.iconfinder.com/data/icons/cat-pattern-colored/94/cat17-512.png">
+            </div>
+            <div class="col-xs-4">
+              <h4 class="product-name" (click)="getProduct(item) "><strong>{{item.product.name}}</strong></h4>
+            </div>
+            <div class="col-xs-6">
+              <div class="col-xs-6 text-right">
+                <h6><strong>{{item.product.price}} <span class="text-muted">x</span></strong></h6>
+              </div>
+              <div class="col-xs-4 form-control input-sm">
+                {{item.quantity}}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="panel-footer">
+          <div class="row text-center">
+            <div class="col-xs-9">
+              <h4 class="text-right">Total <strong>{{sum}}</strong></h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
