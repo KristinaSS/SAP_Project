@@ -23,5 +23,14 @@
         <a  (click)="getAllAccounts()" >See All accounts</a>
       </button>
     </div>
+    <button class="btnz update-btn">
+      <a [routerLink]="['/campaign-list']">See Campaigns</a>
+    </button>
+    <button class="btnz update-btn">
+      <a [routerLink]="['/product-list-not-in-stock']">See Products Out of Stock</a>
+    </button>
+    <button class="btnz update-btn">
+      <a [routerLink]="['/sales-report']">See Sales Report for this year</a>
+    </button>
   </div>
 </div>

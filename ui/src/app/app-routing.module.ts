@@ -20,8 +20,35 @@ import {CreatedComponent} from '@app/components/product/created/created.componen
 import {UpdatedComponent} from '@app/components/product/updated/updated.component';
 import {AccountViewEmpComponent} from '@app/components/account/account-view-emp/account-view-emp.component';
 import {EditAccountEmpComponent} from '@app/components/account/edit-account-emp/edit-account-emp.component';
+import {SalesReportComponent} from '@app/components/sales-report/sales-report.component';
+import {CampaginListComponent} from '@app/components/campaign/campagin-list/campagin-list.component';
+import {CreateCampaignComponent} from '@app/components/campaign/create-campaign/create-campaign.component';
+import {EditCampaignComponent} from '@app/components/campaign/edit-campaign/edit-campaign.component';
+import {AddProductToCampaignComponent} from '@app/components/product/add-product-to-campaign/add-product-to-campaign.component';
+import {ProductListKeywordComponent} from '@app/components/product/product-list-keyword/product-list-keyword.component';
+import {ProductListOutOfStockComponent} from '@app/components/product/product-list-out-of-stock/product-list-out-of-stock.component';
 
 const routes: Routes = [
+  {
+    path: 'sales-report',
+    component: SalesReportComponent
+  },
+  {
+    path: 'campaign-list',
+    component: CampaginListComponent
+  },
+  {
+    path: 'campaign-created',
+    component: CreateCampaignComponent
+  },
+  {
+    path: 'campaign-edit/:id',
+    component: EditCampaignComponent
+  },
+  {
+    path: 'product-add-to-campaign',
+    component: AddProductToCampaignComponent
+  },
   {
     path: 'product-created',
     component: CreatedComponent
@@ -53,6 +80,14 @@ const routes: Routes = [
   {
     path: 'product-list/:category',
     component: ProductListComponent
+  },
+  {
+    path: 'product-list-key/:keyword',
+    component: ProductListKeywordComponent
+  },
+  {
+    path: 'product-list-not-in-stock',
+    component: ProductListOutOfStockComponent
   },
   {
     path: 'myCart',

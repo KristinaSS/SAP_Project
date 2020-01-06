@@ -112,4 +112,22 @@ public class ProductService{
 
         return product;
     }
+
+    public List<Product> findAllOutOfStockProducts() {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : productRepository.findAll()) {
+            if (product.getQuantity()==0)
+                filteredList.add(product);
+        }
+        return filteredList;
+    }
+
+    public List<Product> findAllProductsByKeyword(String keyword) {
+        List<Product> filteredList = new ArrayList<>();
+        for (Product product : productRepository.findAll()) {
+            if (product.getName().contains(keyword))
+                filteredList.add(product);
+        }
+        return filteredList;
+    }
 }

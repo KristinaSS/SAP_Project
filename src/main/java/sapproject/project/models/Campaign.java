@@ -11,7 +11,7 @@ public class Campaign implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "campaign_id")
-    private int accountTypeID;
+    private int campaignId;
 
     @Basic
     @Column(name = "name", nullable = false)
@@ -26,12 +26,12 @@ public class Campaign implements Serializable{
     @Column(name = "details", nullable = false)
     private String details;
 
-    public int getAccountTypeID() {
-        return accountTypeID;
+    public int getCampaignId() {
+        return campaignId;
     }
 
-    public void setAccountTypeID(int accountTypeID) {
-        this.accountTypeID = accountTypeID;
+    public void setCampaignId(int campaignId) {
+        this.campaignId = campaignId;
     }
 
     public String getName() {

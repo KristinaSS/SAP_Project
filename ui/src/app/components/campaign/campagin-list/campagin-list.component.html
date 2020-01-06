@@ -1,0 +1,45 @@
+<div class="site-wrapper">
+  <div class="text-wrap">
+    <br>
+    <div class="title" style="text-align:center">
+      <h1>
+        {{ title }}
+      </h1>
+    </div>
+    <div>Filter by:</div>
+    <div class="filter-input">
+      <input type="text" [(ngModel)]="listFilter">
+    </div>
+    <div>
+      <div>
+        <h4> Filtered by: {{listFilter}}</h4>
+      </div>
+    </div>
+    <div class="container-table"
+         *ngIf="campaigns && campaigns.length">
+      <table class="table table-bordered table-inverse">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Account Type</th>
+        </tr>
+        <tr *ngFor="let account of filteredCampaigns">
+          <!--          <td>
+                      <nav>
+                        <a [routerLink]="['/account/',account.accID]">{{account.firstName}}</a>
+                      </nav>
+                    </td>-->
+          <td  (click)="editAccount(account)">
+            {{account.name}}
+          </td>
+          <td>
+            {{account.email}}
+          </td>
+          <td>
+            {{account.accountType.name}}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

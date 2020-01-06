@@ -63,4 +63,18 @@ public class ProductController {
         //log.debug("REST request to save Product : {}", product);
         return productService.findAllProductsByCategory(category);
     }
+
+    @PostMapping("/filteredByKeyword")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> filterByKeyword(@Valid @RequestBody String keyword) {
+        //log.debug("REST request to save Product : {}", product);
+        return productService.findAllProductsByKeyword(keyword);
+    }
+
+    @GetMapping("/outOfStock")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> filterByCategory() {
+        //log.debug("REST request to save Product : {}", product);
+        return productService.findAllOutOfStockProducts();
+    }
 }

@@ -5,10 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.OrderDetails;
+import sapproject.project.payload.ReportPayload;
 import sapproject.project.services.classes.OrderDetailsService;
-import sapproject.project.services.interfaces.IOrderDetailsService;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Log4j2
@@ -17,4 +16,17 @@ import java.util.List;
 public class OrderDetailsController {
     @Autowired
     OrderDetailsService orderDetailsService;
+
+    @GetMapping("/report")
+    @ResponseStatus(HttpStatus.OK)
+    public List<ReportPayload> createSalesReport(){
+        return orderDetailsService.getSalesReport();
+    }
+
+    @GetMapping("/calculate")
+    @ResponseStatus(HttpStatus.OK)
+    public Float calculateReport(){
+        return orderDetailsService.calculate();
+    }
+
 }
