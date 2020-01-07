@@ -17,10 +17,6 @@ public class ProductCampaigns implements Serializable {
     @Column(name = "product_price", nullable = false)
     private float price;
 
-    @Basic
-    @Column(name = "discount_product", nullable = false)
-    private float discount;
-
 
     public ProductCampaignsFK getProductCampaignsFK() {
         return productCampaignsFK;
@@ -36,13 +32,5 @@ public class ProductCampaigns implements Serializable {
 
     public void setPrice(float price) {
         this.price = price;
-    }
-
-    public float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(float discount) {
-        this.discount = discount;
     }
 }

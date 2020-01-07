@@ -18,18 +18,20 @@ import java.util.List;
 @Service
 public class OrderService implements IOrderService {
     @Autowired
-    OrderRepository orderRepository;
+    private OrderRepository orderRepository;
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
     @Autowired
-    ProductRepository productRepository;
+    private  ProductRepository productRepository;
 
     @Autowired
-    CartProductsRepository cartProductsRepository;
+    private CartProductsRepository cartProductsRepository;
     @Autowired
-    OrderDetailsRepository orderDetailsRepository;
+    private OrderDetailsRepository orderDetailsRepository;
+    @Autowired
+    private ProductService productService;
 
     @Override
     public List<Order> findAll() {
@@ -125,11 +127,13 @@ public class OrderService implements IOrderService {
         Cart cart = cartRepository.findByAccount(account);
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         OrderDetailsPK pk;
+        Product product;
 
         for (CartProducts item : cartProductsRepository.findAll()) {
             if (item.getCart().getCartId() == cart.getCartId()) {
-                item.getProduct().setQuantity(item.getProduct().getQuantity()-item.getQuantity());
-                productRepository.save(item.getProduct());
+                product = productService.getOne(item.getProduct().getProductId());
+                product.setQuantity(item.getProduct().getQuantity()-item.getQuantity());
+                productRepository.save(product);
 
                 pk = new OrderDetailsPK(orderId,item.getProduct().getProductId());
                 orderDetailsList.add(new OrderDetails(pk,

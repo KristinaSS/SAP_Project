@@ -13,16 +13,24 @@ import sapproject.project.repository.CartRepository;
 @Service
 public class CartService {
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    ProductService productService;
+    private ProductService productService;
 
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
 
     @Autowired
-    CartProductsRepository cartProductsRepository;
+    private CartProductsRepository cartProductsRepository;
+
+    public Cart findCart(int accId){
+        for (Cart cart: cartRepository.findAll()){
+            if(cart.getAccount().getAccID() == accId)
+                return cart;
+        }
+        return null;
+    }
 
     public boolean ifCartItemExists(Product product, Cart cart){
         for (CartProducts cartProducts: cartProductsRepository.findAll()){

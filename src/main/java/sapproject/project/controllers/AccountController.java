@@ -39,10 +39,10 @@ public class AccountController {
         return accountService.updateAccount(account);
     }
 
-    @PostMapping("/delete")
+    @GetMapping("/delete-{accID}")
     @ResponseStatus(HttpStatus.OK)
-    public void deleteAccount(@Valid @RequestBody String email) {
+    public Account deleteAccount(@PathVariable(value = "accID") Integer accID) {
         //log.debug("REST request to delete Account : {}", accID);
-        //accountService.deleteByID(accID);
+        return accountService.deleteByID(accID);
     }
 }

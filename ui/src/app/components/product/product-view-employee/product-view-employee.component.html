@@ -60,7 +60,7 @@
           <a (click)="addProductToCart()" class="btn btn-lg btn-primary text-uppercase funct-btn">Add to Cart </a>
           <a [routerLink]="['/product-edit/' + product.productId]" class="btn btn-lg btn-primary text-uppercase funct-btn">Edit Product </a>
           <a [routerLink]="['/product-create']" class="btn btn-lg btn-primary text-uppercase funct-btn">Create New Product </a>
-          <a [routerLink]="['/product-add-to-campaign']" class="btn btn-lg btn-primary text-uppercase funct-btn">Add Product To Campaign </a>
+          <a [routerLink]="['/product-add-to-campaign/'+product.productId]" class="btn btn-lg btn-primary text-uppercase funct-btn">Add Product To Campaign </a>
           <a (click)="deleteProduct(product)" class="btn btn-lg btn-primary text-uppercase funct-btn">Delete Product </a>
         </article> <!-- card-body.// -->
       </aside> <!-- col.// -->

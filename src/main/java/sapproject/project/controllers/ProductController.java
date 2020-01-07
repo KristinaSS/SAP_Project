@@ -5,7 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Product;
+import sapproject.project.models.ProductCampaigns;
 import sapproject.project.payload.ProductPayload;
+import sapproject.project.services.classes.CampaignService;
 import sapproject.project.services.classes.ProductService;
 import sapproject.project.services.interfaces.IProductService;
 
@@ -18,7 +20,10 @@ import java.util.List;
 @RequestMapping("/product")
 public class ProductController {
     @Autowired
-    ProductService productService;
+    private ProductService productService;
+
+    @Autowired
+    private CampaignService campaignService;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
@@ -33,7 +38,14 @@ public class ProductController {
         //log.debug("REST request to get Product : {}", id);
         System.out.println("id of product: " + id);
 
-        return  productService.getOne(Integer.parseInt(id));
+        Product product =  productService.getOne(Integer.parseInt(id));
+
+        ProductCampaigns productCampaigns;
+        productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+        if(productCampaigns!=null)
+            product.setPrice(productCampaigns.getPrice());
+
+        return product;
     }
 
     @PostMapping("/create")

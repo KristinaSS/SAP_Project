@@ -2,6 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CartService} from '@app/services/cart.service';
 import {ProductService} from '@app/services/product.service';
 import {Router} from '@angular/router';
+import {ReportService} from '@app/services/report.service';
 
 @Component({
   selector: 'app-sales-report',
@@ -14,7 +15,7 @@ export class SalesReportComponent implements OnInit {
   public reportItems;
   public sum;
 
-  constructor(private cartService: CartService,
+  constructor(private reportService: ReportService,
               private productService: ProductService,
               private router: Router) {
   }
@@ -25,7 +26,7 @@ export class SalesReportComponent implements OnInit {
   }
 
   getCartItems() {
-    this.cartService.getCartItems().subscribe(
+    this.reportService.getSalesReport().subscribe(
       data => {
         this.reportItems = data;
       },
@@ -37,13 +38,13 @@ export class SalesReportComponent implements OnInit {
   getProduct(item) {
     console.log('getting product');
     let id: string;
-    id = item.product.productId;
+    id = item.productid;
     this.router.navigate(['/product/' + id]);
   }
 
   calculate() {
     console.log('calculate');
-    this.cartService.calculate(sessionStorage.getItem('username')).subscribe(
+    this.reportService.calculate().subscribe(
       data => {
         this.sum = data;
       },

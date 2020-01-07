@@ -46,7 +46,7 @@ const routes: Routes = [
     component: EditCampaignComponent
   },
   {
-    path: 'product-add-to-campaign',
+    path: 'product-add-to-campaign/:id',
     component: AddProductToCampaignComponent
   },
   {

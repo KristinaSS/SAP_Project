@@ -73,9 +73,20 @@ export class EditAccountEmpComponent implements OnInit {
     }
   }
 
-  deleteAccount(account) {
-    this.accountServiceService.deleteAccount(account.accountId);
-
+  deleteAccount() {
+    this.accountServiceService.deleteAccount(this.account.accID).subscribe(
+      data => {
+        console.log('account edited');
+        this.form_signup.reset();
+        this.router.navigate(['/account/account-list']);
+        return true;
+      },
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'A user with this username already exists.';
+        return throwError(error.message || error);
+      }
+    );
   }
 
   intializeMembers() {

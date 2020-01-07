@@ -3,25 +3,18 @@ package sapproject.project.services.classes;
 
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
 import sapproject.project.models.Account;
 import sapproject.project.models.AccountType;
+import sapproject.project.models.Cart;
 import sapproject.project.payload.UpdateAccount;
 import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
-import sapproject.project.services.interfaces.IAccountService;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.transaction.annotation.Transactional;
+import sapproject.project.repository.CartRepository;
 
-import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Log4j2
 @Service
@@ -34,7 +27,10 @@ public class AccountService {
     private AccountTypeService accountTypeService;
     @Autowired
     PasswordEncoder passwordEncoder;
-
+    @Autowired
+    CartRepository cartRepository;
+    @Autowired
+    CartService cartService;
 
     public List<Account> findAll() {
         return accountRepository.findAll();
@@ -52,7 +48,7 @@ public class AccountService {
                 });
     }
 
-    public void deleteByID(int ID) {
+    public Account deleteByID(int ID) {
         Account account = getOne(ID);
         if (account == null) {
             try {
@@ -60,9 +56,12 @@ public class AccountService {
             } catch (EntityNotFoundException e) {
                 //log.warn("Account not found: {}", ID);
             }
-            return;
+            return account;
         }
+        Cart cart = cartService.findCart(ID);
+        cartRepository.delete(cart);
         accountRepository.delete(account);
+        return account;
         //log.debug("Deleted account with id: " + ID);
     }
     public Account updateAccount(UpdateAccount payload){

@@ -28,8 +28,9 @@ export class AccountServiceService {
   }
 
   deleteAccount(id: number) {
-    return this.http.delete('server/account/delete-' + id);
+    return this.http.get('server/account/delete-' + id);
   }
+
   updateAccount(id, username, name, accountTypeName) {
     let password = null;
     return this.http.post<any>('server/account/update', {id, username, password, name, accountTypeName});

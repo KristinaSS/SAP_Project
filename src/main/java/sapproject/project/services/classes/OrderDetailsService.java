@@ -9,6 +9,7 @@ import sapproject.project.exceptions.EntityNotFoundException;
 import sapproject.project.models.OrderDetails;
 import sapproject.project.models.OrderDetailsPK;
 import sapproject.project.models.Product;
+import sapproject.project.models.ProductCampaigns;
 import sapproject.project.payload.ReportPayload;
 import sapproject.project.repository.OrderDetailsRepository;
 import sapproject.project.services.interfaces.IOrderDetailsService;
@@ -25,6 +26,9 @@ public class OrderDetailsService{
     @Autowired
     ProductService productService;
 
+    @Autowired
+    private CampaignService campaignService;
+
 
     public List<OrderDetails> findAll() {
         return orderDetailsRepository.findAll();
@@ -35,6 +39,12 @@ public class OrderDetailsService{
         List<Product>reportedProducts = new ArrayList<>();
         for(OrderDetails orderDetails: findAll()){
             Product product = productService.getOne(orderDetails.getOrderdetailsPK().getProductId());
+
+            ProductCampaigns productCampaigns;
+            productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+            if(productCampaigns!=null)
+                product.setPrice(productCampaigns.getPrice());
+
             float sum  = 0;
             int quantity = 0;
             for (OrderDetails od: findAll()){
@@ -45,14 +55,16 @@ public class OrderDetailsService{
                     quantity += od.getQuantity();
                 }
             }
-            reportedProducts.add(product);
+            if(!reportedProducts.contains(product)) {
+                reportedProducts.add(product);
 
-            ReportPayload payload = new ReportPayload();
-            payload.setProductName(product.getName());
-            payload.setQuantity(quantity);
-            payload.setSum(sum);
-            payload.setProductId(product.getProductId());
-            reportPayloadList.add(payload);
+                ReportPayload payload = new ReportPayload();
+                payload.setProductName(product.getName());
+                payload.setQuantity(quantity);
+                payload.setSum(sum);
+                payload.setProductId(product.getProductId());
+                reportPayloadList.add(payload);
+            }
         }
         return reportPayloadList;
     }

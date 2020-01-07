@@ -3,14 +3,12 @@ package sapproject.project.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import sapproject.project.models.Account;
-import sapproject.project.models.Cart;
-import sapproject.project.models.CartProducts;
-import sapproject.project.models.Product;
+import sapproject.project.models.*;
 import sapproject.project.payload.CartItem;
 import sapproject.project.repository.CartProductsRepository;
 import sapproject.project.repository.CartRepository;
 import sapproject.project.services.classes.AccountService;
+import sapproject.project.services.classes.CampaignService;
 import sapproject.project.services.classes.CartService;
 import sapproject.project.services.classes.ProductService;
 
@@ -36,6 +34,9 @@ public class CartController {
     @Autowired
     CartService cartService;
 
+    @Autowired
+    CampaignService campaignService;
+
     @PostMapping("/getAllByUser")
     @ResponseStatus(HttpStatus.OK)
     public List<CartProducts> filterByCategory(@Valid @RequestBody String username) {
@@ -59,6 +60,10 @@ public class CartController {
     public CartProducts addItemToCart(@Valid @RequestBody CartItem cartItem) {
         Account account = accountService.findAccountByEmail(cartItem.getUsername(), true);
         Product product = productService.getOne(Integer.parseInt(cartItem.getProductId()));
+        ProductCampaigns productCampaigns;
+        productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+        if(productCampaigns!=null)
+            product.setPrice(productCampaigns.getPrice());
         int quantity = Integer.parseInt(cartItem.getQuantity());
         Cart cart = cartRepository.findByAccount(account);
         CartProducts cartProducts = new CartProducts(quantity, cart, product);

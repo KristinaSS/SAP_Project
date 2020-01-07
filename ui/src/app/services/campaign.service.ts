@@ -24,4 +24,8 @@ export class CampaignService {
   editCampaign(id: any, name: any, details: any, isActive: any) {
     return this.http.post('server/campaign/edit', {id, name, details, isActive});
   }
+
+  addProductToCampaign(productId, campaignName, price) {
+    return this.http.post('server/campaign/addToCampaign', {productId, campaignName, price});
+  }
 }

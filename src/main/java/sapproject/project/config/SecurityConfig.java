@@ -80,7 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/account/all").permitAll()
                 .antMatchers("/account/get-{id}").hasAuthority("admin")
                 .antMatchers("/account/update").permitAll()
-                .antMatchers("/account/delete-{accID}").hasAuthority("admin")
+                .antMatchers("/account/delete-{accID}").permitAll()
                 .antMatchers("/account/create-{accID}").permitAll()
                 .antMatchers("/findAccountByEmail").permitAll()
                 .antMatchers("/product/filteredByCategory").permitAll()
