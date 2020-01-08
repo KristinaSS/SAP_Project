@@ -29,8 +29,13 @@ import {ProductListKeywordComponent} from '@app/components/product/product-list-
 import {ProductListOutOfStockComponent} from '@app/components/product/product-list-out-of-stock/product-list-out-of-stock.component';
 import {EditProductInCampaignComponent} from '@app/components/campaign/edit-product-in-campaign/edit-product-in-campaign.component';
 import {SeeProductsInCampaignComponent} from '@app/components/campaign/see-products-in-campaign/see-products-in-campaign.component';
+import {ProductListSaleComponent} from '@app/components/product/product-list-sale/product-list-sale.component';
 
 const routes: Routes = [
+  {
+    path: 'product-list-sale',
+    component: ProductListSaleComponent
+  },
   {
     path: 'sales-report',
     component: SalesReportComponent

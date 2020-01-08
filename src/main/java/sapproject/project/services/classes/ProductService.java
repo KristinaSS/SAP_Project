@@ -161,8 +161,12 @@ public class ProductService {
     }
 
     public List<Product> findAllProductsOnSale(String campaignName) {
-        Campaign campaign = campaignService.findCampaignByName(campaignName);
-
+        Campaign campaign;
+        if(campaignName.equals("null")){
+            campaign = campaignService.findActiveCampaign();
+        }else {
+            campaign = campaignService.findCampaignByName(campaignName);
+        }
         List<Product> filteredList = new ArrayList<>();
 
         for (ProductCampaigns productCampaigns : productCamapaignsRepository.findAll()) {
@@ -172,7 +176,5 @@ public class ProductService {
         }
         return filteredList;
     }
-
-
 }
 

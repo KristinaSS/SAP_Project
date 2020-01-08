@@ -145,4 +145,12 @@ public class CampaignService {
             }
         }
     }
+
+    public Campaign findActiveCampaign(){
+        for(Campaign campaign: campaignRepository.findAll()){
+            if(campaign.getActive())
+                return campaign;
+        }
+        return null;
+    }
 }

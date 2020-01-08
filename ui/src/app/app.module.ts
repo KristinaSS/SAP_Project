@@ -39,6 +39,7 @@ import { ProductListKeywordComponent } from './components/product/product-list-k
 import { ProductListOutOfStockComponent } from './components/product/product-list-out-of-stock/product-list-out-of-stock.component';
 import { EditProductInCampaignComponent } from './components/campaign/edit-product-in-campaign/edit-product-in-campaign.component';
 import { SeeProductsInCampaignComponent } from './components/campaign/see-products-in-campaign/see-products-in-campaign.component';
+import { ProductListSaleComponent } from './components/product/product-list-sale/product-list-sale.component';
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import { SeeProductsInCampaignComponent } from './components/campaign/see-produc
     ProductListKeywordComponent,
     ProductListOutOfStockComponent,
     EditProductInCampaignComponent,
-    SeeProductsInCampaignComponent
+    SeeProductsInCampaignComponent,
+    ProductListSaleComponent
   ],
   imports: [
     BrowserModule,
