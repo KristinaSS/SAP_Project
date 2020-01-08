@@ -18,12 +18,14 @@ export class EditCampaignComponent implements OnInit {
   private description;
   private isActive;
   private campaign;
+  private products;
 
   validMessage: string = 'creating campaign: ';
 
   constructor(private router: Router,
               private  campaignServices: CampaignService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private productService: ProductService) {
   }
 
   ngOnInit() {
@@ -38,12 +40,24 @@ export class EditCampaignComponent implements OnInit {
     this.booleanformGroup = new FormGroup({
       isActive: new FormControl('', Validators.required)
     });
+
+    this.getProductsInCampaign();
+  }
+  getProductsInCampaign() {
+    this.productService.getProductListByCampaign(this.campaign.name).subscribe(
+      data => {
+        this.products = data;
+      },
+      error => console.error(error),
+      () => console.log('Campaign Loaded')
+    );
   }
 
   getCampaignById(id) {
     this.campaignServices.getCampaignById(id).subscribe(
       data => {
         this.campaign = data;
+        console.log('campaign: ' + this.campaign.name);
       },
       error => console.error(error),
       () => console.log('Campaign Loaded')
@@ -100,5 +114,9 @@ export class EditCampaignComponent implements OnInit {
     } catch (e) {
       return false;
     }
+  }
+
+  seeproductsInCampaign() {
+    this.router.navigate(['see-products/' + this.campaign.campaignId]);
   }
 }

@@ -78,6 +78,12 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
     if (request.url.includes('campaign/addToCampaign')) {
       return next.handle(request);
     }
+    if (request.url.includes('campaign/deleteProductInCampaign')) {
+      return next.handle(request);
+    }
+    if (request.url.includes('product/filteredByCampaign')) {
+      return next.handle(request);
+    }
 
 
     console.log('authorize interceptor');

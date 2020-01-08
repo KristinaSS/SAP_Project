@@ -22,10 +22,10 @@ public class CampaignService {
     @Autowired
     private ProductCampaingnsRepository productCampaingnsRepository;
 
-    public List<CampaignPayload> findAll(){
+    public List<CampaignPayload> findAll() {
         List<CampaignPayload> payloads = new ArrayList<>();
         CampaignPayload campaignPayload;
-        for(Campaign campaign: campaignRepository.findAll()){
+        for (Campaign campaign : campaignRepository.findAll()) {
             campaignPayload = new CampaignPayload();
             campaignPayload.setId(String.valueOf(campaign.getCampaignId()));
             campaignPayload.setIsActive(String.valueOf(campaign.getActive()));
@@ -38,8 +38,8 @@ public class CampaignService {
     }
 
     public Campaign getCampaignById(int campaignId) {
-        for(Campaign campaign: campaignRepository.findAll()){
-            if(campaign.getCampaignId() == campaignId)
+        for (Campaign campaign : campaignRepository.findAll()) {
+            if (campaign.getCampaignId() == campaignId)
                 return campaign;
         }
         return null;
@@ -58,8 +58,8 @@ public class CampaignService {
         return campaignRepository.save(result);
     }
 
-    private Campaign initializeCampaign(Campaign createdCampaign, CampaignPayload campaignPayload){
-        if(campaignPayload.getId()!= null)
+    private Campaign initializeCampaign(Campaign createdCampaign, CampaignPayload campaignPayload) {
+        if (campaignPayload.getId() != null)
             createdCampaign.setCampaignId(Integer.parseInt(campaignPayload.getId()));
         createdCampaign.setActive(Boolean.parseBoolean(campaignPayload.getIsActive()));
         createdCampaign.setDetails(campaignPayload.getDetails());
@@ -68,10 +68,10 @@ public class CampaignService {
         return createdCampaign;
     }
 
-    private void makeOnlyOneCampaignActive(Campaign campaign){
-        if(campaign.getActive()){
-            for(Campaign c : campaignRepository.findAll()){
-                if(c.getCampaignId() == campaign.getCampaignId())
+    private void makeOnlyOneCampaignActive(Campaign campaign) {
+        if (campaign.getActive()) {
+            for (Campaign c : campaignRepository.findAll()) {
+                if (c.getCampaignId() == campaign.getCampaignId())
                     continue;
                 c.setActive(false);
                 campaignRepository.save(c);
@@ -107,11 +107,11 @@ public class CampaignService {
         productCampaingnsRepository.save(productCampaigns);
     }
 
-    public ProductCampaigns findProductIfOnSale(int productId){
+    public ProductCampaigns findProductIfOnSale(int productId) {
         Campaign campaign;
-        for (ProductCampaigns productCampaigns: productCampaingnsRepository.findAll()) {
+        for (ProductCampaigns productCampaigns : productCampaingnsRepository.findAll()) {
             campaign = getCampaignById(productCampaigns.getProductCampaignsFK().getCampaignId());
-            if(campaign.getActive() && productCampaigns.getProductCampaignsFK().getProductId() == productId){
+            if (campaign.getActive() && productCampaigns.getProductCampaignsFK().getProductId() == productId) {
                 return productCampaigns;
             }
         }
@@ -119,10 +119,30 @@ public class CampaignService {
     }
 
     private Campaign getCampaignByName(String campaignName) {
-        for (Campaign campaign: campaignRepository.findAll()){
-            if(campaign.getName().equals(campaignName))
+        for (Campaign campaign : campaignRepository.findAll()) {
+            if (campaign.getName().equals(campaignName))
                 return campaign;
         }
         return null;
+    }
+
+    public Campaign findCampaignByName(String campaignName) {
+        for (Campaign campaign : campaignRepository.findAll()) {
+            if (campaign.getName().equals(campaignName)) {
+                return campaign;
+            }
+        }
+        return null;
+    }
+
+    public void deleteProductInCampaign(ProductCampaignPayload payload) {
+        Campaign campaign = findCampaignByName(payload.getCampaignName());
+        for (ProductCampaigns productCampaigns : productCampaingnsRepository.findAll()) {
+            if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()
+                    && productCampaigns.getProductCampaignsFK().getProductId()
+                    == Integer.parseInt(payload.getProductId())) {
+                productCampaingnsRepository.delete(productCampaigns);
+            }
+        }
     }
 }

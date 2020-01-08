@@ -5,8 +5,17 @@ public class ProductPayload {
     private String name;
     private String quantity;
     private String price;
+    private String minPrice;
     private String description;
     private String categoryName;
+
+    public String getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(String minPrice) {
+        this.minPrice = minPrice;
+    }
 
     public String getId() {
         return id;

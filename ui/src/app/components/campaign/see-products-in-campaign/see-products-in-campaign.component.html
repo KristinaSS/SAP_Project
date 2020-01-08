@@ -1,0 +1,30 @@
+<div class="site-wrapper">
+  <div class="text-wrap">
+    <br>
+    <div class="title" style="text-align:center">
+      <h1>
+        Products In Campaign
+      </h1>
+    </div>
+    <br>(click on campaign name to edit)
+    <div class="container-table"
+         *ngIf="products && products.length">
+      <table class="table table-bordered table-inverse">
+        <tr>
+          <th>Name</th>
+        </tr>
+        <tr *ngFor="let product of products">
+          <td>
+            <nav>
+              <a [routerLink]="['/product-edit-in-campaign/' + product.productId]">{{product.name}}</a>
+            </nav>
+          </td>
+          <td>
+            <button type="submit" class="btn btn-primary" (click)="deleteProductFromCampaign(product)" >Delete Product From Campaign </button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+

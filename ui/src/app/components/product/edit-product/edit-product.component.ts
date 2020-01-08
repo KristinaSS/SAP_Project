@@ -20,6 +20,7 @@ export class EditProductComponent implements OnInit {
   private name;
   private quantity;
   private price;
+  private minPrice;
   private description;
 
   validMessage: string = '';
@@ -37,6 +38,7 @@ export class EditProductComponent implements OnInit {
         name: new FormControl('', Validators.required),
         quantity: new FormControl('', Validators.required),
         price: new FormControl('', Validators.required),
+        minPrice: new FormControl('', Validators.required),
         description: new FormControl('', Validators.required)
       });
       this.categoryFormGroup = new FormGroup({
@@ -85,6 +87,7 @@ export class EditProductComponent implements OnInit {
         this.name,
         this.quantity,
         this.price,
+        this.minPrice,
         this.description,
         this.categoryId).subscribe(
         data => {
@@ -103,6 +106,7 @@ export class EditProductComponent implements OnInit {
     this.name = this.productFormGroup.get('name').value;
     this.quantity = this.productFormGroup.get('quantity').value;
     this.price = this.productFormGroup.get('price').value;
+    this.minPrice = this.productFormGroup.get('minPrice').value;
     this.description = this.productFormGroup.get('description').value;
   }
 
@@ -115,6 +119,14 @@ export class EditProductComponent implements OnInit {
         this.price = this.product.price;
       } else {
         this.validMessage = 'Not Valid price';
+        return false;
+      }
+    }
+    if (!this.minPrice.match('\\d*\\.?\\d+')) {
+      if (this.minPrice.length === 0) {
+        this.minPrice = this.product.minPrice;
+      } else {
+        this.validMessage = 'Not Valid min price';
         return false;
       }
     }

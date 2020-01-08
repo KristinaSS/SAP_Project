@@ -28,4 +28,10 @@ export class CampaignService {
   addProductToCampaign(productId, campaignName, price) {
     return this.http.post('server/campaign/addToCampaign', {productId, campaignName, price});
   }
+
+  deleteProductFromCampaign(productId: any, campaignName: any) {
+    let price = null;
+    console.log('info:  ' + productId + campaignName);
+    return this.http.post('server/campaign/deleteProductInCampaign', {productId, campaignName, price});
+  }
 }

@@ -1,0 +1,26 @@
+.container-table{
+  padding-top: 20px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.text-wrap{
+  position: absolute;
+  top: 70px;
+  background:rgba(255,255,255,0.8);
+  padding-right: 10px;
+  padding-left: 10px;
+  font-family: "Century Gothic", CenturyGothic, Geneva, AppleGothic, sans-serif;
+  font-weight: bold;
+}
+.site-wrapper{
+  color: black;
+  background-image: url('http://www.freeppt.net/template/beach_party_on_sun_ppt_template.jpg');
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  text-align: center;
+}

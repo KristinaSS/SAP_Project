@@ -24,14 +24,20 @@ import {SalesReportComponent} from '@app/components/sales-report/sales-report.co
 import {CampaginListComponent} from '@app/components/campaign/campagin-list/campagin-list.component';
 import {CreateCampaignComponent} from '@app/components/campaign/create-campaign/create-campaign.component';
 import {EditCampaignComponent} from '@app/components/campaign/edit-campaign/edit-campaign.component';
-import {AddProductToCampaignComponent} from '@app/components/product/add-product-to-campaign/add-product-to-campaign.component';
+import {AddProductToCampaignComponent} from '@app/components/campaign/add-product-to-campaign/add-product-to-campaign.component';
 import {ProductListKeywordComponent} from '@app/components/product/product-list-keyword/product-list-keyword.component';
 import {ProductListOutOfStockComponent} from '@app/components/product/product-list-out-of-stock/product-list-out-of-stock.component';
+import {EditProductInCampaignComponent} from '@app/components/campaign/edit-product-in-campaign/edit-product-in-campaign.component';
+import {SeeProductsInCampaignComponent} from '@app/components/campaign/see-products-in-campaign/see-products-in-campaign.component';
 
 const routes: Routes = [
   {
     path: 'sales-report',
     component: SalesReportComponent
+  },
+  {
+    path: 'see-products/:campaign',
+    component: SeeProductsInCampaignComponent
   },
   {
     path: 'campaign-list',
@@ -48,6 +54,10 @@ const routes: Routes = [
   {
     path: 'product-add-to-campaign/:id',
     component: AddProductToCampaignComponent
+  },
+  {
+    path: 'product-edit-in-campaign/:id',
+    component: EditProductInCampaignComponent
   },
   {
     path: 'product-created',

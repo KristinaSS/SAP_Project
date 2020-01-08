@@ -34,8 +34,20 @@ public class Product implements Serializable {
     private float price;
 
     @Basic
+    @Column(name = "min_price")
+    private float minPrice;
+
+    @Basic
     @Column(name = "discription")
     private String discription;
+
+    public float getMinPrice() {
+        return minPrice;
+    }
+
+    public void setMinPrice(float minPrice) {
+        this.minPrice = minPrice;
+    }
 
     public String getDiscription() {
         return discription;

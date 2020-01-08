@@ -33,10 +33,12 @@ import { EditAccountEmpComponent } from './components/account/edit-account-emp/e
 import { CampaginListComponent } from './components/campaign/campagin-list/campagin-list.component';
 import { CreateCampaignComponent } from './components/campaign/create-campaign/create-campaign.component';
 import { EditCampaignComponent } from './components/campaign/edit-campaign/edit-campaign.component';
-import { AddProductToCampaignComponent } from './components/product/add-product-to-campaign/add-product-to-campaign.component';
+import { AddProductToCampaignComponent } from './components/campaign/add-product-to-campaign/add-product-to-campaign.component';
 import { SalesReportComponent } from './components/sales-report/sales-report.component';
 import { ProductListKeywordComponent } from './components/product/product-list-keyword/product-list-keyword.component';
 import { ProductListOutOfStockComponent } from './components/product/product-list-out-of-stock/product-list-out-of-stock.component';
+import { EditProductInCampaignComponent } from './components/campaign/edit-product-in-campaign/edit-product-in-campaign.component';
+import { SeeProductsInCampaignComponent } from './components/campaign/see-products-in-campaign/see-products-in-campaign.component';
 
 
 @NgModule({
@@ -70,7 +72,9 @@ import { ProductListOutOfStockComponent } from './components/product/product-lis
     AddProductToCampaignComponent,
     SalesReportComponent,
     ProductListKeywordComponent,
-    ProductListOutOfStockComponent
+    ProductListOutOfStockComponent,
+    EditProductInCampaignComponent,
+    SeeProductsInCampaignComponent
   ],
   imports: [
     BrowserModule,

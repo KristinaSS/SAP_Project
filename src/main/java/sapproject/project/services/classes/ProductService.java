@@ -4,10 +4,9 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
-import sapproject.project.models.Category;
-import sapproject.project.models.Product;
-import sapproject.project.models.ProductCampaigns;
+import sapproject.project.models.*;
 import sapproject.project.payload.ProductPayload;
+import sapproject.project.repository.ProductCampaingnsRepository;
 import sapproject.project.repository.ProductRepository;
 import sapproject.project.services.interfaces.IProductService;
 
@@ -17,7 +16,7 @@ import java.util.List;
 
 @Log4j2
 @Service
-public class ProductService{
+public class ProductService {
     @Autowired
     ProductRepository productRepository;
 
@@ -27,6 +26,9 @@ public class ProductService{
 
     @Autowired
     CampaignService campaignService;
+
+    @Autowired
+    private ProductCampaingnsRepository productCamapaignsRepository;
 
 
     public List<Product> findAllProductsByCategory(String categoryName) {
@@ -40,9 +42,9 @@ public class ProductService{
         else
             catID = category.getCategoryId();
         for (Product product : productRepository.findAll()) {
-            if (product.getCategory().getCategoryId() == catID && product.getQuantity()>0) {
+            if (product.getCategory().getCategoryId() == catID && product.getQuantity() > 0) {
                 productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-                if(productCampaigns!=null)
+                if (productCampaigns != null)
                     product.setPrice(productCampaigns.getPrice());
 
                 filteredList.add(product);
@@ -77,6 +79,7 @@ public class ProductService{
         product.setName(productPayload.getName());
         product.setQuantity(Integer.parseInt(productPayload.getQuantity()));
         product.setPrice(Float.parseFloat(productPayload.getPrice()));
+        product.setMinPrice(Float.parseFloat(productPayload.getMinPrice()));
         product.setCategory(catagoryService.findCategoryByName(productPayload.getCategoryName()));
         product.setDiscription(productPayload.getDescription());
 
@@ -119,6 +122,7 @@ public class ProductService{
         product.setCategory(catagoryService.findCategoryByName(update.getCategoryName()));
         product.setName(update.getName());
         product.setPrice(Float.parseFloat(update.getPrice()));
+        product.setMinPrice(Float.parseFloat(update.getMinPrice()));
         if (!update.getQuantity().equals("")) {
             product.setQuantity(product.getQuantity() + Integer.parseInt(update.getQuantity()));
         }
@@ -131,9 +135,9 @@ public class ProductService{
         List<Product> filteredList = new ArrayList<>();
         ProductCampaigns productCampaigns;
         for (Product product : productRepository.findAll()) {
-            if (product.getQuantity()==0) {
+            if (product.getQuantity() == 0) {
                 productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-                if(productCampaigns!=null)
+                if (productCampaigns != null)
                     product.setPrice(productCampaigns.getPrice());
                 filteredList.add(product);
 
@@ -146,9 +150,9 @@ public class ProductService{
         List<Product> filteredList = new ArrayList<>();
         ProductCampaigns productCampaigns;
         for (Product product : productRepository.findAll()) {
-            if (product.getName().toLowerCase().contains(keyword.toLowerCase())  && product.getQuantity()>0 ) {
+            if (product.getName().toLowerCase().contains(keyword.toLowerCase()) && product.getQuantity() > 0) {
                 productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-                if(productCampaigns!=null)
+                if (productCampaigns != null)
                     product.setPrice(productCampaigns.getPrice());
                 filteredList.add(product);
             }
@@ -156,7 +160,19 @@ public class ProductService{
         return filteredList;
     }
 
-    public List<Product> findAllProductsOnSale(){
-        return null;
+    public List<Product> findAllProductsOnSale(String campaignName) {
+        Campaign campaign = campaignService.findCampaignByName(campaignName);
+
+        List<Product> filteredList = new ArrayList<>();
+
+        for (ProductCampaigns productCampaigns : productCamapaignsRepository.findAll()) {
+            if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()) {
+                filteredList.add(findProductById(productCampaigns.getProductCampaignsFK().getProductId()));
+            }
+        }
+        return filteredList;
     }
+
+
 }
+

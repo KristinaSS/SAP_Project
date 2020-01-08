@@ -18,6 +18,7 @@ export class CreateProductComponent implements OnInit {
   private name;
   private quantity;
   private price;
+  private minPrice;
   private description;
 
   validMessage: string = 'creating product: ';
@@ -31,6 +32,7 @@ export class CreateProductComponent implements OnInit {
       name: new FormControl('', Validators.required),
       quantity: new FormControl('', Validators.required),
       price: new FormControl('', Validators.required),
+      minPrice: new FormControl('', Validators.required),
       description: new FormControl('', Validators.required)
     });
     this.categoryFormGroup = new FormGroup({
@@ -43,7 +45,7 @@ export class CreateProductComponent implements OnInit {
     if (this.validation()) {
       console.log(this.categoryId.name);
       this.validMessage = 'Your food place registration has been submitted. Thank you!';
-      this.productService.createProduct(this.name, this.quantity, this.price, this.description, this.categoryId).subscribe(
+      this.productService.createProduct(this.name, this.quantity, this.price, this.minPrice, this.description, this.categoryId).subscribe(
         data => {
           this.productFormGroup.reset();
           return true;
@@ -60,6 +62,7 @@ export class CreateProductComponent implements OnInit {
     this.name = this.productFormGroup.get('name').value;
     this.quantity = this.productFormGroup.get('quantity').value;
     this.price = this.productFormGroup.get('price').value;
+    this.minPrice = this.productFormGroup.get('minPrice').value;
     this.description = this.productFormGroup.get('description').value;
   }
 
@@ -69,6 +72,10 @@ export class CreateProductComponent implements OnInit {
       return false;
     }
     if (this.price.length === 0 || !this.price.match('\\d*\\.?\\d+')) {
+      this.validMessage = 'Not Valid price';
+      return false;
+    }
+    if (this.minPrice.length === 0 || !this.minPrice.match('\\d*\\.?\\d+')) {
       this.validMessage = 'Not Valid price';
       return false;
     }

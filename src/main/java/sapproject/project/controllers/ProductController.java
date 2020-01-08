@@ -6,6 +6,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Product;
 import sapproject.project.models.ProductCampaigns;
+import sapproject.project.models.ProductCampaignsFK;
+import sapproject.project.payload.ProductCampaignPayload;
 import sapproject.project.payload.ProductPayload;
 import sapproject.project.services.classes.CampaignService;
 import sapproject.project.services.classes.ProductService;
@@ -82,6 +84,13 @@ public class ProductController {
         //log.debug("REST request to save Product : {}", product);
         return productService.findAllProductsByKeyword(keyword);
     }
+    @PostMapping("/filteredByCampaign")
+    @ResponseStatus(HttpStatus.OK)
+    public List<Product> filterByCampaign(@Valid @RequestBody String campaignName) {
+        //log.debug("REST request to save Product : {}", product);
+        return productService.findAllProductsOnSale(campaignName);
+    }
+
 
     @GetMapping("/outOfStock")
     @ResponseStatus(HttpStatus.OK)

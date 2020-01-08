@@ -19,15 +19,15 @@ export class ProductService {
     return this.http.post('server/product/get', id);
   }
 
-  editProduct(id, name , quantity, price, description, categoryName) {
+  editProduct(id, name , quantity, price, minPrice, description, categoryName) {
     console.log('id: edit product ');
-    return this.http.post('server/product/edit', {id,  name, quantity, price, description, categoryName});
+    return this.http.post('server/product/edit', {id,  name, quantity, price, description, categoryName, minPrice});
   }
 
-  createProduct(name , quantity, price, description, categoryName) {
+  createProduct(name , quantity, price, minPrice,  description, categoryName) {
     let id = null;
     console.log('id: create Product ');
-    return this.http.post('server/product/create', {id, name, quantity, price, description, categoryName});
+    return this.http.post('server/product/create', {id, name, quantity, price, description, categoryName, minPrice});
   }
   deleteProduct(id) {
     console.log('delete id: ' + id);
@@ -40,5 +40,10 @@ export class ProductService {
 
   getFilteredProductListByKeyword(keyword: any) {
     return this.http.post('server/product/filteredByKeyword', keyword);
+  }
+
+  getProductListByCampaign(name) {
+    console.log('method: getProductListByCampaign');
+    return this.http.post('server/product/filteredByCampaign', name);
   }
 }

@@ -96,6 +96,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cart/deleteItem").permitAll()
                 .antMatchers("/order/makeOrder").permitAll()
                 .antMatchers("/orderDetails/**").permitAll()
+                .antMatchers("/product/filteredByCampaign").permitAll()
+                .antMatchers("/campaign/deleteProductInCampaign").permitAll()
                 .anyRequest()
                 .authenticated();
 
