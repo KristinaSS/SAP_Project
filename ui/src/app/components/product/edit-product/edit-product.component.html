@@ -33,7 +33,7 @@
         </div>
       </form>
       <div class="form-group">
-        <form [formGroup]="categoryFormGroup" (ngSubmit)="submitRegistration()" novalidate>
+        <form [formGroup]="categoryFormGroup" novalidate>
           <label>Account Type</label>
           <select class="form-control-select" formControlName="category" [(ngModel)]="categoryId">
             <option> IT </option>

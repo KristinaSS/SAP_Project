@@ -27,7 +27,7 @@ export class ViewProductComponent implements OnInit {
   }
 
   getProductByID(id) {
-    this.productService.getProduct(id).subscribe(
+    this.productService.getProduct(id, 'view').subscribe(
       data => {
         this.product = data;
       },

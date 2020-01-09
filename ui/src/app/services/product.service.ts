@@ -14,9 +14,9 @@ export class ProductService {
     return this.http.post('server/product/filteredByCategory', category);
   }
 
-  getProduct(id: string) {
-    console.log('id: ' + id);
-    return this.http.post('server/product/get', id);
+  getProduct(productId, type) {
+    console.log('id: ' + productId);
+    return this.http.post('server/product/get', {productId, type});
   }
 
   editProduct(id, name , quantity, price, minPrice, description, categoryName) {

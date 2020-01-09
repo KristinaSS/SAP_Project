@@ -50,7 +50,7 @@ export class EditProductComponent implements OnInit {
   }
 
   getProductByID(id) {
-    this.productService.getProduct(id).subscribe(
+    this.productService.getProduct(id, 'edit').subscribe(
       data => {
         this.product = data;
       },
@@ -81,7 +81,7 @@ export class EditProductComponent implements OnInit {
   submitRegistration() {
     this.intializeMembers();
     if (this.validation()) {
-      this.validMessage = 'Your campaign registration has been submitted. Thank you!';
+      console.log('Your campaign registration has been submitted. Thank you!');
       this.productService.editProduct(
         this.product.productId,
         this.name,
@@ -133,13 +133,9 @@ export class EditProductComponent implements OnInit {
     if (this.description.length === 0) {
       this.description = this.product.discription;
     }
-    if (this.quantity.match('^(0|[1-9][0-9]{0,9})$')) {
-      if (this.quantity.length === 0) {
-        this.quantity = '0';
-      } else {
-        this.validMessage = 'Not valid quantity';
-        return false;
-      }
+
+    if (this.quantity.length === 0) {
+      this.quantity = '0';
     }
     console.log('Validated');
     return true;

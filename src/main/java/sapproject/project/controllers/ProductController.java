@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Product;
 import sapproject.project.models.ProductCampaigns;
 import sapproject.project.models.ProductCampaignsFK;
+import sapproject.project.payload.EditProductPayload;
 import sapproject.project.payload.ProductCampaignPayload;
 import sapproject.project.payload.ProductPayload;
 import sapproject.project.services.classes.CampaignService;
@@ -36,15 +37,15 @@ public class ProductController {
 
     @PostMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public Product getProduct(@Valid @RequestBody String id){
+    public Product getProduct(@Valid @RequestBody EditProductPayload payload){
         //log.debug("REST request to get Product : {}", id);
-        System.out.println("id of product: " + id);
+        System.out.println("id of product: " + payload.getProductId());
 
-        Product product =  productService.getOne(Integer.parseInt(id));
+        Product product =  productService.getOne(Integer.parseInt(payload.getProductId()));
 
         ProductCampaigns productCampaigns;
         productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-        if(productCampaigns!=null)
+        if(productCampaigns!=null && !payload.getType().equals("edit") && !payload.getType().equals("campaign"))
             product.setPrice(productCampaigns.getPrice());
 
         return product;

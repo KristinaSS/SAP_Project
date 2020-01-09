@@ -40,10 +40,12 @@ public class OrderDetailsService{
         for(OrderDetails orderDetails: findAll()){
             Product product = productService.getOne(orderDetails.getOrderdetailsPK().getProductId());
 
+/*
             ProductCampaigns productCampaigns;
             productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
             if(productCampaigns!=null)
                 product.setPrice(productCampaigns.getPrice());
+*/
 
             float sum  = 0;
             int quantity = 0;

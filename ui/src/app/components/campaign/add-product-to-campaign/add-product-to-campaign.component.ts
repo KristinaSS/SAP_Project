@@ -41,7 +41,7 @@ export class AddProductToCampaignComponent implements OnInit {
   }
 
   getProductByID(id) {
-    this.productService.getProduct(id).subscribe(
+    this.productService.getProduct(id, 'campaign').subscribe(
       data => {
         this.product = data;
       },

@@ -37,10 +37,12 @@ public class ProductService {
         ProductCampaigns productCampaigns;
 
         int catID = 0;
-        if (category == null)
+        if (category == null) {
             return filteredList;//todo fix
-        else
+        }
+        else {
             catID = category.getCategoryId();
+        }
         for (Product product : productRepository.findAll()) {
             if (product.getCategory().getCategoryId() == catID && product.getQuantity() > 0) {
                 productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
@@ -54,6 +56,7 @@ public class ProductService {
     }
 
     public List<Product> findAll() {
+        List<Product> productList = new ArrayList<>();
         return productRepository.findAll();
     }
 
@@ -103,7 +106,7 @@ public class ProductService {
 
     public Product updateByID(ProductPayload payload) {
         Product product = findProductById(Integer.parseInt(payload.getId()));
-        assert product != null;
+
         Product result = updateProductMembers(product, payload);
 
         return productRepository.save(result);
@@ -168,10 +171,17 @@ public class ProductService {
             campaign = campaignService.findCampaignByName(campaignName);
         }
         List<Product> filteredList = new ArrayList<>();
+        ProductCampaigns productCampaigns1;
+        Product product;
 
         for (ProductCampaigns productCampaigns : productCamapaignsRepository.findAll()) {
             if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()) {
-                filteredList.add(findProductById(productCampaigns.getProductCampaignsFK().getProductId()));
+                productCampaigns1 = campaignService.findProductIfOnSale(productCampaigns.getProductCampaignsFK().getProductId());
+                product = findProductById(productCampaigns.getProductCampaignsFK().getProductId());
+                if (productCampaigns1 != null && product!= null) {
+                    product.setPrice(productCampaigns1.getPrice());
+                }
+                filteredList.add(product);
             }
         }
         return filteredList;
