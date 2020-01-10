@@ -72,6 +72,9 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
     if (request.url.includes('product/calculate')) {
       return next.handle(request);
     }
+    if (request.url.includes('product/calculate-with-shipping')) {
+      return next.handle(request);
+    }
     if (request.url.includes('account/delete-{accID}')) {
       return next.handle(request);
     }
@@ -82,6 +85,9 @@ export class BasicAuthHtppInterceptorService implements HttpInterceptor {
       return next.handle(request);
     }
     if (request.url.includes('product/filteredByCampaign')) {
+      return next.handle(request);
+    }
+    if (request.url.includes('campaign/active')) {
       return next.handle(request);
     }
 

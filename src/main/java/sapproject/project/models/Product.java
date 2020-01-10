@@ -25,7 +25,7 @@ public class Product implements Serializable {
     @Column(name = "quantity")
     private int quantity;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 

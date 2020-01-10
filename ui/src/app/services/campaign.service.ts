@@ -34,4 +34,8 @@ export class CampaignService {
     console.log('info:  ' + productId + campaignName);
     return this.http.post('server/campaign/deleteProductInCampaign', {productId, campaignName, price});
   }
+
+  getActiveCampaign() {
+    return this.http.get('server/campaign/active');
+  }
 }

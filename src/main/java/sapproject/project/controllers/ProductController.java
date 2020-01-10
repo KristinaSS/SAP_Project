@@ -37,15 +37,15 @@ public class ProductController {
 
     @PostMapping("/get")
     @ResponseStatus(HttpStatus.OK)
-    public Product getProduct(@Valid @RequestBody EditProductPayload payload){
+    public Product getProduct(@Valid @RequestBody EditProductPayload payload) {
         //log.debug("REST request to get Product : {}", id);
         System.out.println("id of product: " + payload.getProductId());
 
-        Product product =  productService.getOne(Integer.parseInt(payload.getProductId()));
+        Product product = productService.getOne(Integer.parseInt(payload.getProductId()));
 
         ProductCampaigns productCampaigns;
         productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-        if(productCampaigns!=null && !payload.getType().equals("edit") && !payload.getType().equals("campaign"))
+        if (productCampaigns != null && !payload.getType().equals("edit") && !payload.getType().equals("campaign"))
             product.setPrice(productCampaigns.getPrice());
 
         return product;
@@ -61,7 +61,7 @@ public class ProductController {
 
     @PostMapping("/edit")
     @ResponseStatus(HttpStatus.OK)
-    public Product updateProduct(@Valid @RequestBody ProductPayload product){
+    public Product updateProduct(@Valid @RequestBody ProductPayload product) {
         //log.debug("REST request to update Product : {}", ID);
         return productService.updateByID(product);
     }
@@ -72,6 +72,7 @@ public class ProductController {
         //log.debug("REST request to delete Product : {}", ID);
         productService.deleteByID(Integer.parseInt(productId));
     }
+
     @PostMapping("/filteredByCategory")
     @ResponseStatus(HttpStatus.OK)
     public List<Product> filterByCategory(@Valid @RequestBody String category) {
@@ -85,13 +86,13 @@ public class ProductController {
         //log.debug("REST request to save Product : {}", product);
         return productService.findAllProductsByKeyword(keyword);
     }
+
     @PostMapping("/filteredByCampaign")
     @ResponseStatus(HttpStatus.OK)
     public List<Product> filterByCampaign(@Valid @RequestBody String campaignName) {
         //log.debug("REST request to save Product : {}", product);
         return productService.findAllProductsOnSale(campaignName);
     }
-
 
     @GetMapping("/outOfStock")
     @ResponseStatus(HttpStatus.OK)

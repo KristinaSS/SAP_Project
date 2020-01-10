@@ -93,11 +93,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/cart/getAllByUser").permitAll()
                 .antMatchers("/cart/addItem").permitAll()
                 .antMatchers("/cart/calculate").permitAll()
+                .antMatchers("/cart/calculate-with-shipping").permitAll()
                 .antMatchers("/cart/deleteItem").permitAll()
                 .antMatchers("/order/makeOrder").permitAll()
                 .antMatchers("/orderDetails/**").permitAll()
                 .antMatchers("/product/filteredByCampaign").permitAll()
                 .antMatchers("/campaign/deleteProductInCampaign").permitAll()
+                .antMatchers("/campaign/active").permitAll()
                 .anyRequest()
                 .authenticated();
 

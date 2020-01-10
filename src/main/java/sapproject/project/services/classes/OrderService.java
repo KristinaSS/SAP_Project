@@ -24,7 +24,7 @@ public class OrderService implements IOrderService {
     @Autowired
     private CartRepository cartRepository;
     @Autowired
-    private  ProductRepository productRepository;
+    private ProductRepository productRepository;
 
     @Autowired
     private CartProductsRepository cartProductsRepository;
@@ -32,6 +32,8 @@ public class OrderService implements IOrderService {
     private OrderDetailsRepository orderDetailsRepository;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private CampaignService campaignService;
 
     @Override
     public List<Order> findAll() {
@@ -107,58 +109,69 @@ public class OrderService implements IOrderService {
         return order;
     }
 
-    private String createAddress(Checkout checkout){
+    private String createAddress(Checkout checkout) {
 
-        return  checkout.getCountry() + ", " +
+        return checkout.getCountry() + ", " +
                 checkout.getAddress() + ", " +
                 checkout.getCity() + ", " +
                 checkout.getState() + ", " +
                 checkout.getPostCode();
     }
 
-    private String createPaymentDetails(Checkout checkout){
+    private String createPaymentDetails(Checkout checkout) {
         return "Card Type: " + checkout.getCardType() +
                 "\nCard Number: " + checkout.getCardNumber() +
                 "\nCard CVV: " + checkout.getCVV() +
-                "\nExpiration Date: " + checkout.getExpirationMonth()+ " " + checkout.getExpirationYear();
+                "\nExpiration Date: " + checkout.getExpirationMonth() + " " + checkout.getExpirationYear();
     }
 
-    private List<OrderDetails> getItemsToBuy(int orderId, Checkout checkout, Account account){
+    private List<OrderDetails> getItemsToBuy(int orderId, Checkout checkout, Account account) {
         Cart cart = cartRepository.findByAccount(account);
         List<OrderDetails> orderDetailsList = new ArrayList<>();
         OrderDetailsPK pk;
         Product product;
+        float price;
+        ProductCampaigns productCampaigns;
 
         for (CartProducts item : cartProductsRepository.findAll()) {
             if (item.getCart().getCartId() == cart.getCartId()) {
                 product = productService.getOne(item.getProduct().getProductId());
-                product.setQuantity(item.getProduct().getQuantity()-item.getQuantity());
+                product.setQuantity(item.getProduct().getQuantity() - item.getQuantity());
                 productRepository.save(product);
 
-                pk = new OrderDetailsPK(orderId,item.getProduct().getProductId());
+
+                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+                if (productCampaigns != null) {
+                    price = productCampaigns.getPrice();
+                } else {
+                    price = product.getPrice();
+                }
+
+                pk = new OrderDetailsPK(orderId, item.getProduct().getProductId());
                 orderDetailsList.add(new OrderDetails(pk,
-                        item.getProduct().getPrice(),
+                        price,
                         item.getQuantity(),
-                        (item.getQuantity()*item.getProduct().getPrice())));
+                        (item.getQuantity() * price)));
             }
         }
         deleteAllByCartId(cart.getCartId());
         return orderDetailsList;
     }
 
-    private void addToOrderDetailsRepository(List<OrderDetails> orderDetailsList){
-        for(OrderDetails orderDetails: orderDetailsList){
+    private void addToOrderDetailsRepository(List<OrderDetails> orderDetailsList) {
+        for (OrderDetails orderDetails : orderDetailsList) {
             orderDetailsRepository.save(orderDetails);
         }
 
     }
-    private void deleteAllByCartId(int cartId){
+
+    private void deleteAllByCartId(int cartId) {
         Iterator<CartProducts> iterator = cartProductsRepository.findAll().iterator();
         CartProducts cartProducts;
-        while (iterator.hasNext()){
+        while (iterator.hasNext()) {
             cartProducts = iterator.next();
 
-            if(cartProducts.getCart().getCartId() == cartId)
+            if (cartProducts.getCart().getCartId() == cartId)
                 cartProductsRepository.delete(cartProducts);
         }
     }

@@ -148,6 +148,11 @@ table.shoping-cart-table tr td:last-child {
 }
 .container{
   margin-left: 250px;
-  margin-top:150px;
+  margin-top:20px;
+}
+.title {
+  margin-left: 300px;
+  margin-top:100px;
+  font-weight: bold;
 }
 

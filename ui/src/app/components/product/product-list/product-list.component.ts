@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ProductListComponent implements OnInit {
   public productList;
+  public category;
 
   /*todo title*/
 
@@ -19,6 +20,11 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit() {
     this.getProducts(this.route.snapshot.params.category);
+    this.getCategory();
+  }
+
+  getCategory() {
+    this.category = this.route.snapshot.params.category;
   }
 
   getProducts(category) {

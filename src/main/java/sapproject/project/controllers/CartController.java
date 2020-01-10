@@ -37,6 +37,9 @@ public class CartController {
     @Autowired
     CampaignService campaignService;
 
+    private static final float  SHIPPING_PRICE = 5f;
+
+
     @PostMapping("/getAllByUser")
     @ResponseStatus(HttpStatus.OK)
     public List<CartProducts> filterByCategory(@Valid @RequestBody String username) {
@@ -46,9 +49,18 @@ public class CartController {
             if (cart.getAccount().getAccID() == accId)
                 cartId = cart.getCartId();
         }
+        Product product;
+        ProductCampaigns productCampaigns;
         List<CartProducts> filteredList = new ArrayList<>();
+
         for (CartProducts cartProducts : cartProductsRepository.findAll()) {
             if (cartId == cartProducts.getCart().getCartId()) {
+                product = cartProducts.getProduct();
+                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+                if (productCampaigns != null) {
+                    product.setPrice(productCampaigns.getPrice());
+                }
+                cartProducts.setProduct(product);
                 filteredList.add(cartProducts);
             }
         }
@@ -60,11 +72,9 @@ public class CartController {
     public CartProducts addItemToCart(@Valid @RequestBody CartItem cartItem) {
         Account account = accountService.findAccountByEmail(cartItem.getUsername(), true);
         Product product = productService.getOne(Integer.parseInt(cartItem.getProductId()));
-        ProductCampaigns productCampaigns;
-        productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-        if(productCampaigns!=null)
-            product.setPrice(productCampaigns.getPrice());
+
         int quantity = Integer.parseInt(cartItem.getQuantity());
+
         Cart cart = cartRepository.findByAccount(account);
         CartProducts cartProducts = new CartProducts(quantity, cart, product);
 
@@ -79,6 +89,14 @@ public class CartController {
         Account account = accountService.findAccountByEmail(username, true);
         Cart cart = cartRepository.findByAccount(account);
         return cartService.calculateCart(cart);
+    }
+
+    @PostMapping("/calculate-with-shipping")
+    @ResponseStatus(HttpStatus.OK)
+    public Float calculateWithShipping(@Valid @RequestBody String username) {
+        Account account = accountService.findAccountByEmail(username, true);
+        Cart cart = cartRepository.findByAccount(account);
+        return cartService.calculateCart(cart) + SHIPPING_PRICE;
     }
 
     @PostMapping("/deleteItem")

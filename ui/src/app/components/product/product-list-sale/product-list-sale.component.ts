@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from '@app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {CampaignService} from '@app/services/campaign.service';
 
 @Component({
   selector: 'app-product-list-sale',
@@ -9,15 +10,24 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ProductListSaleComponent implements OnInit {
   public productList;
+  public campaign;
 
   /*todo title*/
 
   constructor(private productService: ProductService,
+              private campaignService: CampaignService,
               private router: Router) {
   }
 
   ngOnInit() {
     this.getProducts();
+    this.campaignService.getActiveCampaign().subscribe(
+      data => {
+        this.campaign = data;
+      },
+      error => console.error(error),
+      () => console.log('Message Loaded')
+    );
   }
 
   getProducts() {

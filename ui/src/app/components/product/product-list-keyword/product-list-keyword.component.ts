@@ -9,6 +9,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ProductListKeywordComponent implements OnInit {
   public productList;
+  public keyword;
 
   /*todo title*/
 
@@ -19,6 +20,7 @@ export class ProductListKeywordComponent implements OnInit {
 
   ngOnInit() {
     this.getProducts(this.route.snapshot.params.keyword);
+    this.keyword = this.route.snapshot.params.keyword;
   }
 
   getProducts(keyword) {

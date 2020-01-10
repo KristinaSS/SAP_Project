@@ -35,14 +35,20 @@ export class CheckoutComponent implements OnInit {
     if (result) {
       this.getCartItems();
       this.calculate();
-      this.total = this.total + 5;
+      this.getTotal();
     } else {
         this.router.navigate(['/login']);
     }
   }
 
   public getTotal() {
-    this.total = this.sum + 5;
+    this.cartService.getTotalWithShipping(sessionStorage.getItem('username')).subscribe(
+      data => {
+        this.total = data;
+      },
+      error => console.error(error),
+      () => console.log('Items Loaded')
+    );
   }
 
   getCartItems() {

@@ -8,6 +8,9 @@ export class CartService {
 
   constructor(private http: HttpClient) {
   }
+  getTotalWithShipping(username) {
+    return this.http.post('server/cart/calculate-with-shipping', username);
+  }
 
   getCartItems() {
     console.log('category: ' + sessionStorage.getItem('username'));

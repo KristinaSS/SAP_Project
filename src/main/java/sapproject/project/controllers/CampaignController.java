@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Campaign;
 import sapproject.project.models.ProductCampaignsFK;
+import sapproject.project.payload.CampaignIsActiveResponse;
 import sapproject.project.payload.CampaignPayload;
 import sapproject.project.payload.ProductCampaignPayload;
 import sapproject.project.payload.UpdateAccount;
@@ -64,6 +65,15 @@ public class CampaignController {
     public void deleteProductFromCampaign(@Valid @RequestBody ProductCampaignPayload payload) {
         //log.debug("REST request to save Product : {}", product);
         campaignService.deleteProductInCampaign(payload);
+    }
+
+    @GetMapping("/active")
+    @ResponseStatus(HttpStatus.OK)
+    public CampaignIsActiveResponse getActiveCampaign() {
+        Campaign campaign = campaignService.findActiveCampaign();
+        CampaignIsActiveResponse response = new CampaignIsActiveResponse();
+        response.setMessage(campaign==null?"No Products are on sale":campaign.getName());
+        return response;
     }
 
 }
