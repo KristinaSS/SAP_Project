@@ -24,7 +24,7 @@
       </div>
       <form [formGroup]="productFormGroup" (ngSubmit)="submitRegistration()" novalidate>
         <div class="form-group">
-          <label>Price during campaign</label>
+          <label> Discount in percent during campaign (current product price)</label>
           <h6>Price must not be less than minimal price of product.</h6>
           <input type="text" class="form-control" formControlName="price" required value="{{product.price}}"/>
         </div>

@@ -10,6 +10,7 @@ import sapproject.project.payload.CampaignPayload;
 import sapproject.project.payload.ProductCampaignPayload;
 import sapproject.project.repository.CampaignRepository;
 import sapproject.project.repository.ProductCampaingnsRepository;
+import sapproject.project.services.interfaces.IProductService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,9 @@ public class CampaignService {
 
     @Autowired
     private ProductCampaingnsRepository productCampaingnsRepository;
+
+    @Autowired
+    private ProductService productService;
 
     public List<CampaignPayload> findAll() {
         List<CampaignPayload> payloads = new ArrayList<>();
@@ -90,11 +94,13 @@ public class CampaignService {
 
     public void addToCampaign(ProductCampaignPayload campaign) {
         int productId = Integer.parseInt(campaign.getProductId());
+        Product product = productService.getOne(productId);
         Campaign campaignByName = getCampaignByName(campaign.getCampaignName());
         if (campaignByName == null)
             return;
         int campaignId = campaignByName.getCampaignId();
-        float priceDurCampaign = Float.parseFloat(campaign.getPrice());
+        float discount = Float.parseFloat(campaign.getPrice())/100f;
+        float priceDuringCampaign = product.getPrice() - (product.getPrice()*discount);
 
         ProductCampaignsFK fk = new ProductCampaignsFK();
         fk.setCampaignId(campaignId);
@@ -102,7 +108,7 @@ public class CampaignService {
 
         ProductCampaigns productCampaigns = new ProductCampaigns();
         productCampaigns.setProductCampaignsFK(fk);
-        productCampaigns.setPrice(priceDurCampaign);
+        productCampaigns.setPrice(priceDuringCampaign);
 
         productCampaingnsRepository.save(productCampaigns);
     }
