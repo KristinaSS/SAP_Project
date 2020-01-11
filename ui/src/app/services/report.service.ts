@@ -8,10 +8,11 @@ export class ReportService {
 
   constructor(private http: HttpClient) { }
 
-  calculate() {
-    return this.http.get('server/orderDetails/calculate');
+  calculate(time) {
+    console.log('time' + time);
+    return this.http.post('server/orderDetails/calculate', time);
   }
-  getSalesReport() {
-    return this.http.get('server/orderDetails/report');
+  getSalesReport(time) {
+    return this.http.post('server/orderDetails/report', time);
   }
 }

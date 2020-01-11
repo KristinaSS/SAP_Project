@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AccountServiceService} from '@app/services/account-service.service';
 import {Router} from '@angular/router';
 import {AuthenticationService} from '@app/security/helper/authentication.service';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-account-view-emp',
@@ -12,6 +13,8 @@ export class AccountViewEmpComponent implements OnInit {
 
 
   public account;
+  reportTimeFormGroup: FormGroup;
+  public reportTime;
 
   constructor(private accountServiceService: AccountServiceService,
               private router: Router,
@@ -25,6 +28,10 @@ export class AccountViewEmpComponent implements OnInit {
     }
     console.log('ng on init');
     this.getAccountByEmail();
+
+    this.reportTimeFormGroup = new FormGroup({
+      reportTime: new FormControl('', Validators.required)
+    });
   }
 
   getAccountByEmail() {
@@ -66,5 +73,13 @@ export class AccountViewEmpComponent implements OnInit {
     } catch (e) {
       return false;
     }
+  }
+
+  goToEditAccount() {
+    this.router.navigate(['/account-edit/' + this.account.email]);
+  }
+
+  seeSalesReport() {
+    this.router.navigate([ '/sales-report/' + this.reportTime]);
   }
 }

@@ -1,51 +1,54 @@
-<div class="site-wrapper">
-  <div class="text-wrapper">
-    <br>
-    <div class="title" style="text-align:center">
-      <h1>
-        Create Product
-      </h1>
-    </div>
-    <div class="container-form">
-      <form [formGroup]="productFormGroup" (ngSubmit)="submitRegistration()" novalidate>
-        <div *ngIf="validMessage != ''">
-          <h3 class="has-info">{{validMessage}}</h3>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<!--<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>-->
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+  <div class="row">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><i class="fa fa-times"></i></button>
+        <h4 class="modal-title">{{validMessage}}</h4>
+      </div>
+
+      <form [formGroup]="form_signup" (ngSubmit)="submitChanges()">
+        <div class="modal-body">
+          <div class="form-group" >
+            <label>Email Address</label>
+            <input type="text" class="form-control" required="" name="userEmail" value="{{result.email}}" formControlName="email">
+            <span class="help-block">Your email address is also used to log in. Needs to be unique</span>
+          </div>
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" required="" name="name" value="{{result.name}}" formControlName="name">
+            <span class="help-block">This will be your first name</span>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label>Password</label>
+                <input type="password" class="form-control" required="" name="password" value="" formControlName="password">
+                <span class="help-block">Choose a password for your new account. Must contain capital letter and number</span>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label >Repeat Password</label>
+                <input type="password" class="form-control" required="" name="passwordr" value="" formControlName="passwordAgain">
+                <span class="help-block">Type the password again. Passwords must match.</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Product Name</label>
-          <input type="text" class="form-control" formControlName="name" required autofocus value="{{product.name}}"/>
-        </div>
-        <div class="form-group">
-          <label>Add Product Quantity</label>
-          <input type="text" class="form-control" formControlName="quantity" required value="0"/>
-        </div>
-        <div class="form-group">
-          <label>Edit Price</label>
-          <input type="text" class="form-control" formControlName="price" required value="{{product.price}}"/>
-        </div>
-        <div class="form-group">
-          <label>Description</label>
-          <input type="text" class="form-control" formControlName="description" value="{{product.discription}}"/>
+
+        <div class="modal-footer">
+          <input type="hidden" name="isEmpty" value="">
+          <button type="input" name="submit" value="newAccount" class="btn btn-success btn-icon"><i class="fa fa-check"></i> Create My Account</button>
+          <button type="button" class="btn btn-default btn-icon" data-dismiss="modal" (click)="navigateCancel()"> Cancel</button>
         </div>
       </form>
-      <div class="form-group">
-        <form [formGroup]="categoryFormGroup" (ngSubmit)="submitRegistration()" novalidate>
-          <label>Account Type</label>
-          <select class="form-control-select" formControlName="category" [(ngModel)]="categoryId">
-            <option> IT </option>
-            <option> Photography </option>
-            <option> Electrical Appliances </option>
-            <option> Clothes </option>
-            <option> Health and Care </option>
-            <option> Books </option>
-            <option> Toys </option>
-            <option> Sport </option>
-            <option> Food </option>
-            <option> Other </option>
-          </select>
-        </form>
-      </div>
-      <button type="submit" class="btn btn-primary" (click)="submitRegistration()" >Submit</button>
+
     </div>
   </div>
 </div>

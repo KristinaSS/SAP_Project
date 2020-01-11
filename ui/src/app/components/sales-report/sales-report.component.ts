@@ -1,7 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {CartService} from '@app/services/cart.service';
 import {ProductService} from '@app/services/product.service';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {ReportService} from '@app/services/report.service';
 
 @Component({
@@ -17,16 +17,17 @@ export class SalesReportComponent implements OnInit {
 
   constructor(private reportService: ReportService,
               private productService: ProductService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.getCartItems();
-    this.calculate();
+    this.getCartItems(this.route.snapshot.params.time);
+    this.calculate(this.route.snapshot.params.time);
   }
 
-  getCartItems() {
-    this.reportService.getSalesReport().subscribe(
+  getCartItems(time) {
+    this.reportService.getSalesReport(time).subscribe(
       data => {
         this.reportItems = data;
       },
@@ -35,16 +36,9 @@ export class SalesReportComponent implements OnInit {
     );
   }
 
-  getProduct(item) {
-    console.log('getting product');
-    let id: string;
-    id = item.productid;
-    this.router.navigate(['/product/' + id]);
-  }
-
-  calculate() {
-    console.log('calculate');
-    this.reportService.calculate().subscribe(
+  calculate(time) {
+    console.log('calculate:' + time);
+    this.reportService.calculate(time).subscribe(
       data => {
         this.sum = data;
       },

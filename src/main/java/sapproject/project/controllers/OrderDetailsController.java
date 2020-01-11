@@ -8,6 +8,8 @@ import sapproject.project.models.OrderDetails;
 import sapproject.project.payload.ReportPayload;
 import sapproject.project.services.classes.OrderDetailsService;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Log4j2
@@ -17,16 +19,16 @@ public class OrderDetailsController {
     @Autowired
     OrderDetailsService orderDetailsService;
 
-    @GetMapping("/report")
+    @PostMapping("/report")
     @ResponseStatus(HttpStatus.OK)
-    public List<ReportPayload> createSalesReport(){
-        return orderDetailsService.getSalesReport();
+    public List<ReportPayload> createSalesReport(@Valid @RequestBody String time){
+        return orderDetailsService.getSalesReport(time);
     }
 
-    @GetMapping("/calculate")
+    @PostMapping("/calculate")
     @ResponseStatus(HttpStatus.OK)
-    public Float calculateReport(){
-        return orderDetailsService.calculate();
+    public BigDecimal calculateReport(@Valid @RequestBody String time){
+        return orderDetailsService.calculate(time);
     }
 
 }

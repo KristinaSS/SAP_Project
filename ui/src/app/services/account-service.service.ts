@@ -35,4 +35,9 @@ export class AccountServiceService {
     let password = null;
     return this.http.post<any>('server/account/update', {id, username, password, name, accountTypeName});
   }
+
+  updateAccountByUser(id, username, name, password) {
+    let accountTypeName = null;
+    return this.http.post<any>('server/account/update', {id, username, password, name, accountTypeName});
+  }
 }

@@ -59,15 +59,20 @@ public class AccountService {
             return account;
         }
         Cart cart = cartService.findCart(ID);
-        cartRepository.delete(cart);
+        if(cart!=null)
+            cartRepository.delete(cart);
         accountRepository.delete(account);
         return account;
         //log.debug("Deleted account with id: " + ID);
     }
-    public Account updateAccount(UpdateAccount payload){
-        Account account = findAccountByEmail(payload.getUsername(), true);
-        AccountType accountType = accountTypeService.findAccountTypeByName(payload.getAccountTypeName());
-        Account result = updateAccMembers(account, payload.getName(),payload.getUsername(), payload.getPassword(), accountType);
+
+    public Account updateAccount(UpdateAccount payload) {
+        Account account = getOne(Integer.parseInt(payload.getId()));
+        AccountType accountType = null;
+        if (payload.getAccountTypeName() != null) {
+            accountType = accountTypeService.findAccountTypeByName(payload.getAccountTypeName());
+        }
+        Account result = updateAccMembers(account, payload.getName(), payload.getUsername(), payload.getPassword(), accountType);
         result.setAccID(account.getAccID());
 
         return accountRepository.save(result);
@@ -84,23 +89,26 @@ public class AccountService {
 
     private Account updateAccMembers(Account hashPassAcc, String name, String email, String password, AccountType accountType) {
         hashPassAcc.setName(name);
-        hashPassAcc.setAccountType(accountType);
+        if (accountType != null) {
+            hashPassAcc.setAccountType(accountType);
+        }
         hashPassAcc.setEmail(email);
-        if(password!= null)
-            hashPassAcc.setPassword( passwordEncoder.encode(password));
+        if (password != null && !password.equals(" "))
+            hashPassAcc.setPassword(passwordEncoder.encode(password));
         return hashPassAcc;
     }
 
     public Account findAccountByEmail(String email) {
         System.out.println("find string: " + email);
-        String username = email.substring(13, email.length()-2);
-        System.out.println("username: "+ username);
+        String username = email.substring(13, email.length() - 2);
+        System.out.println("username: " + username);
         for (Account account : accountRepository.findAll()) {
             if (account.getEmail().equals(username))
                 return account;
         }
         return null;
     }
+
     public Account findAccountByEmail(String email, boolean res) {
         for (Account account : accountRepository.findAll()) {
             if (account.getEmail().equals(email))

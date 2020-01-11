@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AccountServiceService} from '../../../services/account-service.service';
-import {AccountTypeServiceService} from '../../../services/account-type-service.service';
+import {AccountServiceService} from '@app/services/account-service.service';
 import {AuthenticationService} from '@app/security/helper/authentication.service';
 
 @Component({
@@ -62,5 +61,9 @@ export class AccountViewComponent implements OnInit {
     } catch (e) {
       return false;
     }
+  }
+
+  goToEditAccount() {
+    this.router.navigate(['/account-edit/' + this.account.email]);
   }
 }

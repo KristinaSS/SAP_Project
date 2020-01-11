@@ -17,7 +17,7 @@
         <a>Log out</a>
       </button>
       <button class="btnz update-btn">
-        <a>Edit</a>
+        <a (click)="goToEditAccount()">Edit</a>
       </button>
       <button class="btnz update-btn">
         <a  (click)="getAllAccounts()" >See All accounts</a>
@@ -29,8 +29,19 @@
     <button class="btnz update-btn">
       <a [routerLink]="['/product-list-not-in-stock']">See Products Out of Stock</a>
     </button>
+    <div class="form-group">
+      <form [formGroup]="reportTimeFormGroup" (ngSubmit)="seeSalesReport()" novalidate>
+        <label>Campaigns</label>
+        <div> Get Sales report for this: </div>
+        <select class="form-control-select" formControlName="reportTime" [(ngModel)]="reportTime">
+          <option>year</option>
+          <option>month</option>
+          <option>day</option>
+        </select>
+      </form>
+    </div>
     <button class="btnz update-btn">
-      <a [routerLink]="['/sales-report']">See Sales Report for this year</a>
+      <a (click)="seeSalesReport()">See Sales Report for this year</a>
     </button>
   </div>
 </div>

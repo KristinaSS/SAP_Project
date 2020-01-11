@@ -30,6 +30,7 @@ import {ProductListOutOfStockComponent} from '@app/components/product/product-li
 import {EditProductInCampaignComponent} from '@app/components/campaign/edit-product-in-campaign/edit-product-in-campaign.component';
 import {SeeProductsInCampaignComponent} from '@app/components/campaign/see-products-in-campaign/see-products-in-campaign.component';
 import {ProductListSaleComponent} from '@app/components/product/product-list-sale/product-list-sale.component';
+import {EditAccountComponent} from '@app/components/account/edit-account/edit-account.component';
 
 const routes: Routes = [
   {
@@ -37,7 +38,7 @@ const routes: Routes = [
     component: ProductListSaleComponent
   },
   {
-    path: 'sales-report',
+    path: 'sales-report/:time',
     component: SalesReportComponent
   },
   {
@@ -126,6 +127,10 @@ const routes: Routes = [
   {
     path: 'account-edit-emp/:username',
     component: EditAccountEmpComponent,
+  },
+  {
+    path: 'account-edit/:username',
+    component: EditAccountComponent,
   },
   {
     path: 'login',

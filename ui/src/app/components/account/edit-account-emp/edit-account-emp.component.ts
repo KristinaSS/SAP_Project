@@ -56,7 +56,7 @@ export class EditAccountEmpComponent implements OnInit {
   submitRegistration() {
     this.intializeMembers();
     if (this.validation()) {
-      this.accountServiceService.updateAccount(this.account.accountId, this.email, this.name, this.account_Type).subscribe(
+      this.accountServiceService.updateAccount(this.account.accID, this.email, this.name, this.account_Type).subscribe(
         data => {
           console.log('account edited');
           this.form_signup.reset();
@@ -83,7 +83,7 @@ export class EditAccountEmpComponent implements OnInit {
       },
       error => {
         console.log('error thrown');
-        this.validMessage = 'A user with this username already exists.';
+        this.validMessage = 'Error while deleting';
         return throwError(error.message || error);
       }
     );
@@ -100,7 +100,7 @@ export class EditAccountEmpComponent implements OnInit {
   }
 
   validation() {
-    if (!this.email.match('/^[a-zA-Z]+ [a-zA-Z]+$/')) {
+    if (!this.email.match('[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}')) {
       if (this.email.length === 0 ) {
         this.email = this.account.email;
       } else {
