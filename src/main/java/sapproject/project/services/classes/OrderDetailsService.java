@@ -2,6 +2,8 @@ package sapproject.project.services.classes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sapproject.project.exceptions.ListSizeIsZero;
+import sapproject.project.models.Campaign;
 import sapproject.project.models.Order;
 import sapproject.project.models.OrderDetails;
 import sapproject.project.models.Product;
@@ -30,6 +32,9 @@ public class OrderDetailsService implements IOrderDetailsService {
 
     @Override
     public List<OrderDetails> findAll() {
+        List<OrderDetails> orderDetails = orderDetailsRepository.findAll();
+        if(orderDetails.size() == 0)
+            throw new ListSizeIsZero("orderDetails");
         return orderDetailsRepository.findAll();
     }
 

@@ -2,6 +2,9 @@ package sapproject.project.services.classes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sapproject.project.exceptions.CampaignNotUniqueName;
+import sapproject.project.exceptions.DiscountBelowMinimalPriceException;
+import sapproject.project.exceptions.ListSizeIsZero;
 import sapproject.project.models.Campaign;
 import sapproject.project.models.Product;
 import sapproject.project.models.ProductCampaigns;
@@ -28,9 +31,12 @@ public class CampaignService implements ICampaignService {
 
     @Override
     public List<CampaignPayload> findAll() {
+        List<Campaign> campaigns = campaignRepository.findAll();
+        if(campaigns.size() == 0)
+            throw new ListSizeIsZero("campaigns");
         List<CampaignPayload> payloads = new ArrayList<>();
         CampaignPayload campaignPayload;
-        for (Campaign campaign : campaignRepository.findAll()) {
+        for (Campaign campaign : campaigns) {
             campaignPayload = new CampaignPayload();
             campaignPayload.setId(String.valueOf(campaign.getCampaignId()));
             campaignPayload.setIsActive(String.valueOf(campaign.getActive()));
@@ -59,6 +65,11 @@ public class CampaignService implements ICampaignService {
 
     @Override
     public Campaign createCampaign(CampaignPayload campaign) {
+        Campaign isUnique = getCampaignByName(campaign.getName());
+
+        if(isUnique!=null)
+            throw new CampaignNotUniqueName(campaign.getName());
+
         Campaign createdCampaign = new Campaign();
         Campaign result = initializeCampaign(createdCampaign, campaign);
         makeOnlyOneCampaignActive(result);
@@ -69,6 +80,14 @@ public class CampaignService implements ICampaignService {
     @Override
     public Campaign editCampaign(CampaignPayload campaign) {
         Campaign editedCampaign = getCampaignById(Integer.parseInt(campaign.getId()));
+
+        Campaign isUnique = getCampaignByName(editedCampaign.getName());
+        assert isUnique != null;
+        if(!isUnique.getName().equals(campaign.getName())){
+            isUnique = getCampaignByName(campaign.getName());
+            if(isUnique!= null)
+                throw new CampaignNotUniqueName(campaign.getName());        }
+
         Campaign result = initializeCampaign(editedCampaign, campaign);
 
         makeOnlyOneCampaignActive(result);
@@ -86,6 +105,9 @@ public class CampaignService implements ICampaignService {
         int campaignId = campaignByName.getCampaignId();
         float discount = Float.parseFloat(campaign.getPrice()) / 100f;
         float priceDuringCampaign = product.getPrice() - (product.getPrice() * discount);
+
+        if(priceDuringCampaign<product.getMinPrice())
+            throw new DiscountBelowMinimalPriceException(product.getName());
 
         ProductCampaignsFK fk = new ProductCampaignsFK();
         fk.setCampaignId(campaignId);
@@ -169,4 +191,5 @@ public class CampaignService implements ICampaignService {
         }
         return null;
     }
+
 }

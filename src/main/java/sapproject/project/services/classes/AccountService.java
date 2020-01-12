@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
+import sapproject.project.exceptions.ListSizeIsZero;
 import sapproject.project.models.Account;
 import sapproject.project.models.AccountType;
 import sapproject.project.models.Cart;
@@ -23,8 +24,6 @@ public class AccountService implements IAccountService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
-    private AccountTypeRepository accountTypeRepository;
-    @Autowired
     private AccountTypeService accountTypeService;
     @Autowired
     PasswordEncoder passwordEncoder;
@@ -35,18 +34,17 @@ public class AccountService implements IAccountService {
 
     @Override
     public List<Account> findAll() {
-        return accountRepository.findAll();
+        List<Account> accounts = accountRepository.findAll();
+        if (accounts.size() == 0)
+            throw new ListSizeIsZero("accounts");
+        else
+            return accounts;
     }
 
     public Account getOne(int Id) {
         return accountRepository.findById(Id)
                 .orElseGet(() -> {
-                    try {
                         throw new EntityNotFoundException(Account.class);
-                    } catch (EntityNotFoundException e) {
-                        //log.warn("Account not found: {}", Id);
-                    }
-                    return null;
                 });
     }
 
@@ -54,19 +52,13 @@ public class AccountService implements IAccountService {
     public Account deleteByID(int ID) {
         Account account = getOne(ID);
         if (account == null) {
-            try {
                 throw new EntityNotFoundException(Account.class);
-            } catch (EntityNotFoundException e) {
-                //log.warn("Account not found: {}", ID);
-            }
-            return account;
         }
         Cart cart = cartService.findCart(ID);
         if (cart != null)
             cartRepository.delete(cart);
         accountRepository.delete(account);
         return account;
-        //log.debug("Deleted account with id: " + ID);
     }
 
     @Override

@@ -3,6 +3,8 @@ package sapproject.project.services.classes;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sapproject.project.exceptions.ListSizeIsZero;
+import sapproject.project.models.Campaign;
 import sapproject.project.models.Category;
 import sapproject.project.repository.CatagoryRepository;
 import sapproject.project.services.interfaces.ICatagoryService;
@@ -27,7 +29,10 @@ public class CatagoryService implements ICatagoryService{
 
     @Override
     public List<Category> findAll() {
-        return catagoryRepository.findAll();
+        List<Category> categories = catagoryRepository.findAll();
+        if(categories.size() == 0)
+            throw new ListSizeIsZero("catagories");
+        return categories;
     }
 
 

@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
+import sapproject.project.exceptions.ListSizeIsZero;
+import sapproject.project.exceptions.RegularLessThanMinimalPrice;
 import sapproject.project.models.Campaign;
 import sapproject.project.models.Category;
 import sapproject.project.models.Product;
@@ -59,9 +61,12 @@ public class ProductService implements IProductService {
 
     @Override
     public List<Product> findAll() {
+        List<Product> products = productRepository.findAll();
+        if(products.size() == 0)
+            throw new ListSizeIsZero("products");
         Product pr;
         List<Product> productList = new ArrayList<>();
-        for (Product product : productRepository.findAll()) {
+        for (Product product : products) {
             if (product.getQuantity() > 0) {
                 pr = findProductOnSale(product);
                 if (pr == null)
@@ -87,7 +92,6 @@ public class ProductService implements IProductService {
 
     @Override
     public Product createOne(ProductPayload entity) {
-        //log.info("New product has been created: {}", entity);
         Product product = createProductObject(entity);
         return productRepository.save(product);
     }
@@ -156,6 +160,9 @@ public class ProductService implements IProductService {
         } else {
             campaign = campaignService.findCampaignByName(campaignName);
         }
+        if(campaign==null)
+            return new ArrayList<>();
+
         List<Product> filteredList = new ArrayList<>();
         ProductCampaigns productCampaigns1;
         Product product;
@@ -167,6 +174,9 @@ public class ProductService implements IProductService {
                 if (productCampaigns1 != null && product != null) {
                     product.setPrice(productCampaigns1.getPrice());
                 }
+                assert product != null;
+                if(product.getQuantity()==0)
+                    continue;
                 filteredList.add(product);
             }
         }
@@ -192,6 +202,9 @@ public class ProductService implements IProductService {
         }
         product.setDiscription(update.getDescription());
 
+        if(product.getPrice()<product.getMinPrice())
+            throw new RegularLessThanMinimalPrice(product.getName());
+
         return product;
     }
 
@@ -203,6 +216,9 @@ public class ProductService implements IProductService {
         product.setMinPrice(Float.parseFloat(productPayload.getMinPrice()));
         product.setCategory(catagoryService.findCategoryByName(productPayload.getCategoryName()));
         product.setDiscription(productPayload.getDescription());
+
+        if(product.getPrice()<product.getMinPrice())
+            throw new RegularLessThanMinimalPrice(product.getName());
 
         return product;
     }

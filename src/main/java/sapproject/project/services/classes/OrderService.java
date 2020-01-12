@@ -4,6 +4,8 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
+import sapproject.project.exceptions.ListSizeIsZero;
+import sapproject.project.exceptions.NotEnoughProductsException;
 import sapproject.project.models.*;
 import sapproject.project.payload.Checkout;
 import sapproject.project.repository.*;
@@ -25,7 +27,6 @@ public class OrderService implements IOrderService {
     private CartRepository cartRepository;
     @Autowired
     private ProductRepository productRepository;
-
     @Autowired
     private CartProductsRepository cartProductsRepository;
     @Autowired
@@ -37,7 +38,10 @@ public class OrderService implements IOrderService {
 
     @Override
     public List<Order> findAll() {
-        return orderRepository.findAll();
+        List<Order> orders = orderRepository.findAll();
+        if (orders.size() == 0)
+            throw new ListSizeIsZero("orders");
+        return orders;
     }
 
     @Override
@@ -54,6 +58,10 @@ public class OrderService implements IOrderService {
     @Override
     public Order makeOrder(Checkout checkout) {
         Account account = accountService.findAccountByEmail(checkout.getUsername(), true);
+
+        if(!isOrderPossible(account))
+            throw new NotEnoughProductsException();
+
         String dateTime = LocalDateTime.now().toString();
         String address = createAddress(checkout);
         String paymentDetails = createPaymentDetails(checkout);
@@ -83,6 +91,21 @@ public class OrderService implements IOrderService {
                 "\nCard Number: " + checkout.getCardNumber() +
                 "\nCard CVV: " + checkout.getCVV() +
                 "\nExpiration Date: " + checkout.getExpirationMonth() + " " + checkout.getExpirationYear();
+    }
+
+    private boolean isOrderPossible(Account account){
+        Cart cart = cartRepository.findByAccount(account);
+        Product product;
+
+        for (CartProducts item : cartProductsRepository.findAll()) {
+            if (item.getCart().getCartId() == cart.getCartId()) {
+                product = productService.getOne(item.getProduct().getProductId());
+                product.setQuantity(item.getProduct().getQuantity() - item.getQuantity());
+                if (product.getQuantity()< 0)
+                    return false;
+            }
+        }
+        return true;
     }
 
     private List<OrderDetails> getItemsToBuy(int orderId, Checkout checkout, Account account) {
