@@ -4,19 +4,21 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
-import sapproject.project.models.*;
+import sapproject.project.models.Campaign;
+import sapproject.project.models.Category;
+import sapproject.project.models.Product;
+import sapproject.project.models.ProductCampaigns;
 import sapproject.project.payload.ProductPayload;
 import sapproject.project.repository.ProductCampaingnsRepository;
 import sapproject.project.repository.ProductRepository;
 import sapproject.project.services.interfaces.IProductService;
 
-import javax.validation.Payload;
 import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
 @Service
-public class ProductService {
+public class ProductService implements IProductService {
     @Autowired
     ProductRepository productRepository;
 
@@ -31,6 +33,7 @@ public class ProductService {
     private ProductCampaingnsRepository productCamapaignsRepository;
 
 
+    @Override
     public List<Product> findAllProductsByCategory(String categoryName) {
         Category category = catagoryService.findCategoryByName(categoryName);
         List<Product> filteredList = new ArrayList<>();
@@ -39,8 +42,7 @@ public class ProductService {
         int catID = 0;
         if (category == null) {
             return filteredList;//todo fix
-        }
-        else {
+        } else {
             catID = category.getCategoryId();
         }
         for (Product product : productRepository.findAll()) {
@@ -55,11 +57,23 @@ public class ProductService {
         return filteredList;
     }
 
+    @Override
     public List<Product> findAll() {
+        Product pr;
         List<Product> productList = new ArrayList<>();
-        return productRepository.findAll();
+        for (Product product : productRepository.findAll()) {
+            if (product.getQuantity() > 0) {
+                pr = findProductOnSale(product);
+                if (pr == null)
+                    productList.add(product);
+                else
+                    productList.add(pr);
+            }
+        }
+        return productList;
     }
 
+    @Override
     public Product getOne(int Id) {
         return productRepository.findById(Id).orElseGet(() -> {
             try {
@@ -71,24 +85,14 @@ public class ProductService {
         });
     }
 
+    @Override
     public Product createOne(ProductPayload entity) {
         //log.info("New product has been created: {}", entity);
         Product product = createProductObject(entity);
         return productRepository.save(product);
     }
 
-    private Product createProductObject(ProductPayload productPayload) {
-        Product product = new Product();
-        product.setName(productPayload.getName());
-        product.setQuantity(Integer.parseInt(productPayload.getQuantity()));
-        product.setPrice(Float.parseFloat(productPayload.getPrice()));
-        product.setMinPrice(Float.parseFloat(productPayload.getMinPrice()));
-        product.setCategory(catagoryService.findCategoryByName(productPayload.getCategoryName()));
-        product.setDiscription(productPayload.getDescription());
-
-        return product;
-    }
-
+    @Override
     public void deleteByID(int ID) {
         Product catagory = getOne(ID);
         if (catagory == null) {
@@ -104,12 +108,69 @@ public class ProductService {
 
     }
 
+    @Override
     public Product updateByID(ProductPayload payload) {
         Product product = findProductById(Integer.parseInt(payload.getId()));
 
         Product result = updateProductMembers(product, payload);
 
         return productRepository.save(result);
+    }
+
+    @Override
+    public List<Product> findAllOutOfStockProducts() {
+        List<Product> filteredList = new ArrayList<>();
+        ProductCampaigns productCampaigns;
+        for (Product product : productRepository.findAll()) {
+            if (product.getQuantity() == 0) {
+                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+                if (productCampaigns != null)
+                    product.setPrice(productCampaigns.getPrice());
+                filteredList.add(product);
+
+            }
+        }
+        return filteredList;
+    }
+
+    @Override
+    public List<Product> findAllProductsByKeyword(String keyword) {
+        List<Product> filteredList = new ArrayList<>();
+        ProductCampaigns productCampaigns;
+        for (Product product : productRepository.findAll()) {
+            if (product.getName().toLowerCase().contains(keyword.toLowerCase()) && product.getQuantity() > 0) {
+                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+                if (productCampaigns != null)
+                    product.setPrice(productCampaigns.getPrice());
+                filteredList.add(product);
+            }
+        }
+        return filteredList;
+    }
+
+    @Override
+    public List<Product> findAllProductsOnSale(String campaignName) {
+        Campaign campaign;
+        if (campaignName.equals("null")) {
+            campaign = campaignService.findActiveCampaign();
+        } else {
+            campaign = campaignService.findCampaignByName(campaignName);
+        }
+        List<Product> filteredList = new ArrayList<>();
+        ProductCampaigns productCampaigns1;
+        Product product;
+
+        for (ProductCampaigns productCampaigns : productCamapaignsRepository.findAll()) {
+            if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()) {
+                productCampaigns1 = campaignService.findProductIfOnSale(productCampaigns.getProductCampaignsFK().getProductId());
+                product = findProductById(productCampaigns.getProductCampaignsFK().getProductId());
+                if (productCampaigns1 != null && product != null) {
+                    product.setPrice(productCampaigns1.getPrice());
+                }
+                filteredList.add(product);
+            }
+        }
+        return filteredList;
     }
 
     private Product findProductById(int id) {
@@ -134,57 +195,25 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> findAllOutOfStockProducts() {
-        List<Product> filteredList = new ArrayList<>();
-        ProductCampaigns productCampaigns;
-        for (Product product : productRepository.findAll()) {
-            if (product.getQuantity() == 0) {
-                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-                if (productCampaigns != null)
-                    product.setPrice(productCampaigns.getPrice());
-                filteredList.add(product);
+    private Product createProductObject(ProductPayload productPayload) {
+        Product product = new Product();
+        product.setName(productPayload.getName());
+        product.setQuantity(Integer.parseInt(productPayload.getQuantity()));
+        product.setPrice(Float.parseFloat(productPayload.getPrice()));
+        product.setMinPrice(Float.parseFloat(productPayload.getMinPrice()));
+        product.setCategory(catagoryService.findCategoryByName(productPayload.getCategoryName()));
+        product.setDiscription(productPayload.getDescription());
 
-            }
-        }
-        return filteredList;
+        return product;
     }
 
-    public List<Product> findAllProductsByKeyword(String keyword) {
-        List<Product> filteredList = new ArrayList<>();
-        ProductCampaigns productCampaigns;
-        for (Product product : productRepository.findAll()) {
-            if (product.getName().toLowerCase().contains(keyword.toLowerCase()) && product.getQuantity() > 0) {
-                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
-                if (productCampaigns != null)
-                    product.setPrice(productCampaigns.getPrice());
-                filteredList.add(product);
+    private Product findProductOnSale(Product product) {
+        for (Product p : findAllProductsOnSale("null")) {
+            if (p.getProductId() == product.getProductId()) {
+                return p;
             }
         }
-        return filteredList;
-    }
-
-    public List<Product> findAllProductsOnSale(String campaignName) {
-        Campaign campaign;
-        if(campaignName.equals("null")){
-            campaign = campaignService.findActiveCampaign();
-        }else {
-            campaign = campaignService.findCampaignByName(campaignName);
-        }
-        List<Product> filteredList = new ArrayList<>();
-        ProductCampaigns productCampaigns1;
-        Product product;
-
-        for (ProductCampaigns productCampaigns : productCamapaignsRepository.findAll()) {
-            if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()) {
-                productCampaigns1 = campaignService.findProductIfOnSale(productCampaigns.getProductCampaignsFK().getProductId());
-                product = findProductById(productCampaigns.getProductCampaignsFK().getProductId());
-                if (productCampaigns1 != null && product!= null) {
-                    product.setPrice(productCampaigns1.getPrice());
-                }
-                filteredList.add(product);
-            }
-        }
-        return filteredList;
+        return null;
     }
 }
 

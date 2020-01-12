@@ -25,7 +25,6 @@ import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
 import sapproject.project.repository.CartRepository;
 import sapproject.project.services.classes.AccountService;
-import sapproject.project.services.interfaces.IAccountService;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -33,25 +32,25 @@ import java.net.URI;
 @RestController
 public class AuthController {
     @Autowired
-    AccountTypeRepository accountTypeRepository;
+    private AccountTypeRepository accountTypeRepository;
 
     @Autowired
-    AuthenticationManager authenticationManager;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    AccountRepository accountRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    PasswordEncoder passwordEncoder;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    JwtTokenProvider tokenProvider;
+    private JwtTokenProvider tokenProvider;
 
     @Autowired
-    AccountService accountService;
+    private AccountService accountService;
 
     @Autowired
-    CartRepository cartRepository;
+    private CartRepository cartRepository;
 
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
@@ -72,7 +71,7 @@ public class AuthController {
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 
-        if(accountRepository.existsAccountByEmail(signUpRequest.getUsername())) {
+        if (accountRepository.existsAccountByEmail(signUpRequest.getUsername())) {
             System.out.println("Username is already taken!");
             return new ResponseEntity<>(new ApiResponse(false, "Username is already taken!"),
                     HttpStatus.BAD_REQUEST);
@@ -80,10 +79,10 @@ public class AuthController {
         // Creating client account
         String email = signUpRequest.getUsername();
         String pass = passwordEncoder.encode(signUpRequest.getPassword());
-        String name  = signUpRequest.getName();
+        String name = signUpRequest.getName();
         AccountType accountType = accountTypeRepository.getAccountTypeByAccountTypeID(1);
 
-        Account client = new Account(accountType,name, email, pass);
+        Account client = new Account(accountType, name, email, pass);
 
         Account result = accountRepository.save(client);
 
@@ -93,12 +92,12 @@ public class AuthController {
                 .fromCurrentContextPath().path("/account/create-1")
                 .buildAndExpand(result.getEmail()).toUri();
 
-        Account result1 =  null;
+        Account result1 = null;
         for (Account account : accountRepository.findAll()) {
             if (account.getEmail().equals(email))
                 result1 = account;
         }
-        System.out.println("result for cart: "+ result1);
+        System.out.println("result for cart: " + result1);
         Cart cart = new Cart(result1);
         cartRepository.save(cart);
 
@@ -106,22 +105,22 @@ public class AuthController {
     }
 
     @PostMapping("/get")
-    public Account findByEmail(@Valid @RequestBody String email){
-        System.out.println("email: "+ email);
+    public Account findByEmail(@Valid @RequestBody String email) {
+        System.out.println("email: " + email);
         Account result;
-        if(email.contains("username"))
-            result =  accountService.findAccountByEmail(email);
-        else{
+        if (email.contains("username"))
+            result = accountService.findAccountByEmail(email);
+        else {
             result = accountService.findAccountByEmail(email, true);
         }
-        System.out.println("result: "+ result);
+        System.out.println("result: " + result);
         return result;
     }
 
     @PostMapping("/cart")
-    public Cart cart(@Valid @RequestBody String email){
-        Account result =  accountService.findAccountByEmail(email);
-        System.out.println("result for cart: "+ result);
+    public Cart cart(@Valid @RequestBody String email) {
+        Account result = accountService.findAccountByEmail(email);
+        System.out.println("result for cart: " + result);
         Cart cart = new Cart(result);
         return cartRepository.save(cart);
     }

@@ -4,14 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import sapproject.project.models.Campaign;
-import sapproject.project.models.ProductCampaignsFK;
 import sapproject.project.payload.CampaignIsActiveResponse;
 import sapproject.project.payload.CampaignPayload;
 import sapproject.project.payload.ProductCampaignPayload;
-import sapproject.project.payload.UpdateAccount;
-import sapproject.project.repository.CampaignRepository;
-import sapproject.project.services.classes.CampaignService;
-import sapproject.project.services.classes.ProductService;
+import sapproject.project.services.interfaces.ICampaignService;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -20,9 +16,7 @@ import java.util.List;
 @RequestMapping("campaign")
 public class CampaignController {
     @Autowired
-    private CampaignService campaignService;
-    @Autowired
-    private ProductService productService;
+    private ICampaignService campaignService;
 
     @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
@@ -72,7 +66,7 @@ public class CampaignController {
     public CampaignIsActiveResponse getActiveCampaign() {
         Campaign campaign = campaignService.findActiveCampaign();
         CampaignIsActiveResponse response = new CampaignIsActiveResponse();
-        response.setMessage(campaign==null?"No Products are on sale":campaign.getName());
+        response.setMessage(campaign == null ? "No Products are on sale" : campaign.getName());
         return response;
     }
 

@@ -5,12 +5,10 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import {AppRoutingModule} from './app-routing.module';
-import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { AcountListComponent } from './components/account/acount-list/acount-list.component';
 import { CreateAccountComponent } from './components/account/create-account/create-account.component';
 import { AccountViewComponent } from './components/account/account-view/account-view.component';
-import { FilterByNamePipe } from './filter-by-name.pipe';
 import {LoginComponent} from './components/login';
 
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -40,17 +38,16 @@ import { ProductListOutOfStockComponent } from './components/product/product-lis
 import { EditProductInCampaignComponent } from './components/campaign/edit-product-in-campaign/edit-product-in-campaign.component';
 import { SeeProductsInCampaignComponent } from './components/campaign/see-products-in-campaign/see-products-in-campaign.component';
 import { ProductListSaleComponent } from './components/product/product-list-sale/product-list-sale.component';
+import { HomeComponentComponent } from './components/home-component/home-component.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     HeaderComponent,
     AcountListComponent,
     CreateAccountComponent,
     AccountViewComponent,
-    FilterByNamePipe,
     LoginComponent,
     CatagoryComponent,
     ProductListComponent,
@@ -76,7 +73,8 @@ import { ProductListSaleComponent } from './components/product/product-list-sale
     ProductListOutOfStockComponent,
     EditProductInCampaignComponent,
     SeeProductsInCampaignComponent,
-    ProductListSaleComponent
+    ProductListSaleComponent,
+    HomeComponentComponent
   ],
   imports: [
     BrowserModule,

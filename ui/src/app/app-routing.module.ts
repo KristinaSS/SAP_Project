@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 
-import {HomeComponent} from './components/home/home.component';
 import {AcountListComponent} from './components/account/acount-list/acount-list.component';
 import {AccountViewComponent} from './components/account/account-view/account-view.component';
 import {CreateAccountComponent} from './components/account/create-account/create-account.component';
@@ -31,6 +30,7 @@ import {EditProductInCampaignComponent} from '@app/components/campaign/edit-prod
 import {SeeProductsInCampaignComponent} from '@app/components/campaign/see-products-in-campaign/see-products-in-campaign.component';
 import {ProductListSaleComponent} from '@app/components/product/product-list-sale/product-list-sale.component';
 import {EditAccountComponent} from '@app/components/account/edit-account/edit-account.component';
+import {HomeComponentComponent} from '@app/components/home-component/home-component.component';
 
 const routes: Routes = [
   {
@@ -150,12 +150,13 @@ const routes: Routes = [
   },
   {
     path: '',
-    component: HomeComponent
+    component: HomeComponentComponent
   },
   // otherwise redirect to home
   {
     path: '**',
-    redirectTo: ''
+    redirectTo: '',
+    component: HomeComponentComponent
   }
 ];
 

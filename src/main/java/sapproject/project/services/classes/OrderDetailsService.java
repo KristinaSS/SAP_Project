@@ -1,26 +1,21 @@
 package sapproject.project.services.classes;
 
-import lombok.extern.log4j.Log4j2;
-import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sapproject.project.exceptions.EntityNotFoundException;
-
-import sapproject.project.models.*;
+import sapproject.project.models.Order;
+import sapproject.project.models.OrderDetails;
+import sapproject.project.models.Product;
 import sapproject.project.payload.ReportPayload;
 import sapproject.project.repository.OrderDetailsRepository;
 import sapproject.project.services.interfaces.IOrderDetailsService;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-@Log4j2
 @Service
-public class OrderDetailsService {
+public class OrderDetailsService implements IOrderDetailsService {
     @Autowired
     OrderDetailsRepository orderDetailsRepository;
 
@@ -30,17 +25,15 @@ public class OrderDetailsService {
     @Autowired
     OrderService orderService;
 
-    @Autowired
-    private CampaignService campaignService;
-
     private static float sum;
     private static int quantity;
 
-
+    @Override
     public List<OrderDetails> findAll() {
         return orderDetailsRepository.findAll();
     }
 
+    @Override
     public List<ReportPayload> getSalesReport(String time) {
         List<ReportPayload> reportPayloadList = new ArrayList<>();
         List<Product> reportedProducts = new ArrayList<>();
@@ -62,10 +55,30 @@ public class OrderDetailsService {
         return reportPayloadList;
     }
 
+    @Override
+    public BigDecimal calculate(String time) {
+        float total = 0;
+        LocalDateTime localDateTime;
+
+        for (OrderDetails orderDetails : findAll()) {
+            localDateTime = getDateTimeOfOrder(orderDetails.getOrderdetailsPK().getOrderId());
+            if (!isInTimeRequested(time, localDateTime))
+                continue;
+            total += orderDetails.getSum();
+        }
+        return round(total, 2);
+    }
+
     private LocalDateTime getDateTimeOfOrder(int orderId) {
         Order order = orderService.getOne(orderId);
         String dateTime = order.getDateTime();
         return LocalDateTime.parse(dateTime);
+    }
+
+    private BigDecimal round(float d, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(d));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd;
     }
 
     private boolean isInTimeRequested(String time, LocalDateTime localDateTime) {
@@ -111,23 +124,5 @@ public class OrderDetailsService {
             payload.setProductId(product.getProductId());
             reportPayloadList.add(payload);
         }
-    }
-
-    public BigDecimal calculate(String time) {
-        float total = 0;
-        LocalDateTime localDateTime;
-
-        for (OrderDetails orderDetails : findAll()) {
-            localDateTime = getDateTimeOfOrder(orderDetails.getOrderdetailsPK().getOrderId());
-            if (!isInTimeRequested(time, localDateTime))
-                continue;
-            total += orderDetails.getSum();
-        }
-        return round(total,2);
-    }
-    private BigDecimal round(float d, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(d));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd;
     }
 }

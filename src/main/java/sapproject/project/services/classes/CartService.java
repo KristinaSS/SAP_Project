@@ -6,9 +6,13 @@ import sapproject.project.models.*;
 import sapproject.project.payload.CartItem;
 import sapproject.project.repository.CartProductsRepository;
 import sapproject.project.repository.CartRepository;
+import sapproject.project.services.interfaces.ICartService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
-public class CartService {
+public class CartService implements ICartService {
     @Autowired
     private AccountService accountService;
 
@@ -25,6 +29,7 @@ public class CartService {
     @Autowired
     private CampaignService campaignService;
 
+    @Override
     public Cart findCart(int accId) {
         for (Cart cart : cartRepository.findAll()) {
             if (cart.getAccount().getAccID() == accId)
@@ -33,6 +38,7 @@ public class CartService {
         return null;
     }
 
+    @Override
     public boolean ifCartItemExists(Product product, Cart cart) {
         for (CartProducts cartProducts : cartProductsRepository.findAll()) {
             if (cartProducts.getCart().getCartId() == cart.getCartId()
@@ -42,6 +48,7 @@ public class CartService {
         return false;
     }
 
+    @Override
     public CartProducts updateCartItem(Cart cart, Product product, int quantity) {
         CartProducts item = null;
         for (CartProducts cartProducts : cartProductsRepository.findAll()) {
@@ -54,6 +61,7 @@ public class CartService {
         return item;
     }
 
+    @Override
     public Float calculateCart(Cart cart) {
         float sum = 0;
 
@@ -73,6 +81,7 @@ public class CartService {
         return sum;
     }
 
+    @Override
     public void deleteCartItem(CartItem cartItem) {
         Account account = accountService.findAccountByEmail(cartItem.getUsername(), true);
         Cart cart = cartRepository.findByAccount(account);
@@ -84,5 +93,46 @@ public class CartService {
             }
         }
 
+    }
+
+    @Override
+    public List<CartProducts> filterByCategory(String username) {
+        int accId = accountService.findAccountByEmail(username).getAccID();
+        int cartId = 0;
+        for (Cart cart : cartRepository.findAll()) {
+            if (cart.getAccount().getAccID() == accId)
+                cartId = cart.getCartId();
+        }
+        Product product;
+        ProductCampaigns productCampaigns;
+        List<CartProducts> filteredList = new ArrayList<>();
+
+        for (CartProducts cartProducts : cartProductsRepository.findAll()) {
+            if (cartId == cartProducts.getCart().getCartId()) {
+                product = cartProducts.getProduct();
+                productCampaigns = campaignService.findProductIfOnSale(product.getProductId());
+                if (productCampaigns != null) {
+                    product.setPrice(productCampaigns.getPrice());
+                }
+                cartProducts.setProduct(product);
+                filteredList.add(cartProducts);
+            }
+        }
+        return filteredList;
+    }
+
+    @Override
+    public CartProducts addItemToCart(CartItem cartItem) {
+        Account account = accountService.findAccountByEmail(cartItem.getUsername(), true);
+        Product product = productService.getOne(Integer.parseInt(cartItem.getProductId()));
+
+        int quantity = Integer.parseInt(cartItem.getQuantity());
+
+        Cart cart = cartRepository.findByAccount(account);
+        CartProducts cartProducts = new CartProducts(quantity, cart, product);
+
+        return ifCartItemExists(product, cart)
+                ? cartProductsRepository.save(updateCartItem(cart, product, quantity))
+                : cartProductsRepository.save(cartProducts);
     }
 }

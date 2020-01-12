@@ -46,52 +46,12 @@ public class OrderService implements IOrderService {
             try {
                 throw new EntityNotFoundException(Order.class);
             } catch (EntityNotFoundException e) {
-                //log.warn("A order with this Id has not been found:  {}", Id);
             }
             return null;
         });
     }
 
     @Override
-    public Order createOne(Order entity) {
-        //log.info("New order has been created: {}", entity);
-        return orderRepository.save(entity);
-    }
-
-    @Override
-    public void deleteByID(int ID) {
-        Order catagory = getOne(ID);
-        if (catagory == null) {
-            try {
-                throw new EntityNotFoundException(Order.class);
-            } catch (EntityNotFoundException e) {
-                // log.warn("Order not found: {}", ID);
-            }
-            return;
-        }
-        //log.info("Deleted order: {} ",ID);
-        orderRepository.delete(catagory);
-
-    }
-
-    @Override
-    public Order updateByID(int ID, Order entity) {
-        return orderRepository.findById(ID)
-                .map(accountType -> orderRepository.save(updateOrderMembers(accountType, entity)))
-                .orElseGet(() -> {
-                    entity.setOrderId(ID);
-                    // log.info("Order has been created: {}",ID);
-                    return orderRepository.save(entity);
-                });
-    }
-
-    private Order updateOrderMembers(Order order, Order update) {
-        order.setClient(update.getClient());
-        order.setDateTime(update.getDateTime());
-        //log.info("Order updated: {}", order);
-        return order;
-    }
-
     public Order makeOrder(Checkout checkout) {
         Account account = accountService.findAccountByEmail(checkout.getUsername(), true);
         String dateTime = LocalDateTime.now().toString();

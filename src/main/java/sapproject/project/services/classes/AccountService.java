@@ -13,12 +13,13 @@ import sapproject.project.payload.UpdateAccount;
 import sapproject.project.repository.AccountRepository;
 import sapproject.project.repository.AccountTypeRepository;
 import sapproject.project.repository.CartRepository;
+import sapproject.project.services.interfaces.IAccountService;
 
 import java.util.List;
 
 @Log4j2
 @Service
-public class AccountService {
+public class AccountService implements IAccountService {
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -32,6 +33,7 @@ public class AccountService {
     @Autowired
     CartService cartService;
 
+    @Override
     public List<Account> findAll() {
         return accountRepository.findAll();
     }
@@ -48,6 +50,7 @@ public class AccountService {
                 });
     }
 
+    @Override
     public Account deleteByID(int ID) {
         Account account = getOne(ID);
         if (account == null) {
@@ -59,13 +62,14 @@ public class AccountService {
             return account;
         }
         Cart cart = cartService.findCart(ID);
-        if(cart!=null)
+        if (cart != null)
             cartRepository.delete(cart);
         accountRepository.delete(account);
         return account;
         //log.debug("Deleted account with id: " + ID);
     }
 
+    @Override
     public Account updateAccount(UpdateAccount payload) {
         Account account = getOne(Integer.parseInt(payload.getId()));
         AccountType accountType = null;
@@ -78,26 +82,7 @@ public class AccountService {
         return accountRepository.save(result);
     }
 
-
-    public Account createOne(Account account, int accType) {
-
-        AccountType accountType = accountTypeRepository.getOne(accType);
-
-        account.setAccountType(accountTypeRepository.getOne(accType));
-        return accountRepository.save(account);
-    }
-
-    private Account updateAccMembers(Account hashPassAcc, String name, String email, String password, AccountType accountType) {
-        hashPassAcc.setName(name);
-        if (accountType != null) {
-            hashPassAcc.setAccountType(accountType);
-        }
-        hashPassAcc.setEmail(email);
-        if (password != null && !password.equals(" "))
-            hashPassAcc.setPassword(passwordEncoder.encode(password));
-        return hashPassAcc;
-    }
-
+    @Override
     public Account findAccountByEmail(String email) {
         System.out.println("find string: " + email);
         String username = email.substring(13, email.length() - 2);
@@ -109,11 +94,23 @@ public class AccountService {
         return null;
     }
 
+    @Override
     public Account findAccountByEmail(String email, boolean res) {
         for (Account account : accountRepository.findAll()) {
             if (account.getEmail().equals(email))
                 return account;
         }
         return null;
+    }
+
+    private Account updateAccMembers(Account hashPassAcc, String name, String email, String password, AccountType accountType) {
+        hashPassAcc.setName(name);
+        if (accountType != null) {
+            hashPassAcc.setAccountType(accountType);
+        }
+        hashPassAcc.setEmail(email);
+        if (password != null && !password.equals(" "))
+            hashPassAcc.setPassword(passwordEncoder.encode(password));
+        return hashPassAcc;
     }
 }

@@ -10,13 +10,13 @@ import sapproject.project.payload.CampaignPayload;
 import sapproject.project.payload.ProductCampaignPayload;
 import sapproject.project.repository.CampaignRepository;
 import sapproject.project.repository.ProductCampaingnsRepository;
-import sapproject.project.services.interfaces.IProductService;
+import sapproject.project.services.interfaces.ICampaignService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class CampaignService {
+public class CampaignService implements ICampaignService {
     @Autowired
     private CampaignRepository campaignRepository;
 
@@ -26,6 +26,7 @@ public class CampaignService {
     @Autowired
     private ProductService productService;
 
+    @Override
     public List<CampaignPayload> findAll() {
         List<CampaignPayload> payloads = new ArrayList<>();
         CampaignPayload campaignPayload;
@@ -41,6 +42,7 @@ public class CampaignService {
         return payloads;
     }
 
+    @Override
     public Campaign getCampaignById(int campaignId) {
         for (Campaign campaign : campaignRepository.findAll()) {
             if (campaign.getCampaignId() == campaignId)
@@ -49,17 +51,94 @@ public class CampaignService {
         return null;
     }
 
+    @Override
     public void deleteCampaignById(int campaignId) {
         Campaign campaign = getCampaignById(campaignId);
         campaignRepository.delete(campaign);
     }
 
+    @Override
     public Campaign createCampaign(CampaignPayload campaign) {
         Campaign createdCampaign = new Campaign();
         Campaign result = initializeCampaign(createdCampaign, campaign);
         makeOnlyOneCampaignActive(result);
 
         return campaignRepository.save(result);
+    }
+
+    @Override
+    public Campaign editCampaign(CampaignPayload campaign) {
+        Campaign editedCampaign = getCampaignById(Integer.parseInt(campaign.getId()));
+        Campaign result = initializeCampaign(editedCampaign, campaign);
+
+        makeOnlyOneCampaignActive(result);
+
+        return campaignRepository.save(result);
+    }
+
+    @Override
+    public void addToCampaign(ProductCampaignPayload campaign) {
+        int productId = Integer.parseInt(campaign.getProductId());
+        Product product = productService.getOne(productId);
+        Campaign campaignByName = getCampaignByName(campaign.getCampaignName());
+        if (campaignByName == null)
+            return;
+        int campaignId = campaignByName.getCampaignId();
+        float discount = Float.parseFloat(campaign.getPrice()) / 100f;
+        float priceDuringCampaign = product.getPrice() - (product.getPrice() * discount);
+
+        ProductCampaignsFK fk = new ProductCampaignsFK();
+        fk.setCampaignId(campaignId);
+        fk.setProductId(productId);
+
+        ProductCampaigns productCampaigns = new ProductCampaigns();
+        productCampaigns.setProductCampaignsFK(fk);
+        productCampaigns.setPrice(priceDuringCampaign);
+
+        productCampaingnsRepository.save(productCampaigns);
+    }
+
+    @Override
+    public ProductCampaigns findProductIfOnSale(int productId) {
+        Campaign campaign;
+        for (ProductCampaigns productCampaigns : productCampaingnsRepository.findAll()) {
+            campaign = getCampaignById(productCampaigns.getProductCampaignsFK().getCampaignId());
+            if (campaign.getActive() && productCampaigns.getProductCampaignsFK().getProductId() == productId) {
+                return productCampaigns;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public Campaign findCampaignByName(String campaignName) {
+        for (Campaign campaign : campaignRepository.findAll()) {
+            if (campaign.getName().equals(campaignName)) {
+                return campaign;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteProductInCampaign(ProductCampaignPayload payload) {
+        Campaign campaign = findCampaignByName(payload.getCampaignName());
+        for (ProductCampaigns productCampaigns : productCampaingnsRepository.findAll()) {
+            if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()
+                    && productCampaigns.getProductCampaignsFK().getProductId()
+                    == Integer.parseInt(payload.getProductId())) {
+                productCampaingnsRepository.delete(productCampaigns);
+            }
+        }
+    }
+
+    @Override
+    public Campaign findActiveCampaign() {
+        for (Campaign campaign : campaignRepository.findAll()) {
+            if (campaign.getActive())
+                return campaign;
+        }
+        return null;
     }
 
     private Campaign initializeCampaign(Campaign createdCampaign, CampaignPayload campaignPayload) {
@@ -83,78 +162,9 @@ public class CampaignService {
         }
     }
 
-    public Campaign editCampaign(CampaignPayload campaign) {
-        Campaign editedCampaign = getCampaignById(Integer.parseInt(campaign.getId()));
-        Campaign result = initializeCampaign(editedCampaign, campaign);
-
-        makeOnlyOneCampaignActive(result);
-
-        return campaignRepository.save(result);
-    }
-
-    public void addToCampaign(ProductCampaignPayload campaign) {
-        int productId = Integer.parseInt(campaign.getProductId());
-        Product product = productService.getOne(productId);
-        Campaign campaignByName = getCampaignByName(campaign.getCampaignName());
-        if (campaignByName == null)
-            return;
-        int campaignId = campaignByName.getCampaignId();
-        float discount = Float.parseFloat(campaign.getPrice())/100f;
-        float priceDuringCampaign = product.getPrice() - (product.getPrice()*discount);
-
-        ProductCampaignsFK fk = new ProductCampaignsFK();
-        fk.setCampaignId(campaignId);
-        fk.setProductId(productId);
-
-        ProductCampaigns productCampaigns = new ProductCampaigns();
-        productCampaigns.setProductCampaignsFK(fk);
-        productCampaigns.setPrice(priceDuringCampaign);
-
-        productCampaingnsRepository.save(productCampaigns);
-    }
-
-    public ProductCampaigns findProductIfOnSale(int productId) {
-        Campaign campaign;
-        for (ProductCampaigns productCampaigns : productCampaingnsRepository.findAll()) {
-            campaign = getCampaignById(productCampaigns.getProductCampaignsFK().getCampaignId());
-            if (campaign.getActive() && productCampaigns.getProductCampaignsFK().getProductId() == productId) {
-                return productCampaigns;
-            }
-        }
-        return null;
-    }
-
     private Campaign getCampaignByName(String campaignName) {
         for (Campaign campaign : campaignRepository.findAll()) {
             if (campaign.getName().equals(campaignName))
-                return campaign;
-        }
-        return null;
-    }
-
-    public Campaign findCampaignByName(String campaignName) {
-        for (Campaign campaign : campaignRepository.findAll()) {
-            if (campaign.getName().equals(campaignName)) {
-                return campaign;
-            }
-        }
-        return null;
-    }
-
-    public void deleteProductInCampaign(ProductCampaignPayload payload) {
-        Campaign campaign = findCampaignByName(payload.getCampaignName());
-        for (ProductCampaigns productCampaigns : productCampaingnsRepository.findAll()) {
-            if (productCampaigns.getProductCampaignsFK().getCampaignId() == campaign.getCampaignId()
-                    && productCampaigns.getProductCampaignsFK().getProductId()
-                    == Integer.parseInt(payload.getProductId())) {
-                productCampaingnsRepository.delete(productCampaigns);
-            }
-        }
-    }
-
-    public Campaign findActiveCampaign(){
-        for(Campaign campaign: campaignRepository.findAll()){
-            if(campaign.getActive())
                 return campaign;
         }
         return null;

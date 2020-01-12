@@ -46,4 +46,8 @@ export class ProductService {
     console.log('method: getProductListByCampaign');
     return this.http.post('server/product/filteredByCampaign', name);
   }
+
+  getAllAvailableProducts() {
+    return this.http.get('server/product/all');
+  }
 }
