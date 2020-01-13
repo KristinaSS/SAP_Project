@@ -3,6 +3,7 @@ import {CartService} from '@app/services/cart.service';
 import {ProductService} from '@app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ReportService} from '@app/services/report.service';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-sales-report',
@@ -14,6 +15,7 @@ export class SalesReportComponent implements OnInit {
   public product;
   public reportItems;
   public sum;
+  validMessage: any;
 
   constructor(private reportService: ReportService,
               private productService: ProductService,
@@ -31,8 +33,10 @@ export class SalesReportComponent implements OnInit {
       data => {
         this.reportItems = data;
       },
-      error => console.error(error),
-      () => console.log('Items Loaded')
+      error => {
+        this.validMessage = 'There are no products sold for the selected period of time.';
+        return throwError(error.message || error);
+      }
     );
   }
 

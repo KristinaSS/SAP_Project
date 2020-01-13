@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import sapproject.project.exceptions.EntityNotFoundException;
 import sapproject.project.exceptions.ListSizeIsZero;
+import sapproject.project.exceptions.PriceZeroOrLess;
 import sapproject.project.exceptions.RegularLessThanMinimalPrice;
 import sapproject.project.models.Campaign;
 import sapproject.project.models.Category;
@@ -149,6 +150,8 @@ public class ProductService implements IProductService {
                 filteredList.add(product);
             }
         }
+        if(filteredList.size() == 0)
+            throw new ListSizeIsZero("filteredList");
         return filteredList;
     }
 
@@ -202,8 +205,11 @@ public class ProductService implements IProductService {
         }
         product.setDiscription(update.getDescription());
 
-        if(product.getPrice()<product.getMinPrice())
+        if(product.getPrice()<product.getMinPrice()|| product.getMinPrice()<=0)
             throw new RegularLessThanMinimalPrice(product.getName());
+
+        if(product.getPrice()<= 0)
+            throw new PriceZeroOrLess(product.getName());
 
         return product;
     }

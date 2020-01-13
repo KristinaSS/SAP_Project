@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from '@app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-product-list-keyword',
@@ -12,6 +13,7 @@ export class ProductListKeywordComponent implements OnInit {
   public keyword;
 
   /*todo title*/
+  private validMessage: string;
 
   constructor(private productService: ProductService,
               private router: Router,
@@ -28,8 +30,11 @@ export class ProductListKeywordComponent implements OnInit {
       data => {
         this.productList = data;
       },
-      error => console.error(error),
-      () => console.log('Products Loaded')
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'No products found with this keyword.';
+        return throwError(error.message || error);
+      }
     );
   }
 

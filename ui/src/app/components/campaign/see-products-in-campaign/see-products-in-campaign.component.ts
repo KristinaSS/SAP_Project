@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {CampaignService} from '@app/services/campaign.service';
 import {ProductService} from '@app/services/product.service';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 
 @Component({
   selector: 'app-see-products-in-campaign',
@@ -37,8 +37,10 @@ export class SeeProductsInCampaignComponent implements OnInit {
       data => {
         this.products = data;
       },
-      error => console.error(error),
-      () => console.log('Products Loaded')
+      error => {
+        this.validMessage = 'There are no products in this campaign.';
+        return throwError(error.message || error);
+      }
     );
   }
 

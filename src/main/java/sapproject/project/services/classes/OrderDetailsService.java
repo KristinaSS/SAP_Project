@@ -57,6 +57,9 @@ public class OrderDetailsService implements IOrderDetailsService {
             intializeSumAndQuantity(reportedProducts, product);
             addToPayloadList(reportedProducts, product, reportPayloadList);
         }
+        if(reportPayloadList.size()== 0)
+            throw new ListSizeIsZero("reportPayloadList");
+
         return reportPayloadList;
     }
 

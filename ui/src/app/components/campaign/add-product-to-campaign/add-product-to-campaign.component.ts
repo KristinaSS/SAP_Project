@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '@app/services/product.service';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {CampaignService} from '@app/services/campaign.service';
 
 @Component({
@@ -72,21 +72,18 @@ export class AddProductToCampaignComponent implements OnInit {
   submitRegistration() {
     this.intializeMembers();
     if (this.validation()) {
-      this.validMessage = 'Your campaign registration has been submitted. Thank you!';
-
-      console.log('cur campaign: ' + this.campaign);
-
       this.campaignService.addProductToCampaign(
         this.product.productId, this.campaign, this.price).subscribe(
         data => {
           this.productFormGroup.reset();
+          this.router.navigate(['product-updated']);
           return true;
         },
         error => {
-          return Observable.throw(error);
+          this.validMessage = 'Тhe price calculated is below the minimal';
+          return throwError(error.message || error);
         }
       );
-      this.router.navigate(['product-updated']);
     }
   }
 
@@ -97,6 +94,10 @@ export class AddProductToCampaignComponent implements OnInit {
   validation() {
     if (!this.price.match('\\d*\\.?\\d+') || this.price.length === 0) {
       this.validMessage = 'Not Valid price';
+      return false;
+    }
+    if (!this.price.match('^[1-9][0-9]?$')) {
+      this.validMessage = 'Not valid discount percent, needs to be from 1 - 99';
       return false;
     }
     console.log('Validated');

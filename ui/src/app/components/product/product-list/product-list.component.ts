@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProductService} from '@app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-product-list',
@@ -12,6 +13,7 @@ export class ProductListComponent implements OnInit {
   public category;
 
   /*todo title*/
+  private validMessage: string;
 
   constructor(private productService: ProductService,
               private router: Router,
@@ -32,8 +34,12 @@ export class ProductListComponent implements OnInit {
       data => {
         this.productList = data;
       },
-      error => console.error(error),
-      () => console.log('Products Loaded')
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'List is empty ' +
+          'Regular price cannot be 0 or less';
+        return throwError(error.message || error);
+      }
     );
   }
 

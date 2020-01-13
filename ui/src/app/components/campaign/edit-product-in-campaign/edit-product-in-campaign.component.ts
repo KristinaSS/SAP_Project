@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '@app/services/product.service';
 import {CampaignService} from '@app/services/campaign.service';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 
 @Component({
   selector: 'app-edit-product-in-campaign',
@@ -46,7 +46,11 @@ export class EditProductInCampaignComponent implements OnInit {
       data => {
         this.product = data;
       },
-      error => console.error(error),
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'Calculated price on product is below minimal.';
+        return throwError(error.message || error);
+      },
       () => console.log('Account Loaded')
     );
   }
@@ -80,15 +84,15 @@ export class EditProductInCampaignComponent implements OnInit {
       this.campaignService.addProductToCampaign(
         this.product.productId, this.campaign, this.price).subscribe(
         data => {
-          this.item = data;
           this.productFormGroup.reset();
+          this.router.navigate(['product-updated']);
           return true;
         },
         error => {
-          return Observable.throw(error);
+          this.validMessage = 'Тhe price calculated is below the minimal';
+          return throwError(error.message || error);
         }
       );
-      this.router.navigate(['product-updated']);
     }
   }
 

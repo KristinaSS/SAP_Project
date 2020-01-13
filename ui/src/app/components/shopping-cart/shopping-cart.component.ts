@@ -3,6 +3,7 @@ import {CartService} from '@app/services/cart.service';
 import {AccountServiceService} from '@app/services/account-service.service';
 import {ProductService} from '@app/services/product.service';
 import {Router} from '@angular/router';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-shopping-cart',
@@ -15,6 +16,7 @@ export class ShoppingCartComponent implements OnInit {
   public product;
   public cartList;
   public sum;
+  private validMessage: string;
 
   constructor(private cartService: CartService,
               private productService: ProductService,
@@ -31,8 +33,10 @@ export class ShoppingCartComponent implements OnInit {
       data => {
         this.cartList = data;
       },
-      error => console.error(error),
-      () => console.log('Items Loaded')
+      error => {
+        this.validMessage = 'There are no items in the cart';
+        return throwError(error.message || error);
+      }
     );
   }
 

@@ -28,7 +28,7 @@ export class AccountViewComponent implements OnInit {
       data => {
         this.account = data;
         if (this.lsTestAuthentication()) {
-          console.log('emplyee or admin');
+          console.log('employee or admin');
           this.router.navigate(['account-view-emp']);
         }
         sessionStorage.setItem('accountType', this.account.accountType.name);

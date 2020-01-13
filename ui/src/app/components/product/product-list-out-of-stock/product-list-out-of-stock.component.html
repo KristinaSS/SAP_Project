@@ -1,7 +1,9 @@
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
 
 <div class="title">
-  <h1>Out of stock products: </h1>
+  <h1>Out of stock products:
+  <br>
+  {{validMessage}}</h1>
 </div>
 <div class="container" *ngIf="productList && productList.length">
   <div class="row">

@@ -2,6 +2,7 @@ package sapproject.project.services.classes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import sapproject.project.exceptions.ListSizeIsZero;
 import sapproject.project.models.*;
 import sapproject.project.payload.CartItem;
 import sapproject.project.repository.CartProductsRepository;
@@ -118,6 +119,8 @@ public class CartService implements ICartService {
                 filteredList.add(cartProducts);
             }
         }
+        if(filteredList.size()== 0)
+            throw new ListSizeIsZero("filteredList");
         return filteredList;
     }
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from '@app/services/product.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-product-list-out-of-stock',
@@ -12,6 +13,7 @@ export class ProductListOutOfStockComponent implements OnInit {
   public productList;
 
   /*todo title*/
+  private validMessage: string;
 
   constructor(private productService: ProductService,
               private router: Router) {
@@ -26,8 +28,11 @@ export class ProductListOutOfStockComponent implements OnInit {
       data => {
         this.productList = data;
       },
-      error => console.error(error),
-      () => console.log('Products Loaded')
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'No products out of stock';
+        return throwError(error.message || error);
+      }
     );
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Router} from '@angular/router';
 import {AccountServiceService} from '@app/services/account-service.service';
 import {CampaignService} from '@app/services/campaign.service';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-campagin-list',
@@ -13,6 +14,7 @@ export class CampaginListComponent implements OnInit {
   public campaigns;
   title = 'All Campaigns';
 
+  validMessage = "";
   // tslint:disable-next-line:variable-name
 
   constructor( private router: Router,
@@ -32,8 +34,10 @@ export class CampaginListComponent implements OnInit {
       data => {
         this.campaigns = data;
       },
-      error => console.error(error),
-      () => console.log('Campaigns Loaded')
+      error => {
+        this.validMessage = 'There are no campaigns.';
+        return throwError(error.message || error);
+      }
     );
   }
 

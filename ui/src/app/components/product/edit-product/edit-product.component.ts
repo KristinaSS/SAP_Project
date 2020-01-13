@@ -3,7 +3,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '@app/services/product.service';
 import {CartService} from '@app/services/cart.service';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 
 @Component({
   selector: 'app-edit-product',
@@ -54,8 +54,12 @@ export class EditProductComponent implements OnInit {
       data => {
         this.product = data;
       },
-      error => console.error(error),
-      () => console.log('Account Loaded')
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'Min Price cannot be less more than regular price, and cannot be 0 or less. ' +
+          'Regular price cannot be 0 or less';
+        return throwError(error.message || error);
+      }
     );
   }
 

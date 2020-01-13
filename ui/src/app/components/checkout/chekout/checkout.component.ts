@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {CartService} from '@app/services/cart.service';
 import {Router} from '@angular/router';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -23,6 +24,7 @@ export class CheckoutComponent implements OnInit {
   public cartList;
   public sum;
   public total;
+  private validMessage: string;
 
   constructor(private cartService: CartService,
               private router: Router) {
@@ -85,8 +87,17 @@ export class CheckoutComponent implements OnInit {
       this.cardNumber,
       this.CVV,
       this.expirationMonth,
-      this.expirationYear);
-    this.router.navigate(['thankyou']);
+      this.expirationYear).subscribe(
+      data => {
+        this.router.navigate(['thankyou']);
+        return true;
+      },
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'An error has occured while placing order.Please try again later.';
+        return throwError(error.message || error);
+      }
+    );
   }
 
   lsTest() {

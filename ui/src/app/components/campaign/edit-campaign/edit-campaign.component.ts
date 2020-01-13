@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
 import {ProductService} from '@app/services/product.service';
-import {Observable} from 'rxjs';
+import {Observable, throwError} from 'rxjs';
 import {CampaignService} from '@app/services/campaign.service';
 
 @Component({
@@ -48,8 +48,11 @@ export class EditCampaignComponent implements OnInit {
       data => {
         this.products = data;
       },
-      error => console.error(error),
-      () => console.log('Campaign Loaded')
+      error => {
+        console.log('error thrown');
+        this.validMessage = 'Campaign Name not unique';
+        return throwError(error.message || error);
+      }
     );
   }
 
@@ -71,13 +74,15 @@ export class EditCampaignComponent implements OnInit {
       this.campaignServices.editCampaign(this.campaign.campaignId, this.name, this.description, this.isActive).subscribe(
         data => {
           this.campaignFormGroup.reset();
+          this.router.navigate(['campaign-list']);
           return true;
         },
         error => {
-          return Observable.throw(error);
+          console.log('error thrown');
+          this.validMessage = 'Campaign Name not unique';
+          return throwError(error.message || error);
         }
       );
-      this.router.navigate(['campaign-list']);
     }
   }
 

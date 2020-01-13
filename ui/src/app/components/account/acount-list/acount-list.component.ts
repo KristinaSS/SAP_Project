@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 
 import {AccountServiceService} from '@app/services/account-service.service';
 import {Router} from '@angular/router';
+import {throwError} from 'rxjs';
 
 @Component({
   selector: 'app-acount-list',
@@ -12,6 +13,8 @@ export class AcountListComponent implements OnInit {
   public accounts;
   public filteredAccounts: any[];
   title = 'All Accounts';
+
+  validMessage = "";
 
   // tslint:disable-next-line:variable-name
   private _listFilter: string;
@@ -42,8 +45,10 @@ export class AcountListComponent implements OnInit {
         this.accounts = data;
         this.filteredAccounts = this.accounts;
       },
-      error => console.error(error),
-      () => console.log('Accounts Loaded')
+      error => {
+        this.validMessage = 'There are no accounts.';
+        return throwError(error.message || error);
+      }
     );
   }
 
